@@ -1,0 +1,319 @@
+<?xml version="1.0" ?>
+
+<?author name='Brian L A Corbin' ?>
+<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<name>Even-Odd (Binary)</name>
+<description>VisuTuring Sample:
+
+Takes a binary string as input and
+
+outputs 1 if it is even, or 0 if it is odd
+
+(Performs modulo 2)
+
+
+BC</description>
+<has-diagram>true</has-diagram>
+<states>
+<state>
+<name>s</name>
+<location x='74.0' y='240.0' />
+</state>
+<state>
+<name>h</name>
+<location x='764.0' y='232.0' />
+</state>
+<state>
+<name>odd</name>
+<location x='437.0' y='95.0' />
+</state>
+<state>
+<name>even</name>
+<location x='441.0' y='358.0' />
+</state>
+<state>
+<name>odd+</name>
+<location x='632.0' y='97.0' />
+</state>
+<state>
+<name>even+</name>
+<location x='634.0' y='359.0' />
+</state>
+<state>
+<name>q</name>
+<location x='238.0' y='240.0' />
+</state>
+</states>
+<alphabet>
+<symbol>22B3</symbol>
+<symbol>2294</symbol>
+<symbol>0030</symbol>
+<symbol>0031</symbol>
+</alphabet>
+<transitions>
+<transition>
+<current-state>s</current-state>
+<current-symbol>0030</current-symbol>
+<next-state>s</next-state>
+<task>2192</task>
+<edge>
+<p1 x='74.0' y='240.0' />
+<p2 x='74.0' y='240.0' />
+<p3 x='76.0' y='311.0' />
+</edge>
+</transition>
+<transition>
+<current-state>s</current-state>
+<current-symbol>0031</current-symbol>
+<next-state>s</next-state>
+<task>2192</task>
+<edge>
+<p1 x='74.0' y='240.0' />
+<p2 x='74.0' y='240.0' />
+<p3 x='76.0' y='163.0' />
+</edge>
+</transition>
+<transition>
+<current-state>s</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>q</next-state>
+<task>2190</task>
+<edge>
+<p1 x='74.0' y='240.0' />
+<p2 x='238.0' y='240.0' />
+<p3 x='156.0' y='240.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>odd</next-state>
+<task>2190</task>
+<edge>
+<p1 x='437.0' y='95.0' />
+<p2 x='437.0' y='95.0' />
+<p3 x='326.0' y='92.0' />
+</edge>
+</transition>
+<transition>
+<current-state>even</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>even</next-state>
+<task>2190</task>
+<edge>
+<p1 x='441.0' y='358.0' />
+<p2 x='441.0' y='358.0' />
+<p3 x='442.0' y='439.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd</current-state>
+<current-symbol>22B3</current-symbol>
+<next-state>odd+</next-state>
+<task>2192</task>
+<edge>
+<p1 x='437.0' y='95.0' />
+<p2 x='632.0' y='97.0' />
+<p3 x='534.0' y='96.0' />
+</edge>
+</transition>
+<transition>
+<current-state>even</current-state>
+<current-symbol>22B3</current-symbol>
+<next-state>even+</next-state>
+<task>2192</task>
+<edge>
+<p1 x='441.0' y='358.0' />
+<p2 x='634.0' y='359.0' />
+<p3 x='537.0' y='357.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd+</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>h</next-state>
+<task>0030</task>
+<edge>
+<p1 x='632.0' y='97.0' />
+<p2 x='764.0' y='232.0' />
+<p3 x='731.5' y='121.5' />
+</edge>
+</transition>
+<transition>
+<current-state>even+</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>h</next-state>
+<task>0031</task>
+<edge>
+<p1 x='634.0' y='359.0' />
+<p2 x='764.0' y='232.0' />
+<p3 x='734.0' y='351.5' />
+</edge>
+</transition>
+<transition>
+<current-state>odd</current-state>
+<current-symbol>0030</current-symbol>
+<next-state>odd</next-state>
+<task>2294</task>
+<edge>
+<p1 x='437.0' y='95.0' />
+<p2 x='437.0' y='95.0' />
+<p3 x='439.0' y='173.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd</current-state>
+<current-symbol>0031</current-symbol>
+<next-state>odd</next-state>
+<task>2294</task>
+<edge>
+<p1 x='437.0' y='95.0' />
+<p2 x='437.0' y='95.0' />
+<p3 x='437.0' y='16.0' />
+</edge>
+</transition>
+<transition>
+<current-state>even</current-state>
+<current-symbol>0030</current-symbol>
+<next-state>even</next-state>
+<task>2294</task>
+<edge>
+<p1 x='441.0' y='358.0' />
+<p2 x='441.0' y='358.0' />
+<p3 x='327.0' y='368.0' />
+</edge>
+</transition>
+<transition>
+<current-state>even</current-state>
+<current-symbol>0031</current-symbol>
+<next-state>even</next-state>
+<task>2294</task>
+<edge>
+<p1 x='441.0' y='358.0' />
+<p2 x='441.0' y='358.0' />
+<p3 x='441.0' y='298.0' />
+</edge>
+</transition>
+<transition>
+<current-state>q</current-state>
+<current-symbol>0031</current-symbol>
+<next-state>odd</next-state>
+<task>2294</task>
+<edge>
+<p1 x='238.0' y='240.0' />
+<p2 x='437.0' y='95.0' />
+<p3 x='337.5' y='167.5' />
+</edge>
+</transition>
+<transition>
+<current-state>q</current-state>
+<current-symbol>0030</current-symbol>
+<next-state>even</next-state>
+<task>2294</task>
+<edge>
+<p1 x='238.0' y='240.0' />
+<p2 x='441.0' y='358.0' />
+<p3 x='347.0' y='257.5' />
+</edge>
+</transition>
+<transition>
+<current-state>q</current-state>
+<current-symbol>22B3</current-symbol>
+<next-state>q</next-state>
+<task>2192</task>
+<edge>
+<p1 x='238.0' y='240.0' />
+<p2 x='238.0' y='240.0' />
+<p3 x='238.0' y='180.0' />
+</edge>
+</transition>
+<transition>
+<current-state>s</current-state>
+<current-symbol>22B3</current-symbol>
+<next-state>s</next-state>
+<task>2192</task>
+<edge>
+<p1 x='74.0' y='240.0' />
+<p2 x='74.0' y='240.0' />
+<p3 x='75.0' y='102.0' />
+</edge>
+</transition>
+<transition>
+<current-state>q</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>even</next-state>
+<task>2294</task>
+<edge>
+<p1 x='238.0' y='240.0' />
+<p2 x='441.0' y='358.0' />
+<p3 x='268.0' y='353.5' />
+</edge>
+</transition>
+<transition>
+<current-state>even+</current-state>
+<current-symbol>0030</current-symbol>
+<next-state>even+</next-state>
+<task>2294</task>
+<edge>
+<p1 x='634.0' y='359.0' />
+<p2 x='634.0' y='359.0' />
+<p3 x='731.0' y='421.0' />
+</edge>
+</transition>
+<transition>
+<current-state>even+</current-state>
+<current-symbol>0031</current-symbol>
+<next-state>even+</next-state>
+<task>2294</task>
+<edge>
+<p1 x='634.0' y='359.0' />
+<p2 x='634.0' y='359.0' />
+<p3 x='634.0' y='299.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd+</current-state>
+<current-symbol>0030</current-symbol>
+<next-state>odd+</next-state>
+<task>2294</task>
+<edge>
+<p1 x='632.0' y='97.0' />
+<p2 x='632.0' y='97.0' />
+<p3 x='743.0' y='74.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd+</current-state>
+<current-symbol>0031</current-symbol>
+<next-state>odd+</next-state>
+<task>2294</task>
+<edge>
+<p1 x='632.0' y='97.0' />
+<p2 x='632.0' y='97.0' />
+<p3 x='630.0' y='16.0' />
+</edge>
+</transition>
+<transition>
+<current-state>even+</current-state>
+<current-symbol>22B3</current-symbol>
+<next-state>even+</next-state>
+<task>2192</task>
+<edge>
+<p1 x='634.0' y='359.0' />
+<p2 x='634.0' y='359.0' />
+<p3 x='535.0' y='420.0' />
+</edge>
+</transition>
+<transition>
+<current-state>odd+</current-state>
+<current-symbol>22B3</current-symbol>
+<next-state>odd+</next-state>
+<task>2192</task>
+<edge>
+<p1 x='632.0' y='97.0' />
+<p2 x='632.0' y='97.0' />
+<p3 x='542.0' y='149.0' />
+</edge>
+</transition>
+</transitions>
+</turing-machine>
