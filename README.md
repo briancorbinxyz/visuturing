@@ -7,8 +7,10 @@ Found my 3rd Year Bachelors Compsci Project and with all the recent Alan Turing 
 
 Download the bin folder and run the VisuTuring.jar file:
 
+```
 cd bin
 java -jar VisuTuring.jar
+```
 
 What is VisuTuring?
 -------------------
