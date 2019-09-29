@@ -7,12 +7,12 @@ Found my 3rd Year Bachelors Compsci Project and with all the recent Alan Turing 
 
 Download the bin folder and run the VisuTuring.jar file:
 
-```
+```bash
 cd bin
 java -jar VisuTuring.jar
 ```
 
-What is VisuTuring?
+Overview
 -------------------
 
 VisuTuring is a cross-platform system using Java Technology for simulating computations on Turing Machines. It allows you to create, edit and simulate models of computation and algorithms based on the Turing Machine model which was the brainchild of Alan Turing, a British mathematician known as the Father of Computer Science. All other models of computation provide at most the same computing power as that of Turing Machines, one of the earliest of such models.
