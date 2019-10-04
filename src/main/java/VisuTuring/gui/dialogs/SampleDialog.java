@@ -48,7 +48,7 @@ public class SampleDialog extends VTDialog implements ListSelectionListener, Mou
     var4.setPreferredSize(new Dimension(256, 300));
     var4.setBorder(BorderFactory.createBevelBorder(1));
     var2.add(var4, "Center");
-    var2.add(new JLabel(this.createImageIcon("/res/bitmaps/samples.gif")), "West");
+    var2.add(new JLabel(this.createImageIcon("bitmaps/samples.gif")), "West");
     this.mylist.addListSelectionListener(this);
     var2.setBorder(BorderFactory.createEtchedBorder(0));
     this.init(var2);
@@ -107,7 +107,7 @@ public class SampleDialog extends VTDialog implements ListSelectionListener, Mou
   }
 
   class MyCellRenderer extends JLabel implements ListCellRenderer {
-    ImageIcon icon = SampleDialog.this.createImageIcon("/res/bitmaps/vt.gif");
+    ImageIcon icon = SampleDialog.this.createImageIcon("bitmaps/vt.gif");
 
     MyCellRenderer() {
     }

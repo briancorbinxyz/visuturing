@@ -106,8 +106,8 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
   }
 
   private void initWindow() {
-    this.splash = new SplashWindow(this.createImageIcon("/res/bitmaps/splash.png"), 5000);
-    this.setIconImage(this.createImageIcon("/res/bitmaps/vticon.jpg").getImage());
+    this.splash = new SplashWindow(this.createImageIcon("bitmaps/splash.png"), 5000);
+    this.setIconImage(this.createImageIcon("bitmaps/vticon.jpg").getImage());
     Dimension var1 = Toolkit.getDefaultToolkit().getScreenSize();
     this.setSize(var1);
     this.desktop = new JDesktopPane();
@@ -215,7 +215,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
   JButton addAction(String var1, String var2, String var3, JToolBar var4, boolean var5) {
     JButton var6;
     if (var1 != null) {
-      var6 = new JButton(this.createImageIcon("/res/buttons/" + var1 + "16.gif"));
+      var6 = new JButton(this.createImageIcon("buttons/" + var1 + "16.gif"));
     } else {
       var6 = new JButton();
     }
@@ -249,7 +249,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
     }
 
     if (var1 != null) {
-      var10.setIcon(this.createImageIcon("/res/buttons/" + var1 + "16.gif"));
+      var10.setIcon(this.createImageIcon("buttons/" + var1 + "16.gif"));
     }
 
     if (var7 != 0) {
@@ -405,7 +405,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                     JOptionPane.showMessageDialog(this, "Oops! There was an error setting look and feel", "TBIT VisuTuring", 0, (Icon)null);
                   }
                 } else if (var4.equals("About VisuTuring...")) {
-                  this.splash = new SplashWindow(this.createImageIcon("/res/bitmaps/splash.png"), 7000);
+                  this.splash = new SplashWindow(this.createImageIcon("bitmaps/splash.png"), 7000);
                   this.splash.complete();
                   this.splash.setProgressText("This is VisuTuring - The Turing Machine Simulator created by Brian Corbin\nas part of a Final Year Project");
                 } else if (var4.equals("Brian Corbin on the web..")) {

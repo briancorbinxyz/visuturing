@@ -30,7 +30,7 @@ public class TransitionTool extends MouseTool {
 
     try {
       Toolkit var2 = Toolkit.getDefaultToolkit();
-      this.setCursor(var2.createCustomCursor(this.createImageIcon("/res/cursors/addtrans.gif").getImage(), new Point(0, 0), "AddTransition"));
+      this.setCursor(var2.createCustomCursor(this.createImageIcon("cursors/addtrans.gif").getImage(), new Point(0, 0), "AddTransition"));
       this.setOverCursor(this.cursor);
     } catch (Exception var3) {
       System.out.println("messed up.");

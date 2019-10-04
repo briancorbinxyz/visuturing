@@ -51,28 +51,28 @@ public class SimulationPanel extends JPanel implements ActionListener, KeyListen
     JPanel var3 = new JPanel(new BorderLayout(0, 0));
     var3.setOpaque(false);
     this.add(var3, "North");
-    var3.add(new JLabel(this.createImageIcon("/res/bitmaps/simulator/title.gif")), "West");
+    var3.add(new JLabel(this.createImageIcon("bitmaps/simulator/title.gif")), "West");
     JPanel var4 = new JPanel(new BorderLayout(0, 0));
     var3.add(var4, "Center");
     JPanel var5 = new JPanel(new BorderLayout(0, 0));
-    var5.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/topborder.gif")));
+    var5.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
     var5.setBackground(Color.BLACK);
     JPanel var6 = new JPanel(new BorderLayout(0, 0));
     var6.setBackground(Color.white);
     var6.add(var5, "North");
     var4.add(var6, "Center");
-    var4.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/rightcorner.gif")), "East");
+    var4.add(new JLabel(this.createImageIcon("bitmaps/diagram/rightcorner.gif")), "East");
     JPanel var7 = new JPanel(new BorderLayout(0, 0));
     var7.setBackground(Color.BLACK);
-    var7.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/sideborder.gif")));
+    var7.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
     this.add(var7, "East");
     JPanel var8 = new JPanel(new BorderLayout(0, 0));
     var8.setBackground(Color.BLACK);
-    var8.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/sideborder.gif")));
+    var8.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
     this.add(var8, "West");
     JPanel var9 = new JPanel(new BorderLayout(0, 0));
     var9.setBackground(Color.BLACK);
-    var9.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/topborder.gif")));
+    var9.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
     this.add(var9, "South");
     JPanel var10 = new JPanel(new BorderLayout(0, 0));
     var10.setBackground(Color.WHITE);
@@ -107,7 +107,7 @@ public class SimulationPanel extends JPanel implements ActionListener, KeyListen
     var3.setFocusPainted(false);
     var3.setBorderPainted(false);
     var3.setContentAreaFilled(false);
-    var3.setIcon(this.createImageIcon("/res/buttons/simulator/" + var2 + ".gif"));
+    var3.setIcon(this.createImageIcon("buttons/simulator/" + var2 + ".gif"));
     var3.setPreferredSize(new Dimension(52, 52));
     var3.addActionListener(this);
     var3.addActionListener(this.externalListener);
@@ -254,7 +254,7 @@ public class SimulationPanel extends JPanel implements ActionListener, KeyListen
 
     public SpeedShifter() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(SimulationPanel.this.createImageIcon("/res/bitmaps/simulator/speed.gif"));
+      JLabel var2 = new JLabel(SimulationPanel.this.createImageIcon("bitmaps/simulator/speed.gif"));
       var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
       JButton var3 = SimulationPanel.this.createMediaButton("Increase the speed", "increase");
       var3.setBounds(14, 18, 22, 22);
@@ -280,7 +280,7 @@ public class SimulationPanel extends JPanel implements ActionListener, KeyListen
 
     public InputWordBox(ActionListener var2, KeyListener var3) {
       super(new BorderLayout(0, 0));
-      JLabel var4 = new JLabel(SimulationPanel.this.createImageIcon("/res/bitmaps/simulator/inputw.gif"));
+      JLabel var4 = new JLabel(SimulationPanel.this.createImageIcon("bitmaps/simulator/inputw.gif"));
       var4.setBounds(0, 0, (int)var4.getPreferredSize().getWidth(), (int)var4.getPreferredSize().getHeight());
       this.inputWord = new JTextField("");
       this.inputWord.setFont(new Font("monospaced", 0, 16));
@@ -313,7 +313,7 @@ public class SimulationPanel extends JPanel implements ActionListener, KeyListen
   public class SymbolButton extends JPanel {
     public SymbolButton() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(SimulationPanel.this.createImageIcon("/res/bitmaps/simulator/alphabet.gif"));
+      JLabel var2 = new JLabel(SimulationPanel.this.createImageIcon("bitmaps/simulator/alphabet.gif"));
       var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
       JButton var3 = SimulationPanel.this.createMediaButton("Insert a symbol from the alphabet", "addsymbol");
       var3.setBounds(7, 19, 78, 18);

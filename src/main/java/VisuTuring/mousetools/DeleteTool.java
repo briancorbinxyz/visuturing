@@ -53,7 +53,7 @@ public class DeleteTool extends MouseTool {
 
     try {
       Toolkit var2 = Toolkit.getDefaultToolkit();
-      this.setCursor(var2.createCustomCursor(this.createImageIcon("/res/cursors/delete.gif").getImage(), new Point(9, 9), "Remove"));
+      this.setCursor(var2.createCustomCursor(this.createImageIcon("cursors/delete.gif").getImage(), new Point(9, 9), "Remove"));
       this.setOverCursor(this.cursor);
     } catch (Exception var3) {
     }

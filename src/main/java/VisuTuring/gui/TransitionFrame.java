@@ -30,7 +30,7 @@ public class TransitionFrame extends JDialog implements ActionListener {
     this.setResizable(false);
     this.setUndecorated(true);
     JLayeredPane var3 = new JLayeredPane();
-    JLabel var4 = new JLabel(this.createImageIcon("/res/bitmaps/transframe.gif"));
+    JLabel var4 = new JLabel(this.createImageIcon("bitmaps/transframe.gif"));
     var4.setBounds(0, 0, (int)var4.getPreferredSize().getWidth(), (int)var4.getPreferredSize().getHeight());
     Container var5 = this.getContentPane();
     var5.add(var3);
@@ -83,7 +83,7 @@ public class TransitionFrame extends JDialog implements ActionListener {
     var3.setFocusPainted(false);
     var3.setBorderPainted(false);
     var3.setContentAreaFilled(false);
-    var3.setIcon(this.createImageIcon("/res/buttons/" + var2 + ".gif"));
+    var3.setIcon(this.createImageIcon("buttons/" + var2 + ".gif"));
     var3.setPreferredSize(new Dimension(22, 22));
     var3.addActionListener(this);
     return var3;

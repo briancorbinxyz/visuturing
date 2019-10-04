@@ -41,7 +41,7 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
     this.fileName = "-untitled-";
     this.setSize(DEFAULT_FRAME_SIZE);
     this.setDefaultCloseOperation(0);
-    this.setFrameIcon(this.createImageIcon("/res/bitmaps/vticons.jpg"));
+    this.setFrameIcon(this.createImageIcon("bitmaps/vticons.jpg"));
     this.descPanel = new DescriptionPanel(var3);
     this.diagramEditor = new DiagramPanel(var2, var3);
     this.simulator = new SimulationPanel(var2, new DiagramSimulator(var3));

@@ -15,7 +15,7 @@ public class VTPanel extends JPanel {
     this.add(var2);
     this.setOpaque(false);
     var2.setOpaque(false);
-    JLabel var3 = new JLabel(this.createImageIcon("/res/bitmaps/" + var1));
+    JLabel var3 = new JLabel(this.createImageIcon("bitmaps/" + var1));
     var3.setBounds(0, 0, (int)var3.getPreferredSize().getWidth(), (int)var3.getPreferredSize().getHeight());
     this.setPreferredSize(var3.getPreferredSize());
     var2.setPreferredSize(var3.getPreferredSize());

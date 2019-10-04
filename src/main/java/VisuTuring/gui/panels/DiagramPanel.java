@@ -47,28 +47,28 @@ public class DiagramPanel extends JPanel implements ActionListener {
     JPanel var3 = new JPanel(new BorderLayout(0, 0));
     var3.setOpaque(false);
     this.add(var3, "North");
-    var3.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/title.gif")), "West");
+    var3.add(new JLabel(this.createImageIcon("bitmaps/diagram/title.gif")), "West");
     JPanel var4 = new JPanel(new BorderLayout(0, 0));
     var3.add(var4, "Center");
     JPanel var5 = new JPanel(new BorderLayout(0, 0));
-    var5.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/topborder.gif")));
+    var5.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
     var5.setBackground(Color.BLACK);
     JPanel var6 = new JPanel(new BorderLayout(0, 0));
     var6.setBackground(Color.white);
     var6.add(var5, "North");
     var4.add(var6, "Center");
-    var4.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/rightcorner.gif")), "East");
+    var4.add(new JLabel(this.createImageIcon("bitmaps/diagram/rightcorner.gif")), "East");
     JPanel var7 = new JPanel(new BorderLayout(0, 0));
     var7.setBackground(Color.BLACK);
-    var7.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/sideborder.gif")));
+    var7.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
     this.add(var7, "East");
     JPanel var8 = new JPanel(new BorderLayout(0, 0));
     var8.setBackground(Color.BLACK);
-    var8.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/sideborder.gif")));
+    var8.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
     this.add(var8, "West");
     JPanel var9 = new JPanel(new BorderLayout(0, 0));
     var9.setBackground(Color.BLACK);
-    var9.add(new JLabel(this.createImageIcon("/res/bitmaps/diagram/topborder.gif")));
+    var9.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
     this.add(var9, "South");
     JPanel var10 = new JPanel(new BorderLayout(0, 0));
     JPanel var11 = new JPanel(new BorderLayout(0, 0));
@@ -107,7 +107,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
     var3.setFocusPainted(false);
     var3.setBorderPainted(false);
     var3.setContentAreaFilled(false);
-    var3.setIcon(this.createImageIcon("/res/buttons/diagram/" + var2 + ".gif"));
+    var3.setIcon(this.createImageIcon("buttons/diagram/" + var2 + ".gif"));
     var3.setPreferredSize(new Dimension(52, 52));
     var3.addActionListener(this);
     var3.addActionListener(this.externalListener);
@@ -154,7 +154,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
   public class ZoomModifier extends JPanel {
     public ZoomModifier() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("/res/bitmaps/diagram/zoom.gif"));
+      JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/zoom.gif"));
       var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
       JButton var3 = DiagramPanel.this.createMediaButton("Zoom in", "increase");
       var3.setBounds(14, 18, 22, 22);
@@ -173,7 +173,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
   public class NonDeterminismButton extends JPanel {
     public NonDeterminismButton() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("/res/bitmaps/diagram/nd.gif"));
+      JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/nd.gif"));
       var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
       JButton var3 = DiagramPanel.this.createMediaButton("Check to see if this Turing Machine is deterministic", "check");
       var3.setBounds(7, 19, 78, 18);
@@ -189,7 +189,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
   public class GenerateButton extends JPanel {
     public GenerateButton() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("/res/buttons/diagram/diagram.gif"));
+      JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("buttons/diagram/diagram.gif"));
       var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
       JButton var3 = DiagramPanel.this.createMediaButton("Generate a new diagram based on transition table", "generate");
       var3.setBounds(7, 19, 78, 18);

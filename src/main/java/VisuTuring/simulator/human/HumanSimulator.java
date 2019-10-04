@@ -103,10 +103,10 @@ public class HumanSimulator extends Simulator implements Runnable, ImageObserver
     this.setBackground(Color.WHITE);
     this.reset();
     Toolkit var2 = Toolkit.getDefaultToolkit();
-    this.stateImage = var2.getImage(this.pathToURL("/res/bitmaps/simulator/human/state.gif"));
-    this.instrImage = var2.getImage(this.pathToURL("/res/bitmaps/simulator/human/instr.gif"));
-    this.titleImage = var2.getImage(this.pathToURL("/res/bitmaps/simulator/human/title.gif"));
-    this.hand = new Hand(this.pathToURL("/res/bitmaps/simulator/hand.gif"), new Double(0.0D, 16.0D), new Double(450.0D, 400.0D), this);
+    this.stateImage = var2.getImage(this.pathToURL("bitmaps/simulator/human/state.gif"));
+    this.instrImage = var2.getImage(this.pathToURL("bitmaps/simulator/human/instr.gif"));
+    this.titleImage = var2.getImage(this.pathToURL("bitmaps/simulator/human/title.gif"));
+    this.hand = new Hand(this.pathToURL("bitmaps/simulator/hand.gif"), new Double(0.0D, 16.0D), new Double(450.0D, 400.0D), this);
     this.runner = null;
   }
 
