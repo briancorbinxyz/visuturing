@@ -101,7 +101,7 @@ public class TuringMachine implements XmlElement {
         var3 = 8883;
       } else if (var1.getWord() == null) {
         var3 = 8852;
-        var1.setWord(Character.toString('⊔'));
+        var1.setWord(Character.toString(Symbols.SPACE));
       } else if (var1.getIndex() < var1.getWord().length()) {
         var3 = var1.getWord().charAt(var1.getIndex());
       }
@@ -127,7 +127,7 @@ public class TuringMachine implements XmlElement {
         var3 = 8883;
       } else if (var1.getWord() == null) {
         var3 = 8852;
-        var1.setWord(Character.toString('⊔'));
+        var1.setWord(Character.toString(Symbols.SPACE));
       } else if (var1.getIndex() < var1.getWord().length()) {
         var3 = var1.getWord().charAt(var1.getIndex());
       }
@@ -153,13 +153,13 @@ public class TuringMachine implements XmlElement {
           } else {
             var6.setIndex(var6.getIndex() + 1);
             if (var6.getIndex() > var6.getWord().length() - 1) {
-              var7 = var6.getWord() + '⊔';
+              var7 = var6.getWord() + Symbols.SPACE;
               var6.setWord(var7);
             }
           }
 
           if (var6.getIndex() > var6.getWord().length() - 1) {
-            var6.setWord(var6.getWord() + '⊔');
+            var6.setWord(var6.getWord() + Symbols.SPACE);
           }
 
           if (var6 != null) {

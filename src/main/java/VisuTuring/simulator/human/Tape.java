@@ -1,5 +1,7 @@
 package VisuTuring.simulator.human;
 
+import VisuTuring.core.Symbols;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -59,12 +61,12 @@ public class Tape {
       var1.setColor(Color.BLACK);
       var1.draw(new Rectangle((int)var2, (int)(var4 - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
       var6 = (String)this.tapeContents.get(new Integer(var11));
-      var7 = var2 + (double)((this.getCellWidth() - var1.getFontMetrics().charWidth('⊔')) / 2);
+      var7 = var2 + (double)((this.getCellWidth() - var1.getFontMetrics().charWidth(Symbols.SPACE)) / 2);
       var9 = var4 - (this.cell.getHeight() - (double)var1.getFontMetrics().getAscent()) / 2.0D;
       if (var11 == -1) {
-        var1.drawString(String.valueOf('⊳'), (float)var7, (float)var9);
+        var1.drawString(String.valueOf(Symbols.LEFT_END_MARKER), (float)var7, (float)var9);
       } else if (var6 == null) {
-        var1.drawString(String.valueOf('⊔'), (float)var7, (float)var9);
+        var1.drawString(String.valueOf(Symbols.SPACE), (float)var7, (float)var9);
       } else {
         var1.drawString(var6, (float)var7, (float)var9);
       }
@@ -73,13 +75,13 @@ public class Tape {
     }
 
     for(var11 = 1; var11 < 6; ++var11) {
-      var7 = var2 + (double)((this.getCellWidth() - var1.getFontMetrics().charWidth('⊔')) / 2);
+      var7 = var2 + (double)((this.getCellWidth() - var1.getFontMetrics().charWidth(Symbols.SPACE)) / 2);
       var9 = var4 - (this.cell.getHeight() - (double)var1.getFontMetrics().getAscent()) / 2.0D;
       var1.setColor(new Color(TAPE_COLOUR.getRed(), TAPE_COLOUR.getGreen(), TAPE_COLOUR.getBlue(), 255 / var11));
       var1.fill(new Rectangle((int)var2, (int)(var4 - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
       var1.setColor(new Color(255 / (6 - var11), 255 / (6 - var11), 255 / (6 - var11)));
       var1.draw(new Rectangle((int)var2, (int)(var4 - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
-      var1.drawString(String.valueOf('⊔'), (float)var7, (float)var9);
+      var1.drawString(String.valueOf(Symbols.SPACE), (float)var7, (float)var9);
       var2 += this.cell.getBounds().getWidth();
     }
 

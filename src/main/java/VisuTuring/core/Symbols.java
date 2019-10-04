@@ -1,12 +1,13 @@
 package VisuTuring.core;
 
 public class Symbols {
-  public static final char UNDERLINER = '̲';
-  public static final char RIGHT_ARROW = '→';
-  public static final char LEFT_ARROW = '←';
-  public static final char SPACE = '⊔';
-  public static final char LEFT_END_MARKER = '⊳';
-  public static final char ASSERTION = '⊦';
+
+  public static final char UNDERLINER = '\u00b2';
+  public static final char RIGHT_ARROW = '\u2020';
+  public static final char LEFT_ARROW = '\u2019';
+  public static final char SPACE = '\u2423';
+  public static final char LEFT_END_MARKER = '\u201d';
+  public static final char ASSERTION = '\u00a6';
 
   public Symbols() {
   }
@@ -29,7 +30,7 @@ public class Symbols {
 
   public static String trim(String var0) {
     String var1 = new String(var0);
-    if (var0.endsWith(String.valueOf('⊔'))) {
+    if (var0.endsWith(String.valueOf(SPACE))) {
       int var2 = var0.length() - 1;
       char var3 = var0.charAt(var2);
 

@@ -29,7 +29,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
-import sun.awt.image.JPEGImageDecoder;
 
 public class Persistence {
   public Persistence() {

@@ -1,5 +1,6 @@
 package VisuTuring.gui;
 
+import VisuTuring.core.Symbols;
 import VisuTuring.core.Transition;
 import VisuTuring.core.TuringMachine;
 import java.awt.Color;
@@ -60,9 +61,9 @@ public class TransitionFrame extends JDialog implements ActionListener {
     var3.add(var10, JLayeredPane.POPUP_LAYER);
     this.currentSymbol.setSelectedValue("" + var2.getCurrentSymbol(), true);
     Vector var11 = new Vector(var1.getAlphabet());
-    var11.remove(new String("⊳"));
-    var11.add(new String("←"));
-    var11.add(new String("→"));
+    var11.remove(String.valueOf(Symbols.LEFT_END_MARKER));
+    var11.add(String.valueOf(Symbols.LEFT_ARROW));
+    var11.add(String.valueOf(Symbols.RIGHT_ARROW));
     this.task = new JList(var11);
     this.task.setFont(new Font("Helvetica", 1, 15));
     JScrollPane var12 = new JScrollPane(this.task);
@@ -100,13 +101,13 @@ public class TransitionFrame extends JDialog implements ActionListener {
     if (this.currentSymbol.getSelectedIndex() > -1) {
       this.transition.setCurrentSymbol(this.currentSymbol.getSelectedValue().toString().charAt(0));
     } else {
-      this.transition.setCurrentSymbol('⊔');
+      this.transition.setCurrentSymbol(Symbols.SPACE);
     }
 
     if (this.task.getSelectedIndex() > -1) {
       this.transition.setTask(this.task.getSelectedValue().toString().charAt(0));
     } else {
-      this.transition.setTask('⊔');
+      this.transition.setTask(Symbols.SPACE);
     }
 
     return this.transition.getCurrentSymbol() == 8883 && this.transition.getTask() != 8594 ? null : this.transition;

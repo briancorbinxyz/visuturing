@@ -131,7 +131,7 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
   }
 
   private void addComputation(Configuration var1) {
-    this.computationText.setText(this.computationText.getText().equals(" ") ? var1.toString() : this.computationText.getText() + " " + '⊦' + " " + var1.toString());
+    this.computationText.setText(this.computationText.getText().equals(" ") ? var1.toString() : this.computationText.getText() + " " + Symbols.ASSERTION + " " + var1.toString());
     this.computationText.setCaretPosition(this.computationText.getText().length());
     ++this.noConfigs;
   }

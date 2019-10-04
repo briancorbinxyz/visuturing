@@ -1,6 +1,7 @@
 package VisuTuring.mousetools;
 
 import VisuTuring.core.State;
+import VisuTuring.core.Symbols;
 import VisuTuring.core.Transition;
 import VisuTuring.diagram.DiagramEditor;
 import VisuTuring.gui.TransitionFrame;
@@ -87,8 +88,8 @@ public class TransitionTool extends MouseTool {
         Point2D var9 = this.newTrans.getP1();
         Point2D var10 = this.newTrans.getP2();
         this.newTrans.setNextState(var3.getName());
-        this.newTrans.setTask('⊔');
-        this.newTrans.setCurrentSymbol('⊔');
+        this.newTrans.setTask(Symbols.SPACE);
+        this.newTrans.setCurrentSymbol(Symbols.SPACE);
         this.transitionEditor = new TransitionFrame(this.diagram.getCurrentMachine(), this.newTrans);
         this.newTrans.setControlPoint(new Double(var9.getX() + (var10.getX() - var9.getX()) / 2.0D, var9.getY() + (var10.getY() - var9.getY()) / 2.0D));
         if (this.newTrans.getNextState().equals(this.newTrans.getCurrentState())) {

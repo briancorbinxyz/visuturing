@@ -1,6 +1,7 @@
 package VisuTuring.gui.panels;
 
 import VisuTuring.core.State;
+import VisuTuring.core.Symbols;
 import VisuTuring.core.Transition;
 import VisuTuring.core.TuringMachine;
 import java.awt.Color;
@@ -76,9 +77,9 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
     var11.setCellEditor(new DefaultCellEditor(var14));
     TableColumn var15 = this.table.getColumnModel().getColumn(3);
     Vector var16 = new Vector(var12);
-    var16.remove(new String("⊳"));
-    var16.add(String.valueOf('←'));
-    var16.add(String.valueOf('→'));
+    var16.remove(String.valueOf(Symbols.LEFT_END_MARKER));
+    var16.add(String.valueOf(Symbols.LEFT_ARROW));
+    var16.add(String.valueOf(Symbols.RIGHT_ARROW));
     JComboBox var17 = new JComboBox(var16);
     var15.setCellEditor(new DefaultCellEditor(var17));
   }

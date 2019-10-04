@@ -5,27 +5,32 @@ public class Configuration {
   private String word;
   private int index;
 
-  public Configuration(String var1, String var2, int var3) {
-    this.state = var1;
-    this.word = var2;
-    this.index = var3;
+  public Configuration(String state, String word, int index) {
+    this.state = state;
+    this.word = word;
+    this.index = index;
   }
 
-  public Configuration(Configuration var1) {
-    if (this != var1) {
-      this.state = var1.getState();
-      this.word = var1.getWord();
-      this.index = var1.getIndex();
+  public Configuration(Configuration other) {
+    if (this != other) {
+      this.state = other.getState();
+      this.word = other.getWord();
+      this.index = other.getIndex();
     }
-
   }
 
   public String toString() {
     String var1 = "";
     if (this.index < this.word.length()) {
-      var1 = '⊳' + this.word.substring(0, this.index + 1) + '̲' + this.word.substring(this.index + 1);
+      var1 = Symbols.LEFT_END_MARKER +
+             this.word.substring(0, this.index + 1) +
+             Symbols.UNDERLINER +
+             this.word.substring(this.index + 1);
     } else {
-      var1 = '⊳' + this.word.substring(0, this.index) + '⊔' + '̲';
+      var1 = Symbols.LEFT_END_MARKER +
+              this.word.substring(0, this.index) +
+              Symbols.SPACE +
+              Symbols.UNDERLINER;
     }
 
     return "(" + this.state + "," + var1 + ")";

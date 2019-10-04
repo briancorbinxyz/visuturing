@@ -2,11 +2,12 @@ package VisuTuring.persistence;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.filechooser.FileFilter;
 
 public class VTFileFilter extends FileFilter implements FilenameFilter {
-  private Vector extensions = new Vector();
+  private List<String> extensions = new ArrayList<>();
   private String description = "VisuTuring Files";
 
   public VTFileFilter() {

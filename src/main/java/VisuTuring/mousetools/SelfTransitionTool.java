@@ -1,6 +1,7 @@
 package VisuTuring.mousetools;
 
 import VisuTuring.core.State;
+import VisuTuring.core.Symbols;
 import VisuTuring.core.Transition;
 import VisuTuring.diagram.DiagramEditor;
 import VisuTuring.gui.TransitionFrame;
@@ -59,7 +60,7 @@ public class SelfTransitionTool extends MouseTool {
         double var6 = var5.getLocation().getX();
         double var8 = var5.getLocation().getY();
         this.diagram.setSelectedTransition((Transition)null);
-        this.newTrans = new Transition(var5.getName(), '⊔', var5.getName(), '⊔');
+        this.newTrans = new Transition(var5.getName(), Symbols.SPACE, var5.getName(), Symbols.SPACE);
         this.newTrans.setP1(new Double(var6, var8));
         this.newTrans.setP2(new Double(var6, var8));
         Point2D var10 = this.newTrans.getP1();

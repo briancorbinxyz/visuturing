@@ -1,5 +1,6 @@
 package VisuTuring.gui.panels;
 
+import VisuTuring.core.Symbols;
 import VisuTuring.simulator.Simulator;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -234,7 +235,7 @@ public class SimulationPanel extends JPanel implements ActionListener, KeyListen
 
   public void keyPressed(KeyEvent var1) {
     if (var1.getKeyCode() == 155) {
-      this.inputBox.setText(this.inputBox.getText().substring(0, this.inputBox.getField().getCaretPosition()) + '⊔' + this.inputBox.getText().substring(this.inputBox.getField().getCaretPosition(), this.inputBox.getField().getText().length()));
+      this.inputBox.setText(this.inputBox.getText().substring(0, this.inputBox.getField().getCaretPosition()) + Symbols.SPACE + this.inputBox.getText().substring(this.inputBox.getField().getCaretPosition(), this.inputBox.getField().getText().length()));
     }
 
   }
