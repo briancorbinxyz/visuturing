@@ -90,7 +90,7 @@ public class TransitionFrame extends JDialog implements ActionListener {
   }
 
   public ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getResource(var1));
+    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
   }
 
   public void actionPerformed(ActionEvent var1) {

@@ -22,7 +22,7 @@ public abstract class MouseTool extends MouseInputAdapter implements MouseListen
   }
 
   public ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getResource(var1));
+    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
   }
 
   public Cursor getCursor() {

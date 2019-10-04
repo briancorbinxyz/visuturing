@@ -91,7 +91,7 @@ public class SampleDialog extends VTDialog implements ListSelectionListener, Mou
   }
 
   public ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getResource(var1));
+    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
   }
 
   public void mousePressed(MouseEvent var1) {

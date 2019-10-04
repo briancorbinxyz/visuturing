@@ -77,7 +77,7 @@ public abstract class VTDialog extends JDialog implements ActionListener {
   }
 
   protected ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getResource(var1));
+    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
   }
 
   public void actionPerformed(ActionEvent var1) {

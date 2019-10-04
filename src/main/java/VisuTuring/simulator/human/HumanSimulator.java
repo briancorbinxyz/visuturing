@@ -131,7 +131,7 @@ public class HumanSimulator extends Simulator implements Runnable, ImageObserver
   }
 
   private URL pathToURL(String var1) {
-    return this.getClass().getResource(var1);
+    return this.getClass().getClassLoader().getResource(var1);
   }
 
   public void run() {

@@ -60,7 +60,7 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
   }
 
   ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getResource(var1));
+    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
   }
 
   public void setFileName(String var1) {
