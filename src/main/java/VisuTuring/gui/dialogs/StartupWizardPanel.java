@@ -21,7 +21,7 @@ public class StartupWizardPanel extends JPanel {
     super(new BorderLayout());
     this.mainProgram = var2;
     this.listener = var1;
-    JLabel var3 = new JLabel(this.createImageIcon("/res/bitmaps/startup.gif"));
+    JLabel var3 = new JLabel(this.createImageIcon("bitmaps/startup.gif"));
     JLayeredPane var4 = new JLayeredPane();
     this.add(var4);
     var3.setBounds(0, 0, (int)var3.getPreferredSize().getWidth(), (int)var3.getPreferredSize().getHeight());
