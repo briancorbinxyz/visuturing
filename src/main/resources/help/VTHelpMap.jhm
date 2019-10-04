@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?> 
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+
+<map version="1.0">
+	<mapID target="VisuTuring" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Introduction" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Introduction.WhatIs" url="Pages/HelpWhatIs.htm" />
+	<mapID target="VisuTuring.Introduction.Features" url="Pages/Features.htm" />
+	
+	<mapID target="VisuTuring.Creation" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Creation.Formal" url="Pages/CreatingFormally.htm" />
+	<mapID target="VisuTuring.Creation.Diagram" url="Pages/CreatingDiagram.htm" />
+	
+	<mapID target="VisuTuring.Editing" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Editing.Description" url="Pages/EditingDescription.htm" />
+	<mapID target="VisuTuring.Editing.Alphabet" url="Pages/EditingAlphabet.htm" />
+	<mapID target="VisuTuring.Editing.States" url="Pages/EditingStates.htm" />
+	<mapID target="VisuTuring.Editing.Transitions" url="Pages/EditingTransitions.htm" />
+	
+	<mapID target="VisuTuring.Persistence" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Persistence.Saving" url="Pages/Saving.htm" />
+	<mapID target="VisuTuring.Persistence.Loading" url="Pages/Loading.htm" />
+
+	<mapID target="VisuTuring.Simulating" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Simulating.Samples" url="Pages/SimulatingSamples.htm" />
+	<mapID target="VisuTuring.Simulating.Diagram" url="Pages/SimulatingDiagram.htm" />
+	<mapID target="VisuTuring.Simulating.Human" url="Pages/SimulatingHuman.htm" />
+	
+	<mapID target="VisuTuring.Exporting" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Exporting.Printing" url="Pages/PrintingDiagrams.htm" />
+	<mapID target="VisuTuring.Exporting.HTML" url="Pages/ExportingHTML.htm" />
+	<mapID target="VisuTuring.Exporting.Diagram" url="Pages/ExportingJPEG.htm" />
+	
+	<mapID target="VisuTuring.Configuring" url="Pages/Index.htm" />
+	<mapID target="VisuTuring.Configuring.LNF" url="Pages/Configuring.htm" />
+</map>

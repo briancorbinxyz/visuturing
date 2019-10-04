@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?> 
+<!DOCTYPE toc
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/toc_2_0.dtd">
+
+<toc version="1.0">
+	<tocitem target="VisuTuring" text="VisuTuring">
+	
+		<tocitem target="VisuTuring.Introduction" text="Introduction">
+			<tocitem target="VisuTuring.Introduction.WhatIs" text="What is VisuTuring?"></tocitem>
+			<tocitem target="VisuTuring.Introduction.Features" text="VisuTuring Features"></tocitem>
+		</tocitem>
+		<tocitem target="VisuTuring.Creation" text="Creating Turing Machines">
+			<tocitem target="VisuTuring.Creation.Formal" text="Formally"></tocitem>
+			<tocitem target="VisuTuring.Creation.Diagram" text="Diagrammatically"></tocitem>
+		</tocitem>
+		<tocitem target="VisuTuring.Editing" text="Editing Turing Machines">
+			<tocitem target="VisuTuring.Editing.Description" text="Turing Machine Description"></tocitem>
+			<tocitem target="VisuTuring.Editing.Alphabet" text="Turing Machine Alphabet"></tocitem>
+			<tocitem target="VisuTuring.Editing.States" text="Turing Machine States"></tocitem>
+			<tocitem target="VisuTuring.Editing.Transitions" text="Turing Machine Transitions"></tocitem>
+		</tocitem>
+		<tocitem target="VisuTuring.Simulating" text="Simulating Computations">
+			<tocitem target="VisuTuring.Simulating.Samples" text="Simulating Sample Machines"></tocitem>
+			<tocitem target="VisuTuring.Simulating.Diagram" text="The Diagram Simulator"></tocitem>
+			<tocitem target="VisuTuring.Simulating.Human" text="The Human Simulator"></tocitem>
+		</tocitem>
+		<tocitem target="VisuTuring.Persistence" text="Saving and Loading">
+			<tocitem target="VisuTuring.Persistence.Saving" text="Saving Turing Machines"></tocitem>
+			<tocitem target="VisuTuring.Persistence.Loading" text="Loading Turing Machines"></tocitem>
+		</tocitem>
+		<tocitem target="VisuTuring.Exporting" text="Printing and Exporting">
+			<tocitem target="VisuTuring.Exporting.Printing" text="Printing Diagrams"></tocitem>
+			<tocitem target="VisuTuring.Exporting.HTML" text="Exporting to HTML files"></tocitem>
+			<tocitem target="VisuTuring.Exporting.Diagram" text="Exporting Diagrams as JPEG Files"></tocitem>
+		</tocitem>
+		<tocitem target="VisuTuring.Configuring" text="Configuring VisuTuring">
+			<tocitem target="VisuTuring.Configuring.LNF" text="Changing the Look And Feel"></tocitem>
+		</tocitem>
+	</tocitem>
+</toc>

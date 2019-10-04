@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+
+<?author name='Brian L A Corbin' ?>
+<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<name>Language Acceptor</name>
+<description>Accepts strings of the form (aab)* where acceptance is denoted by a computation halting normally in the halting state.</description>
+<has-diagram>true</has-diagram>
+<states>
+<state>
+<name>s</name>
+<location x='50.0' y='151.0' />
+</state>
+<state>
+<name>h</name>
+<location x='483.0' y='152.0' />
+</state>
+<state>
+<name>p0</name>
+<location x='147.0' y='283.0' />
+</state>
+<state>
+<name>p1</name>
+<location x='369.0' y='282.0' />
+</state>
+</states>
+<alphabet>
+<symbol>22B3</symbol>
+<symbol>2294</symbol>
+<symbol>0061</symbol>
+<symbol>0062</symbol>
+</alphabet>
+<transitions>
+<transition>
+<current-state>s</current-state>
+<current-symbol>0061</current-symbol>
+<next-state>p0</next-state>
+<task>2192</task>
+<edge>
+<p1 x='50.0' y='151.0' />
+<p2 x='147.0' y='283.0' />
+<p3 x='98.0' y='217.0' />
+</edge>
+</transition>
+<transition>
+<current-state>p0</current-state>
+<current-symbol>0061</current-symbol>
+<next-state>p1</next-state>
+<task>2192</task>
+<edge>
+<p1 x='147.0' y='283.0' />
+<p2 x='369.0' y='282.0' />
+<p3 x='258.0' y='282.0' />
+</edge>
+</transition>
+<transition>
+<current-state>p1</current-state>
+<current-symbol>0062</current-symbol>
+<next-state>s</next-state>
+<task>2192</task>
+<edge>
+<p1 x='369.0' y='282.0' />
+<p2 x='50.0' y='151.0' />
+<p3 x='209.0' y='216.0' />
+</edge>
+</transition>
+<transition>
+<current-state>s</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>h</next-state>
+<task>2294</task>
+<edge>
+<p1 x='50.0' y='151.0' />
+<p2 x='483.0' y='152.0' />
+<p3 x='293.0' y='150.0' />
+</edge>
+</transition>
+</transitions>
+</turing-machine>
