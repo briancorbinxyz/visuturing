@@ -2,9 +2,9 @@ package VisuTuring.core;
 
 public class Symbols {
 
-  public static final char UNDERLINER = '\u00b2';
-  public static final char RIGHT_ARROW = '\u2020';
-  public static final char LEFT_ARROW = '\u2019';
+  public static final char UNDERLINER = '\u0332';
+  public static final char RIGHT_ARROW = '\u2192';
+  public static final char LEFT_ARROW = '\u2190';
   public static final char SPACE = '\u2423';
   public static final char LEFT_END_MARKER = '\u201d';
   public static final char ASSERTION = '\u00a6';

@@ -10,5 +10,4 @@ java {
 
 dependencies {
     compile(files("bin/jh.jar"))
-    compile(files("bin/VisuTuring.jar"))
 }
