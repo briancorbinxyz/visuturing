@@ -1,0 +1,59 @@
+package org.keiosu.visuturing.core;
+
+import org.keiosu.visuturing.xml.XmlElement;
+
+import java.awt.Point;
+import java.awt.geom.Point2D;
+import java.awt.geom.Ellipse2D.Double;
+
+public class State implements XmlElement {
+  private String name;
+  private Point2D location;
+
+  public State(String name, Point2D location) {
+    this.name = name;
+    this.location = location;
+  }
+
+  public State(String name) {
+    this(name, new Point(50, 50));
+  }
+
+  public State(State state) {
+    if (this != state) {
+      this.name = state.name;
+      this.location = state.location;
+    }
+  }
+
+  public boolean contains(Point2D point) {
+    Double area = new Double(this.location.getX() - 20.0D, this.location.getY() - 20.0D, 40.0D, 40.0D);
+    return area.contains(point);
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setLocation(Point2D location) {
+    this.location = location;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public Point2D getLocation() {
+    return this.location;
+  }
+
+  public String toString() {
+    return this.name;
+  }
+
+  public String toXml() {
+    String xml = "<state>\n";
+    xml = xml + "<name>" + this.name + "</name>\n" + "<location " + "x='" + this.location.getX() + "' " + "y='" + this.location.getY() + "' " + "/>\n" + "</state>\n";
+    return xml;
+  }
+}
