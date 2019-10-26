@@ -1,6 +1,6 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.persistence.VTFileFilter;
+import org.keiosu.visuturing.persistence.VisuTuringFileFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -55,7 +55,7 @@ public class SampleDialog extends VTDialog implements ListSelectionListener, Mou
   }
 
   public String[] getFileList(String var1) {
-    VTFileFilter var2 = new VTFileFilter();
+    VisuTuringFileFilter var2 = new VisuTuringFileFilter();
     var2.addExtension("vt");
 
     try {

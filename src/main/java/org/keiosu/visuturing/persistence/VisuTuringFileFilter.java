@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.filechooser.FileFilter;
 
-public class VTFileFilter extends FileFilter implements FilenameFilter {
-  private List<String> extensions = new ArrayList<>();
+public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
+  private List<String> validExtensions = new ArrayList<>();
   private String description = "VisuTuring Files";
 
-  public VTFileFilter() {
+  public VisuTuringFileFilter() {
+    // do nothing
   }
 
-  public void addExtension(String var1) {
-    this.extensions.add(var1.toLowerCase());
+  public void addExtension(String extension) {
+    this.validExtensions.add(extension.toLowerCase());
   }
 
   public boolean accept(File var1) {
@@ -23,8 +24,8 @@ public class VTFileFilter extends FileFilter implements FilenameFilter {
     } else {
       String var2 = var1.getName().toLowerCase();
 
-      for(int var3 = this.extensions.size() - 1; var3 >= 0; --var3) {
-        if (var2.endsWith((String)this.extensions.get(var3))) {
+      for(int var3 = this.validExtensions.size() - 1; var3 >= 0; --var3) {
+        if (var2.endsWith((String)this.validExtensions.get(var3))) {
           return true;
         }
       }
@@ -42,8 +43,8 @@ public class VTFileFilter extends FileFilter implements FilenameFilter {
   }
 
   public boolean accept(File var1, String var2) {
-    for(int var3 = this.extensions.size() - 1; var3 >= 0; --var3) {
-      if (var2.endsWith((String)this.extensions.get(var3))) {
+    for(int var3 = this.validExtensions.size() - 1; var3 >= 0; --var3) {
+      if (var2.endsWith((String)this.validExtensions.get(var3))) {
         return true;
       }
     }

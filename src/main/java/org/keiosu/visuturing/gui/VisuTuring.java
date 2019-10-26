@@ -11,7 +11,7 @@ import org.keiosu.visuturing.gui.dialogs.SampleDialog;
 import org.keiosu.visuturing.gui.dialogs.SplashWindow;
 import org.keiosu.visuturing.gui.dialogs.StartupWizard;
 import org.keiosu.visuturing.persistence.Persistence;
-import org.keiosu.visuturing.persistence.VTFileFilter;
+import org.keiosu.visuturing.persistence.VisuTuringFileFilter;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -199,7 +199,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
     var16.add(this.statusBar);
     var2.add(var16, "South");
     this.setVisible(true);
-    VTFileFilter var17 = new VTFileFilter();
+    VisuTuringFileFilter var17 = new VisuTuringFileFilter();
     var17.addExtension("vt");
     var17.addExtension("xml");
     var17.setDescription("tBIT VisuTuring Files (*.vt, *.xml)");
@@ -341,9 +341,9 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
               } else {
                 int var7;
                 JFileChooser var15;
-                VTFileFilter var17;
+                VisuTuringFileFilter var17;
                 if (var4.equals("Export Diagram...")) {
-                  var17 = new VTFileFilter();
+                  var17 = new VisuTuringFileFilter();
                   var17.addExtension("jpeg");
                   var17.addExtension("jpg");
                   var17.setDescription("Images Files (*.jpg, *.jpeg)");
@@ -358,7 +358,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                   }
                 } else if (var4.equals("Export to HTML File...")) {
                   try {
-                    var17 = new VTFileFilter();
+                    var17 = new VisuTuringFileFilter();
                     var17.addExtension("html");
                     var17.addExtension("htm");
                     var17.setDescription("HTML Files (*.htm, *.html)");
