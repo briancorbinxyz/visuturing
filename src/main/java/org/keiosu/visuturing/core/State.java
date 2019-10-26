@@ -21,13 +21,13 @@ public class State implements XmlElement {
 
   public State(State state) {
     if (this != state) {
-      this.name = state.name;
-      this.location = state.location;
+      name = state.name;
+      location = state.location;
     }
   }
 
   public boolean contains(Point2D point) {
-    Double area = new Double(this.location.getX() - 20.0D, this.location.getY() - 20.0D, 40.0D, 40.0D);
+    Double area = new Double(location.getX() - 20.0D, location.getY() - 20.0D, 40.0D, 40.0D);
     return area.contains(point);
   }
 
@@ -40,20 +40,21 @@ public class State implements XmlElement {
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public Point2D getLocation() {
-    return this.location;
+    return location;
   }
 
   public String toString() {
-    return this.name;
+    return name;
   }
 
   public String toXml() {
-    String xml = "<state>\n";
-    xml = xml + "<name>" + this.name + "</name>\n" + "<location " + "x='" + this.location.getX() + "' " + "y='" + this.location.getY() + "' " + "/>\n" + "</state>\n";
-    return xml;
+    return "<state>\n" +
+      "<name>" + name + "</name>\n" +
+      "<location " + "x='" + location.getX() + "' " + "y='" + location.getY() + "' " + "/>\n" +
+      "</state>\n";
   }
 }

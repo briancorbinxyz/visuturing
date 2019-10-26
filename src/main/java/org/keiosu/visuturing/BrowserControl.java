@@ -1,40 +1,52 @@
 package org.keiosu.visuturing;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 public class BrowserControl {
-  private static final String WIN_ID = "Windows";
 
-  public BrowserControl() {
+  private BrowserControl() {
+    // private
   }
 
-  public static void displayURL(String url) {
-    String cmd = "";
-    try {
-      Process cmdProcess;
-      if (isWindowsPlatform()) {
-        cmd = "rundll32 url.dll,FileProtocolHandler " + url;
-        cmdProcess = Runtime.getRuntime().exec(cmd);
-      } else {
-        cmd = "firefox -new-tab \"" + url + "\"";
-        cmdProcess = Runtime.getRuntime().exec(cmd);
+  private static final String WIN_ID = "Windows";
 
-        try {
-          int exitCode = cmdProcess.waitFor();
-          if (exitCode != 0) {
-            cmd = "netscape " + url;
-            cmdProcess = Runtime.getRuntime().exec(cmd);
-          }
-        } catch (InterruptedException e) {
-          System.err.println("Error bringing up browser, cmd='" + cmd + "'");
-          System.err.println("Caught: " + e);
-          Thread.currentThread().interrupt();
-        }
+  private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+  public static void displayURL(String url) {
+    try {
+      if (isWindowsPlatform()) {
+        openUrlWindows(url);
+      } else {
+        openUrlFirefox(url);
       }
     } catch (IOException e) {
-      System.err.println("Could not invoke browser, command=" + cmd);
-      System.err.println("Caught: " + e);
+      LOGGER.atError()
+              .addArgument(e.getMessage())
+              .addArgument(e)
+              .log("Could not invoke browser, error={}");
     }
+  }
+
+  private static void openUrlFirefox(String url) throws IOException {
+    String cmd = "firefox -new-tab \"" + url + "\"";
+    Process cmdProcess = Runtime.getRuntime().exec(cmd);
+    try {
+      cmdProcess.waitFor();
+    } catch (InterruptedException e) {
+      LOGGER.atError()
+              .addArgument(e.getMessage())
+              .addArgument(e)
+              .log("Could not invoke browser, error={}");
+      Thread.currentThread().interrupt();
+    }
+  }
+
+  private static void openUrlWindows(String url) throws IOException {
+    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
   }
 
   private static boolean isWindowsPlatform() {

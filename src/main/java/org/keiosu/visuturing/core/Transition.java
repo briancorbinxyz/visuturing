@@ -2,11 +2,11 @@ package org.keiosu.visuturing.core;
 
 import org.keiosu.visuturing.xml.XmlElement;
 
-import java.awt.BasicStroke;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.QuadCurve2D.Double;
+import java.util.Objects;
 
 public class Transition implements XmlElement {
   private String currentState;
@@ -21,10 +21,6 @@ public class Transition implements XmlElement {
 
   public void setEdge(QuadCurve2D var1) {
     this.edge = var1;
-  }
-
-  public void setCurrentState(String var1) {
-    this.currentState = var1;
   }
 
   public void setCurrentSymbol(char var1) {
@@ -107,18 +103,24 @@ public class Transition implements XmlElement {
     return this.edge.getCtrlPt();
   }
 
-  public boolean contains(Point2D var1) {
-    BasicStroke var2 = new BasicStroke(5.0F);
-    return var2.createStrokedShape(this.edge).contains(var1);
-  }
-
   public String toXml() {
-    String var1 = "<transition>\n";
-    var1 = var1 + "<current-state>" + this.currentState + "</current-state>\n" + "<current-symbol>" + Symbols.toUnicode(this.currentSymbol) + "</current-symbol>\n" + "<next-state>" + this.nextState + "</next-state>\n" + "<task>" + Symbols.toUnicode(this.task) + "</task>\n" + "<edge>\n" + "<p1 " + "x='" + this.edge.getP1().getX() + "' " + "y='" + this.edge.getP1().getY() + "' " + "/>\n" + "<p2 " + "x='" + this.edge.getP2().getX() + "' " + "y='" + this.edge.getP2().getY() + "' " + "/>\n" + "<p3 " + "x='" + this.edge.getCtrlPt().getX() + "' " + "y='" + this.edge.getCtrlPt().getY() + "' " + "/>\n" + "</edge>\n" + "</transition>\n";
-    return var1;
+    return "<transition>\n" +
+    "<current-state>" + this.currentState + "</current-state>\n" +
+    "<current-symbol>" + Symbols.toUnicode(this.currentSymbol) + "</current-symbol>\n" +
+    "<next-state>" + this.nextState + "</next-state>\n" +
+    "<task>" + Symbols.toUnicode(this.task) + "</task>\n" +
+    "<edge>\n" +
+            "<p1 " + "x='" + this.edge.getP1().getX() + "' " + "y='" + this.edge.getP1().getY() + "' " + "/>\n" +
+            "<p2 " + "x='" + this.edge.getP2().getX() + "' " + "y='" + this.edge.getP2().getY() + "' " + "/>\n" +
+            "<p3 " + "x='" + this.edge.getCtrlPt().getX() + "' " + "y='" + this.edge.getCtrlPt().getY() + "' " + "/>\n" +
+    "</edge>\n" +
+    "</transition>\n";
   }
 
-  public boolean isEqualTo(Transition var1) {
-    return var1.currentState == this.currentState && var1.nextState == this.nextState && var1.currentSymbol == this.currentSymbol && var1.task == this.task;
+  boolean isEqualTo(Transition transition) {
+    return Objects.equals(transition.currentState, this.currentState) &&
+            Objects.equals(transition.nextState,this.nextState) &&
+            transition.currentSymbol == this.currentSymbol &&
+            transition.task == this.task;
   }
 }

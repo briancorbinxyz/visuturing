@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.simulator;
 
 import org.keiosu.visuturing.core.TuringMachine;
+
 import javax.swing.JPanel;
 
 public abstract class Simulator extends JPanel {
@@ -20,11 +21,11 @@ public abstract class Simulator extends JPanel {
   public abstract void pause();
 
   public void increaseSpeed() {
-    this.speed = this.speed < 12.0D ? this.speed + 0.5D : 12.0D;
+    this.speed = this.speed < MAX_SPEED ? this.speed + 0.5D : MAX_SPEED;
   }
 
   public void decreaseSpeed() {
-    this.speed = this.speed > 0.1D ? this.speed - 0.5D : 0.1D;
+    this.speed = this.speed > MIN_SPEED ? this.speed - 0.5D : MIN_SPEED;
   }
 
   public void setInputWord(String var1) {

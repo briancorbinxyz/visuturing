@@ -17,9 +17,9 @@ import java.awt.image.ImageObserver;
 import java.net.URL;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class HumanSimulator extends Simulator implements Runnable, ImageObserver {
-  private Point2D tapeLocation;
   private Hand hand;
   private Tape tape;
   private int fps;
@@ -37,176 +37,193 @@ public class HumanSimulator extends Simulator implements Runnable, ImageObserver
   private boolean initializingTape;
   private boolean textOn;
   private int inputIndex;
+  private ReentrantLock simulationLock = new ReentrantLock();
 
   public void refresh() {
+    // do nothing
   }
 
   public void play() {
-    if (!this.message.equals("")) {
-      synchronized(this.runner) {
-        this.reset();
-        this.paused = false;
-        this.runner = new Thread(this);
-        this.runner.start();
+    if (!message.equals("")) {
+      simulationLock.lock();
+      try {
+        reset();
+        paused = false;
+        runner = new Thread(this);
+        runner.start();
+      } finally {
+        simulationLock.unlock();
       }
-    } else if (this.runner != null) {
-      synchronized(this.runner) {
-        this.paused = false;
-        this.stopped = false;
-        this.runner.notify();
+    } else if (runner != null) {
+      simulationLock.lock();
+      try {
+        paused = false;
+        stopped = false;
+      } finally {
+        simulationLock.unlock();
       }
     } else {
-      this.paused = false;
-      this.runner = new Thread(this);
-      this.runner.start();
+      paused = false;
+      runner = new Thread(this);
+      runner.start();
     }
 
-    this.message = "";
+    message = "";
   }
 
   public void stop() {
-    this.pause();
-    synchronized(this.runner) {
-      this.stopped = true;
+    pause();
+    simulationLock.lock();
+    try {
+      stopped = true;
+      runner = null;
+      reset();
+    } finally {
+      simulationLock.unlock();
     }
-
-    this.runner = null;
-    this.reset();
   }
 
   public void pause() {
-    synchronized(this.runner) {
-      this.paused = true;
+    simulationLock.lock();
+    try {
+      paused = true;
+    } finally {
+      simulationLock.unlock();
     }
   }
 
-  public void reset() {
-    this.fps = 24;
-    this.speed = 1.0D;
-    this.tapeLocation = new Double(300.0D, 115.0D);
-    this.tape = new Tape(this.tapeLocation);
-    this.currentState = "s";
-    this.config = new Configuration(this.currentState, this.inputWord, 0);
-    Symbols.trimToHead(this.config);
-    this.charWaiting = 8592;
-    this.message = "";
-    this.lastPaused = false;
-    this.initializingTape = false;
-    this.inputIndex = 0;
-    this.textOn = false;
-    this.stopped = false;
-    this.repaint();
+  private void reset() {
+    fps = 24;
+    speed = 1.0D;
+    Point2D tapeLocation = new Double(300.0D, 115.0D);
+    tape = new Tape(tapeLocation);
+    currentState = "s";
+    config = new Configuration(currentState, inputWord, 0);
+    Symbols.trimToHead(config);
+    charWaiting = 8592;
+    message = "";
+    lastPaused = false;
+    initializingTape = false;
+    inputIndex = 0;
+    textOn = false;
+    stopped = false;
+    repaint();
   }
 
-  public HumanSimulator(TuringMachine var1) {
-    this.machine = var1;
-    this.setBackground(Color.WHITE);
-    this.reset();
+  public HumanSimulator(TuringMachine turingMachine) {
+    machine = turingMachine;
+    setBackground(Color.WHITE);
+    reset();
     Toolkit var2 = Toolkit.getDefaultToolkit();
-    this.stateImage = var2.getImage(this.pathToURL("bitmaps/simulator/human/state.gif"));
-    this.instrImage = var2.getImage(this.pathToURL("bitmaps/simulator/human/instr.gif"));
-    this.titleImage = var2.getImage(this.pathToURL("bitmaps/simulator/human/title.gif"));
-    this.hand = new Hand(this.pathToURL("bitmaps/simulator/hand.gif"), new Double(0.0D, 16.0D), new Double(450.0D, 400.0D), this);
-    this.runner = null;
+    stateImage = var2.getImage(pathToURL("bitmaps/simulator/human/state.gif"));
+    instrImage = var2.getImage(pathToURL("bitmaps/simulator/human/instr.gif"));
+    titleImage = var2.getImage(pathToURL("bitmaps/simulator/human/title.gif"));
+    hand = new Hand(pathToURL("bitmaps/simulator/hand.gif"), new Double(0.0D, 16.0D), new Double(450.0D, 400.0D), this);
+    runner = null;
   }
 
-  public void paintComponent(Graphics var1) {
-    super.paintComponent(var1);
-    Graphics2D var2 = (Graphics2D)var1;
-    this.tape.draw(var2);
-    this.hand.draw(var2);
-    var2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    var2.drawImage(this.stateImage, 15, 15, this);
-    var2.drawImage(this.instrImage, 15, 420, this);
-    var2.drawImage(this.titleImage, 260, 30, this);
-    var2.setFont(new Font("serif", 0, 30));
-    var2.setColor(Color.BLACK);
-    var2.drawString(this.currentState, 80, 100);
-    var2.setColor(new Color(255, 204, 0));
-    var2.drawString(this.currentState, 81, 99);
-    var2.setColor(Color.BLACK);
-    var2.drawString(this.message, 20, 340);
-    var2.setColor(new Color(255, 204, 0));
-    var2.drawString(this.message, 21, 339);
+  public void paintComponent(Graphics graphics) {
+    super.paintComponent(graphics);
+    Graphics2D graphics2D = (Graphics2D)graphics;
+    tape.draw(graphics2D);
+    hand.draw(graphics2D);
+    graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    graphics2D.drawImage(stateImage, 15, 15, this);
+    graphics2D.drawImage(instrImage, 15, 420, this);
+    graphics2D.drawImage(titleImage, 260, 30, this);
+    graphics2D.setFont(new Font("serif", Font.PLAIN, 30));
+    graphics2D.setColor(Color.BLACK);
+    graphics2D.drawString(currentState, 80, 100);
+    graphics2D.setColor(new Color(255, 204, 0));
+    graphics2D.drawString(currentState, 81, 99);
+    graphics2D.setColor(Color.BLACK);
+    graphics2D.drawString(message, 20, 340);
+    graphics2D.setColor(new Color(255, 204, 0));
+    graphics2D.drawString(message, 21, 339);
   }
 
-  private URL pathToURL(String var1) {
-    return this.getClass().getClassLoader().getResource(var1);
+  private URL pathToURL(String path) {
+    return getClass().getClassLoader().getResource(path);
   }
 
   public void run() {
-    this.config = new Configuration(this.currentState, this.inputWord, 0);
-    Symbols.trimToHead(this.config);
-    Thread var1 = Thread.currentThread();
-    this.hand.moveTo((int)this.tape.getPosition().getX() + this.tape.getCellWidth() + 2, (int)this.tape.getPosition().getY() + 2, 25);
-    if (this.config.getWord().length() > 0) {
-      this.initializingTape = true;
+    config = new Configuration(currentState, inputWord, 0);
+    Symbols.trimToHead(config);
+    Thread currentThread = Thread.currentThread();
+    hand.moveTo(
+      (int)tape.getPosition().getX() + tape.getCellWidth() + 2,
+      (int)tape.getPosition().getY() + 2,
+      25
+    );
+    if (config.getWord().length() > 0) {
+      initializingTape = true;
     }
 
     while(true) {
       try {
-        synchronized(var1) {
+        synchronized(currentThread) {
           while(true) {
-            if (!this.paused) {
-              if (this.stopped) {
+            if (!paused) {
+              if (stopped) {
                 return;
               }
               break;
             }
 
-            var1.wait();
+            currentThread.wait();
           }
         }
 
-        if (this.hand.finishedAnimation()) {
-          if (this.charWaiting != 8592 && this.charWaiting != 8883) {
-            this.tape.write(this.charWaiting, this.tape.cellAtPoint(this.hand.getLocation()));
-            this.repaint();
-            this.charWaiting = 8592;
+        if (hand.finishedAnimation()) {
+          if (charWaiting != 8592 && charWaiting != 8883) {
+            tape.write(charWaiting, tape.cellAtPoint(hand.getLocation()));
+            repaint();
+            charWaiting = 8592;
           }
 
-          this.nextAction();
+          nextAction();
         }
 
-        this.repaint();
-        Thread.sleep((long)((double)(1000 / this.fps) / this.speed));
-      } catch (InterruptedException var5) {
+        repaint();
+        Thread.sleep((long)((1000.0 / (double)fps) / speed));
+      } catch (InterruptedException ie) {
+        Thread.currentThread().interrupt();
       }
     }
   }
 
   private void nextAction() {
-    if (this.initializingTape) {
-      if (this.inputIndex < this.config.getWord().length()) {
-        if (!this.textOn) {
-          this.hand.squiggle(8, this.tape.getCellBounds());
-          this.charWaiting = this.inputWord.charAt(this.inputIndex++);
-        } else if (this.tape.cellAtPoint(this.hand.getLocation()) < this.tape.visibleCells() / 2) {
-          this.hand.moveTo((int)this.hand.getLocation().getX() + this.tape.getCellWidth(), (int)this.hand.getLocation().getY(), 5);
+    if (initializingTape) {
+      if (inputIndex < config.getWord().length()) {
+        if (!textOn) {
+          hand.squiggle(8, tape.getCellBounds());
+          charWaiting = inputWord.charAt(inputIndex++);
+        } else if (tape.cellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
+          hand.moveTo((int)hand.getLocation().getX() + tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
         } else {
-          this.tape.forward();
+          tape.forward();
         }
 
-        this.textOn = !this.textOn;
+        textOn = !textOn;
       } else {
-        this.tape.reset();
-        this.hand.moveTo((int)this.tape.getPosition().getX() + this.tape.getCellWidth() + 1, (int)this.tape.getPosition().getY() + 1, 20);
-        this.initializingTape = false;
+        tape.reset();
+        hand.moveTo((int)tape.getPosition().getX() + tape.getCellWidth() + 1, (int)tape.getPosition().getY() + 1, 20);
+        initializingTape = false;
       }
 
     } else {
-      if (this.config.getState().equals("h")) {
-        this.message = "[halted]";
-        this.pause();
-        this.repaint();
+      if (config.getState().equals("h")) {
+        message = "[halted]";
+        pause();
+        repaint();
       }
 
-      if (!this.lastPaused) {
-        this.hand.pause(10);
-        this.lastPaused = true;
+      if (!lastPaused) {
+        hand.pause(10);
+        lastPaused = true;
       } else {
-        this.lastPaused = false;
-        Vector var1 = this.machine.getNextConfig(this.config);
+        lastPaused = false;
+        Vector var1 = machine.getNextConfig(config);
         Configuration var2 = null;
         if (var1.size() > 0) {
           Random var3 = new Random();
@@ -214,32 +231,32 @@ public class HumanSimulator extends Simulator implements Runnable, ImageObserver
         }
 
         if (var2 != null) {
-          if (var2.getIndex() < this.config.getIndex()) {
-            if (this.tape.cellAtPoint(this.hand.getLocation()) <= this.tape.visibleCells() / 2) {
-              this.hand.moveTo((int)this.hand.getLocation().getX() - this.tape.getCellWidth(), (int)this.hand.getLocation().getY(), 5);
+          if (var2.getIndex() < config.getIndex()) {
+            if (tape.cellAtPoint(hand.getLocation()) <= tape.visibleCells() / 2) {
+              hand.moveTo((int)hand.getLocation().getX() - tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
             } else {
-              this.tape.reverse();
+              tape.reverse();
             }
-          } else if (var2.getIndex() > this.config.getIndex()) {
-            if (this.tape.cellAtPoint(this.hand.getLocation()) < this.tape.visibleCells() / 2) {
-              this.hand.moveTo((int)this.hand.getLocation().getX() + this.tape.getCellWidth(), (int)this.hand.getLocation().getY(), 5);
+          } else if (var2.getIndex() > config.getIndex()) {
+            if (tape.cellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
+              hand.moveTo((int)hand.getLocation().getX() + tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
             } else {
-              this.tape.forward();
+              tape.forward();
             }
           } else {
-            this.charWaiting = var2.getWord().charAt(var2.getIndex());
-            if (this.charWaiting != 8883) {
-              this.hand.squiggle(10, this.tape.getCellBounds());
+            charWaiting = var2.getWord().charAt(var2.getIndex());
+            if (charWaiting != 8883) {
+              hand.squiggle(10, tape.getCellBounds());
             }
           }
 
-          this.config = var2;
+          config = var2;
         } else {
-          this.message = "[stuck]";
-          this.pause();
+          message = "[stuck]";
+          pause();
         }
 
-        this.currentState = this.config.getState();
+        currentState = config.getState();
       }
     }
   }

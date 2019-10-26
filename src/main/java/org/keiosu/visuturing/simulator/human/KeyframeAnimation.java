@@ -3,7 +3,7 @@ package org.keiosu.visuturing.simulator.human;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 
-public class KeyframeAnimation {
+class KeyframeAnimation {
   private Point2D[] keyframePos;
   private int[] keyframes;
   private int totalFrames;
@@ -11,28 +11,24 @@ public class KeyframeAnimation {
   private int currentIndex;
   private boolean finished;
 
-  public KeyframeAnimation(Point2D[] var1, int[] var2) {
-    this.keyframePos = var1;
-    this.keyframes = var2;
-    this.finished = false;
-    if (var2.length < 2) {
-      this.finished = true;
-    }
-
+  KeyframeAnimation(Point2D[] keyframePosition, int[] keyframes) {
+    this.keyframePos = keyframePosition;
+    this.keyframes = keyframes;
+    this.finished = keyframes.length < 2;
     this.currentFrame = 0;
     this.currentIndex = 1;
-    this.totalFrames = var2[this.currentIndex] - var2[this.currentIndex - 1];
+    this.totalFrames = keyframes[this.currentIndex] - keyframes[this.currentIndex - 1];
   }
 
-  public Point2D position() {
+  Point2D position() {
     if (!this.finished) {
       ++this.currentFrame;
-      double var3 = this.keyframePos[this.currentIndex - 1].getX();
-      double var5 = this.keyframePos[this.currentIndex - 1].getY();
-      double var7 = this.keyframePos[this.currentIndex].getX();
-      double var9 = this.keyframePos[this.currentIndex].getY();
-      int var1 = (int)(var3 + (var7 - var3) / (double)this.totalFrames * (double)this.currentFrame);
-      int var2 = (int)(var5 + (var9 - var5) / (double)this.totalFrames * (double)this.currentFrame);
+      double xPrev = this.keyframePos[this.currentIndex - 1].getX();
+      double yPrev = this.keyframePos[this.currentIndex - 1].getY();
+      double xCurr = this.keyframePos[this.currentIndex].getX();
+      double yCurr = this.keyframePos[this.currentIndex].getY();
+      int newX = (int)(xPrev + (xCurr - xPrev) / (double)this.totalFrames * (double)this.currentFrame);
+      int newY = (int)(yPrev + (yCurr - yPrev) / (double)this.totalFrames * (double)this.currentFrame);
       if (this.currentFrame >= this.totalFrames) {
         ++this.currentIndex;
         this.currentFrame = 0;
@@ -44,7 +40,7 @@ public class KeyframeAnimation {
         }
       }
 
-      return new Double((double)var1, (double)var2);
+      return new Double((double)newX, (double)newY);
     } else {
       return this.keyframePos[this.keyframes.length - 1];
     }

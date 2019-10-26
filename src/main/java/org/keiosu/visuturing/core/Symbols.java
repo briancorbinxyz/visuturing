@@ -27,44 +27,32 @@ public class Symbols {
   }
 
   public static String trim(String word) {
-    String var1 = word;
-    if (word.endsWith(String.valueOf(SPACE))) {
-      int var2 = word.length() - 1;
-      char var3 = word.charAt(var2);
-
-      while(var3 == SPACE) {
-        var1 = var1.substring(0, var2--);
-        if (var2 > -1) {
-          var3 = var1.charAt(var2);
-        } else {
-          var3 = LEFT_END_MARKER;
-        }
-      }
-    }
-
-    return var1;
+    return word == null || word.isEmpty() ? word : trim(word, word.length());
   }
 
   public static void trimToHead(Configuration configuration) {
     if (configuration.getWord() != null) {
-      String word = configuration.getWord();
-      String trimmedWord = word;
-      if (word.length() > 0 && word.charAt(word.length() - 1) == SPACE) {
-        int index = word.length() - 1;
-        char charAtIndex = word.charAt(index);
-
-        while(charAtIndex == SPACE && index > configuration.getIndex()) {
-          trimmedWord  = trimmedWord.substring(0, index--);
-          if (index > -1) {
-            charAtIndex = trimmedWord.charAt(index);
-          } else {
-            charAtIndex = LEFT_END_MARKER;
-          }
-        }
-      }
+      String trimmedWord = trim(configuration.getWord(), configuration.getIndex());
       configuration.setWord(trimmedWord);
     }
+  }
 
+  private static String trim(String word, int configurationIndex) {
+    String trimmedWord = word;
+    if (word.length() > 0 && word.charAt(word.length() - 1) == SPACE) {
+      int index = word.length() - 1;
+      char charAtIndex = word.charAt(index);
+
+      while(charAtIndex == SPACE && index > configurationIndex) {
+        trimmedWord  = trimmedWord.substring(0, index--);
+        if (index > -1) {
+          charAtIndex = trimmedWord.charAt(index);
+        } else {
+          charAtIndex = LEFT_END_MARKER;
+        }
+      }
+    }
+    return trimmedWord;
   }
 }
 
