@@ -2,9 +2,9 @@ package org.keiosu.visuturing.gui;
 
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.DiagramPanel;
-import org.keiosu.visuturing.gui.panels.SimulationPanel;
-import org.keiosu.visuturing.simulator.diagram.DiagramSimulator;
-import org.keiosu.visuturing.simulator.human.HumanSimulator;
+import org.keiosu.visuturing.gui.panels.MainSimulationPanel;
+import org.keiosu.visuturing.simulator.diagram.DiagramSimulatorPanel;
+import org.keiosu.visuturing.simulator.human.HumanSimulatorPanel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -28,8 +28,8 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
   TuringMachine machine;
   ActionListener listener;
   DiagramPanel diagramEditor;
-  SimulationPanel simulator;
-  SimulationPanel humanSimulator;
+  MainSimulationPanel simulator;
+  MainSimulationPanel humanSimulator;
   JTabbedPane tp;
   DescriptionPanel descPanel;
 
@@ -44,15 +44,15 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
     this.setFrameIcon(this.createImageIcon("bitmaps/vticons.jpg"));
     this.descPanel = new DescriptionPanel(var3);
     this.diagramEditor = new DiagramPanel(var2, var3);
-    this.simulator = new SimulationPanel(var2, new DiagramSimulator(var3));
-    this.humanSimulator = new SimulationPanel(var2, new HumanSimulator(var3));
+    this.simulator = new MainSimulationPanel(var2, new DiagramSimulatorPanel(var3));
+    this.humanSimulator = new MainSimulationPanel(var2, new HumanSimulatorPanel(var3));
     Container var5 = this.getContentPane();
     var5.setLayout(new BorderLayout());
     this.tp = new JTabbedPane(1, 1);
     this.tp.addTab("Description", this.descPanel);
     this.tp.addTab("Diagram", this.diagramEditor);
-    this.tp.addTab("Simulator", this.simulator);
-    this.tp.addTab("Human Simulator", this.humanSimulator);
+    this.tp.addTab("AbstractSimulatorPanel", this.simulator);
+    this.tp.addTab("Human AbstractSimulatorPanel", this.humanSimulator);
     this.tp.setSelectedIndex(var4);
     this.tp.addChangeListener(this);
     var5.add(this.tp, "Center");

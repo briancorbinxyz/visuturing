@@ -4,19 +4,20 @@ import org.keiosu.visuturing.xml.XmlElement;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 
 public class TuringMachine implements XmlElement {
   private String name;
   private String description;
-  private Vector transitions;
-  private Vector alphabet;
-  private Vector states;
+  private List transitions;
+  private List alphabet;
+  private List states;
   private boolean hasDiagram;
   private boolean changed;
 
-  public TuringMachine(String var1, String var2, Vector var3, Vector var4, Vector var5) {
+  public TuringMachine(String var1, String var2, List var3, List var4, List var5) {
     this.name = var1;
     this.description = var2;
     this.transitions = var3;
@@ -29,11 +30,11 @@ public class TuringMachine implements XmlElement {
   public TuringMachine() {
     this.name = "-untitled-";
     this.description = "-enter a description-";
-    this.transitions = new Vector();
-    this.states = new Vector();
+    this.transitions = new ArrayList();
+    this.states = new ArrayList();
     this.states.add(new State("s"));
     this.states.add(new State("h"));
-    this.alphabet = new Vector();
+    this.alphabet = new ArrayList();
     this.alphabet.add(new String("⊳"));
     this.alphabet.add(new String("⊔"));
     this.hasDiagram = false;
@@ -41,7 +42,7 @@ public class TuringMachine implements XmlElement {
   }
 
   public boolean isDeterministic() {
-    Vector var1 = new Vector(this.alphabet);
+    List var1 = new ArrayList(this.alphabet);
     var1.remove("⊳");
 
     for(int var2 = 0; var2 < this.states.size(); ++var2) {
@@ -49,7 +50,7 @@ public class TuringMachine implements XmlElement {
       if (!var3.getName().equals("h")) {
         for(int var4 = 0; var4 < var1.size(); ++var4) {
           Configuration var5 = new Configuration(var3.getName(), (String)var1.get(var4), 0);
-          Vector var6 = this.getNextConfig(var5);
+          List var6 = this.getNextConfig(var5);
           if (var6.size() == 0 || var6.size() > 1) {
             return false;
           }
@@ -92,8 +93,8 @@ public class TuringMachine implements XmlElement {
 
   }
 
-  public Vector getTransitions(Configuration var1) {
-    Vector var2 = new Vector();
+  public List getTransitions(Configuration var1) {
+    List var2 = new ArrayList();
     if (var1 == null) {
       return this.transitions;
     } else {
@@ -118,8 +119,8 @@ public class TuringMachine implements XmlElement {
     }
   }
 
-  public Vector getNextConfig(Configuration var1) {
-    Vector var2 = new Vector();
+  public List getNextConfig(Configuration var1) {
+    List var2 = new ArrayList();
     if (var1 == null) {
       return var2;
     } else {
@@ -197,17 +198,17 @@ public class TuringMachine implements XmlElement {
     this.description = var1;
   }
 
-  public void setTransitions(Vector var1) {
+  public void setTransitions(List var1) {
     this.changed = true;
     this.transitions = var1;
   }
 
-  public void setAlphabet(Vector var1) {
+  public void setAlphabet(List var1) {
     this.changed = true;
     this.alphabet = var1;
   }
 
-  public void setStates(Vector var1) {
+  public void setStates(List var1) {
     this.changed = true;
     this.states = var1;
   }
@@ -220,15 +221,15 @@ public class TuringMachine implements XmlElement {
     return this.description;
   }
 
-  public Vector getTransitions() {
+  public List getTransitions() {
     return this.transitions;
   }
 
-  public Vector getAlphabet() {
+  public List getAlphabet() {
     return this.alphabet;
   }
 
-  public Vector getStates() {
+  public List getStates() {
     return this.states;
   }
 

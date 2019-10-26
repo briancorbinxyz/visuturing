@@ -4,7 +4,7 @@ import org.keiosu.visuturing.core.State;
 import org.keiosu.visuturing.core.Symbols;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.xml.XMLTransformer;
+import org.keiosu.visuturing.xml.XmlTransformer;
 import org.keiosu.visuturing.xml.XmlElement;
 
 import javax.imageio.ImageIO;
@@ -18,6 +18,8 @@ import java.io.FileWriter;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,7 +43,7 @@ public class Persistence {
   }
 
   public static void exportToHTML(XmlElement var0, String var1) throws IOException, TransformerException, TransformerConfigurationException {
-    XMLTransformer var2 = new XMLTransformer("web/tm.xsl");
+    XmlTransformer var2 = new XmlTransformer("web/tm.xsl");
     String var3 = new String(var1);
     if (!var3.endsWith("html") && !var3.endsWith("htm")) {
       var3 = var3 + ".html";
@@ -64,7 +66,7 @@ public class Persistence {
   public static void save(XmlElement var0, File var1) throws IOException {
     String var2 = trimExtension(var1.toString());
     BufferedWriter var3 = new BufferedWriter(new FileWriter(var2.concat(".vt")));
-    String var4 = "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='tBIT VisuTuring' version='1.0 3YP' ?>";
+    String var4 = "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
     var3.write(var4 + var0.toXml());
     var3.close();
   }
@@ -81,9 +83,9 @@ public class Persistence {
     String var1 = "<no-name>";
     String var2 = "none";
     boolean var3 = false;
-    Vector var4 = new Vector();
-    Vector var5 = new Vector();
-    Vector var6 = new Vector();
+    List var4 = new ArrayList();
+    List var5 = new ArrayList();
+    List var6 = new ArrayList();
     NodeList var7 = var0.getChildNodes();
 
     for(int var8 = 0; var8 < var7.getLength(); ++var8) {
@@ -112,8 +114,8 @@ public class Persistence {
     return var12;
   }
 
-  private static Vector getStates(Element var0) {
-    Vector var1 = new Vector();
+  private static List getStates(Element var0) {
+    List var1 = new ArrayList();
     NodeList var2 = var0.getChildNodes();
 
     for(int var3 = 0; var3 < var2.getLength(); ++var3) {
@@ -148,8 +150,8 @@ public class Persistence {
     return var1;
   }
 
-  private static Vector getAlphabet(Element var0) {
-    Vector var1 = new Vector();
+  private static List getAlphabet(Element var0) {
+    List var1 = new ArrayList();
     NodeList var2 = var0.getChildNodes();
 
     for(int var3 = 0; var3 < var2.getLength(); ++var3) {
@@ -166,8 +168,8 @@ public class Persistence {
     return var1;
   }
 
-  private static Vector getTransitions(Element var0) {
-    Vector var1 = new Vector();
+  private static List getTransitions(Element var0) {
+    List var1 = new ArrayList();
     NodeList var2 = var0.getChildNodes();
 
     for(int var3 = 0; var3 < var2.getLength(); ++var3) {

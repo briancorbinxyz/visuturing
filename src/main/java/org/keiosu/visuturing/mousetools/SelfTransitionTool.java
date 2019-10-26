@@ -15,12 +15,13 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class SelfTransitionTool extends MouseTool {
+public class SelfTransitionTool extends AbstractMouseTool {
   private Transition newTrans;
   private int mouseClicks = 0;
   private TransitionFrame transitionEditor;
@@ -48,13 +49,13 @@ public class SelfTransitionTool extends MouseTool {
 
     this.currentPoint = var1.getPoint();
     Point2D var2 = this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-    Vector var3 = this.diagram.getCurrentMachine().getStates();
+    List var3 = this.diagram.getCurrentMachine().getStates();
 
     for(int var4 = 0; var4 < var3.size(); ++var4) {
       State var5 = (State)var3.get(var4);
       if (var5.contains(var2)) {
         if (var5.getName().equals("h")) {
-          JOptionPane.showMessageDialog((Component)null, "You cannot create transitions out of the halting state.", "TBIT VisuTuring", 0, (Icon)null);
+          JOptionPane.showMessageDialog((Component)null, "You cannot create transitions out of the halting state.", "VisuTuring", 0, (Icon)null);
           return;
         }
 

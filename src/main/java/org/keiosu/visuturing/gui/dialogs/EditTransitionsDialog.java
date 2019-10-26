@@ -3,9 +3,10 @@ package org.keiosu.visuturing.gui.dialogs;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 import java.awt.Frame;
+import java.util.List;
 import java.util.Vector;
 
-public class EditTransitionsDialog extends VTDialog {
+public class EditTransitionsDialog extends AbstractDialog {
   private EditTransitionsPanel transitionEditor;
 
   public EditTransitionsDialog(Frame var1, TuringMachine var2) {
@@ -14,7 +15,7 @@ public class EditTransitionsDialog extends VTDialog {
     this.init(this.transitionEditor);
   }
 
-  public Vector getTransitions() {
+  public List getTransitions() {
     return this.transitionEditor.getTransitions();
   }
 }

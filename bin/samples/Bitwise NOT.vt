@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Bitwise NOT</name>
 <description>Takes a string of 0's and 1's and returns the bitwise NOT of them.
 

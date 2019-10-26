@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Unary Incrementer</name>
 <description>VisuTuring Sample:
 

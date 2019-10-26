@@ -15,7 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public abstract class VTDialog extends JDialog implements ActionListener {
+public abstract class AbstractDialog extends JDialog implements ActionListener {
   private static final Font TITLE_FONT = new Font("Helvetica", 1, 20);
   private static final Color TITLE_COLOUR;
   private static final Dimension DIALOG_SIZE;
@@ -27,14 +27,14 @@ public abstract class VTDialog extends JDialog implements ActionListener {
   private JPanel buttonPanel;
   protected boolean cancelled;
 
-  public VTDialog(Frame var1, String var2) {
+  public AbstractDialog(Frame var1, String var2) {
     super(var1, var2, true);
     this.cancelled = true;
     this.buttonPanel = new JPanel(new FlowLayout(4, 5, 5));
     this.pack();
   }
 
-  public VTDialog(Frame var1, String var2, JPanel var3) {
+  public AbstractDialog(Frame var1, String var2, JPanel var3) {
     this(var1, var2);
     this.buttonPanel = new JPanel(new FlowLayout(4, 5, 5));
     this.init(var3);
@@ -72,7 +72,7 @@ public abstract class VTDialog extends JDialog implements ActionListener {
     return this.mainPanel;
   }
 
-  public VTDialog(Frame var1) {
+  public AbstractDialog(Frame var1) {
     this(var1, "VisuTuring Dialog");
   }
 

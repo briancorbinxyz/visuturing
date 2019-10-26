@@ -10,15 +10,13 @@ import java.awt.geom.Point2D;
 import javax.swing.ImageIcon;
 import javax.swing.event.MouseInputAdapter;
 
-public abstract class MouseTool extends MouseInputAdapter implements MouseListener {
+public abstract class AbstractMouseTool extends MouseInputAdapter implements MouseListener {
   protected DiagramEditor diagram;
   protected Cursor cursor;
   protected Cursor overCursor;
 
-  public MouseTool(DiagramEditor var1) {
-    this.diagram = var1;
-    this.cursor = this.cursor;
-    this.overCursor = this.overCursor;
+  public AbstractMouseTool(DiagramEditor diagramEditor) {
+    this.diagram = diagramEditor;
   }
 
   public ImageIcon createImageIcon(String var1) {

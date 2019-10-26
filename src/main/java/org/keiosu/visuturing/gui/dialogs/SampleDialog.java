@@ -20,7 +20,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class SampleDialog extends VTDialog implements ListSelectionListener, MouseListener {
+public class SampleDialog extends AbstractDialog implements ListSelectionListener, MouseListener {
   private JList mylist;
   private String selectedFile = null;
   public static final String SAMPLE_DIR = "samples/";

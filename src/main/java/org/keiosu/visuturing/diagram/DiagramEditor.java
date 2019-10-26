@@ -4,7 +4,7 @@ import org.keiosu.visuturing.core.State;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.DiagramPrinter;
-import org.keiosu.visuturing.mousetools.MouseTool;
+import org.keiosu.visuturing.mousetools.AbstractMouseTool;
 import org.keiosu.visuturing.mousetools.SelectTool;
 import org.keiosu.visuturing.persistence.Persistence;
 
@@ -30,7 +30,8 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Ellipse2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 public class DiagramEditor extends JPanel {
@@ -48,33 +49,24 @@ public class DiagramEditor extends JPanel {
   private State selectedState;
   private Transition selectedTransition;
   private DiagramEditor.Mousey m;
-  private MouseTool tool;
+  private AbstractMouseTool tool;
   protected AffineTransform transformation;
   private double[] zoomList;
   private int zoomIndex;
-  private Vector transformWatchers;
+  private List transformWatchers;
   private boolean showDescription;
 
   public DiagramEditor(TuringMachine var1) {
     this.currentMachine = var1;
     this.gridOn = true;
-    this.transformWatchers = new Vector();
+    this.transformWatchers = new ArrayList();
     this.selectedState = null;
     this.tool = new SelectTool(this);
     this.transformation = new AffineTransform();
     this.m = new DiagramEditor.Mousey();
     this.addMouseListener(this.m);
     this.addMouseMotionListener(this.m);
-    this.zoomList = new double[9];
-    this.zoomList[0] = 0.25D;
-    this.zoomList[1] = 0.5D;
-    this.zoomList[2] = 1.0D;
-    this.zoomList[3] = 1.25D;
-    this.zoomList[4] = 1.5D;
-    this.zoomList[5] = 1.75D;
-    this.zoomList[6] = 2.0D;
-    this.zoomList[7] = 3.0D;
-    this.zoomList[8] = 4.0D;
+    this.zoomList = new double[]{0.25D, 0.5D, 1.0D, 1.25D, 1.5D, 1.75D, 2.0D, 3.0D, 4.0D};
     this.zoomIndex = 2;
     this.setBackground(Color.white);
     this.showDescription = false;
@@ -232,7 +224,7 @@ public class DiagramEditor extends JPanel {
     var1.setFont(new Font("Helvetica", 0, 14));
     var1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     var1.setColor(Color.BLACK);
-    Vector var3 = this.currentMachine.getTransitions();
+    List var3 = this.currentMachine.getTransitions();
 
     for(int var4 = 0; var4 < var3.size(); ++var4) {
       Transition var5 = (Transition)var3.get(var4);
@@ -240,7 +232,7 @@ public class DiagramEditor extends JPanel {
     }
 
     var1.setStroke(new BasicStroke(1.0F));
-    Vector var7 = this.currentMachine.getStates();
+    List var7 = this.currentMachine.getStates();
 
     for(int var8 = 0; var8 < var7.size(); ++var8) {
       State var6 = (State)var7.get(var8);
@@ -249,7 +241,7 @@ public class DiagramEditor extends JPanel {
 
   }
 
-  public void setTool(MouseTool var1) {
+  public void setTool(AbstractMouseTool var1) {
     this.tool = var1;
     this.setCursor(var1.getCursor());
   }
@@ -266,7 +258,7 @@ public class DiagramEditor extends JPanel {
     this.selectedTransition = var1;
   }
 
-  public MouseTool getTool() {
+  public AbstractMouseTool getTool() {
     return this.tool;
   }
 
@@ -354,7 +346,7 @@ public class DiagramEditor extends JPanel {
     Dimension var1 = new Dimension();
     double var2 = 200.0D;
     double var4 = 200.0D;
-    Vector var6 = this.currentMachine.getStates();
+    List var6 = this.currentMachine.getStates();
 
     for(int var7 = 0; var7 < var6.size(); ++var7) {
       State var8 = (State)var6.get(var7);
@@ -369,7 +361,7 @@ public class DiagramEditor extends JPanel {
       }
     }
 
-    Vector var14 = this.currentMachine.getTransitions();
+    List var14 = this.currentMachine.getTransitions();
     BasicStroke var15 = new BasicStroke(2.0F);
 
     for(int var16 = 0; var16 < var14.size(); ++var16) {

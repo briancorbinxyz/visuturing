@@ -4,14 +4,15 @@ import org.keiosu.visuturing.core.TuringMachine;
 
 import javax.swing.JPanel;
 
-public abstract class Simulator extends JPanel {
+public abstract class AbstractSimulatorPanel extends JPanel {
   private static final double MAX_SPEED = 12.0D;
   private static final double MIN_SPEED = 0.1D;
   protected String inputWord;
   protected double speed;
   protected TuringMachine machine;
 
-  public Simulator() {
+  public AbstractSimulatorPanel(TuringMachine machine) {
+    this.machine = machine;
   }
 
   public abstract void play();
@@ -28,8 +29,8 @@ public abstract class Simulator extends JPanel {
     this.speed = this.speed > MIN_SPEED ? this.speed - 0.5D : MIN_SPEED;
   }
 
-  public void setInputWord(String var1) {
-    this.inputWord = var1;
+  public void setInputWord(String inputWord) {
+    this.inputWord = inputWord;
   }
 
   public TuringMachine getMachine() {

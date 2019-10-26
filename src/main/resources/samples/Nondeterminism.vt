@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Non-Determinism</name>
 <description>Just an example Turing machine do demonstrate the use of non-deterministic states in a Turing machine where the same input word may have many, even an infinite number of possible computations.</description>
 <has-diagram>true</has-diagram>

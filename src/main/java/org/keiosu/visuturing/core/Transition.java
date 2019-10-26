@@ -19,20 +19,20 @@ public class Transition implements XmlElement {
     this(var1, var2, var3, var4, new Point(), new Point(), new Point());
   }
 
-  public void setEdge(QuadCurve2D var1) {
-    this.edge = var1;
+  public void setEdge(QuadCurve2D edge) {
+    this.edge = edge;
   }
 
-  public void setCurrentSymbol(char var1) {
-    this.currentSymbol = var1;
+  public void setCurrentSymbol(char currentSymbol) {
+    this.currentSymbol = currentSymbol;
   }
 
-  public void setNextState(String var1) {
-    this.nextState = var1;
+  public void setNextState(String nextState) {
+    this.nextState = nextState;
   }
 
-  public void setTask(char var1) {
-    this.task = var1;
+  public void setTask(char task) {
+    this.task = task;
   }
 
   public String getCurrentState() {
@@ -59,13 +59,13 @@ public class Transition implements XmlElement {
     return "| " + this.currentState + " | " + this.currentSymbol + " || " + this.nextState + " | " + this.task + " |";
   }
 
-  public Transition(String var1, char var2, String var3, char var4, Point var5, Point var6, Point var7) {
-    this.currentState = var1;
-    this.currentSymbol = var2;
-    this.nextState = var3;
-    this.task = var4;
+  public Transition(String currentState, char currentSymbol, String nextState, char task, Point startPoint, Point endPoint, Point controlPoint) {
+    this.currentState = currentState;
+    this.currentSymbol = currentSymbol;
+    this.nextState = nextState;
+    this.task = task;
     this.edge = new Double();
-    this.edge.setCurve(var5, var7, var6);
+    this.edge.setCurve(startPoint, controlPoint, endPoint);
   }
 
   public Transition(Transition var1) {
@@ -79,16 +79,16 @@ public class Transition implements XmlElement {
 
   }
 
-  public void setP1(Point2D var1) {
-    this.edge.setCurve(var1, this.edge.getCtrlPt(), this.edge.getP2());
+  public void setP1(Point2D p1) {
+    this.edge.setCurve(p1, this.edge.getCtrlPt(), this.edge.getP2());
   }
 
-  public void setP2(Point2D var1) {
-    this.edge.setCurve(this.edge.getP1(), this.edge.getCtrlPt(), var1);
+  public void setP2(Point2D p2) {
+    this.edge.setCurve(this.edge.getP1(), this.edge.getCtrlPt(), p2);
   }
 
-  public void setControlPoint(Point2D var1) {
-    this.edge.setCurve(this.edge.getP1(), var1, this.edge.getP2());
+  public void setControlPoint(Point2D controlPoint) {
+    this.edge.setCurve(this.edge.getP1(), controlPoint, this.edge.getP2());
   }
 
   public Point2D getP1() {

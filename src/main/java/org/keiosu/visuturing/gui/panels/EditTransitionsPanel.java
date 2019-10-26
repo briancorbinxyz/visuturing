@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
@@ -29,59 +31,59 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
   JButton diagramButton;
   JTable table;
   TuringMachine machine;
-  Vector columnNames;
+  List columnNames;
   public static final String ADD_TRANSITION_BUTTON = "Add Transition";
   public static final String REMOVE_TRANSITION_BUTTON = "Remove Transition";
   public static final String GENERATE_BUTTON = "Generate Transition Diagram";
 
   public void refresh() {
-    Vector var1 = new Vector();
-    Vector var2 = this.machine.getTransitions();
-    Vector var3 = this.machine.getStates();
-    Vector var4 = new Vector(this.machine.getAlphabet());
+    List<Object[]> rows = new ArrayList();
+    List transitions = this.machine.getTransitions();
+    List states = this.machine.getStates();
+    List alphabet = new ArrayList(this.machine.getAlphabet());
 
-    for(int var5 = 0; var5 < var2.size(); ++var5) {
-      Vector var6 = new Vector();
-      Transition var7 = (Transition)var2.get(var5);
+    for(int i = 0; i < transitions.size(); ++i) {
+      List var6 = new ArrayList(4);
+      Transition var7 = (Transition)transitions.get(i);
       var6.add(var7.getCurrentState());
-      var6.add(new String("" + var7.getCurrentSymbol()));
+      var6.add("" + var7.getCurrentSymbol());
       var6.add(var7.getNextState());
-      var6.add(new String("" + var7.getTask()));
-      var1.add(var6);
+      var6.add("" + var7.getTask());
+      rows.add(var6.toArray());
     }
 
     DefaultTableModel var18 = (DefaultTableModel)this.table.getModel();
-    var18.setDataVector(var1, this.columnNames);
+    var18.setDataVector((Object[][])rows.toArray(), this.columnNames.toArray());
     TableColumn var19 = this.table.getColumnModel().getColumn(2);
-    JComboBox var20 = new JComboBox(var3);
+    JComboBox var20 = new JComboBox(states.toArray());
     var19.setCellEditor(new DefaultCellEditor(var20));
     TableColumn var8 = this.table.getColumnModel().getColumn(0);
-    Vector var9 = new Vector();
+    List var9 = new ArrayList();
 
-    for(int var10 = 0; var10 < var3.size(); ++var10) {
-      if (!((State)var3.get(var10)).getName().equals("h")) {
-        var9.add(((State)var3.get(var10)).getName());
+    for(int var10 = 0; var10 < states.size(); ++var10) {
+      if (!((State)states.get(var10)).getName().equals("h")) {
+        var9.add(((State)states.get(var10)).getName());
       }
     }
 
-    JComboBox var21 = new JComboBox(var9);
+    JComboBox var21 = new JComboBox(var9.toArray());
     var8.setCellEditor(new DefaultCellEditor(var21));
     TableColumn var11 = this.table.getColumnModel().getColumn(1);
-    Vector var12 = new Vector();
+    List var12 = new ArrayList();
 
-    for(int var13 = 0; var13 < var4.size(); ++var13) {
-      var12.add((String)var4.get(var13));
+    for(int var13 = 0; var13 < alphabet.size(); ++var13) {
+      var12.add((String)alphabet.get(var13));
     }
 
-    Vector var22 = new Vector(var12);
-    JComboBox var14 = new JComboBox(var22);
+    List var22 = new ArrayList(var12);
+    JComboBox var14 = new JComboBox(var22.toArray());
     var11.setCellEditor(new DefaultCellEditor(var14));
     TableColumn var15 = this.table.getColumnModel().getColumn(3);
-    Vector var16 = new Vector(var12);
+    List var16 = new ArrayList(var12);
     var16.remove(String.valueOf(Symbols.LEFT_END_MARKER));
     var16.add(String.valueOf(Symbols.LEFT_ARROW));
     var16.add(String.valueOf(Symbols.RIGHT_ARROW));
-    JComboBox var17 = new JComboBox(var16);
+    JComboBox var17 = new JComboBox(var16.toArray());
     var15.setCellEditor(new DefaultCellEditor(var17));
   }
 
@@ -91,7 +93,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
     JLayeredPane var2 = new JLayeredPane();
     this.panel.add(var2);
     var2.setPreferredSize(this.panel.getPreferredSize());
-    this.columnNames = new Vector();
+    this.columnNames = new ArrayList();
     this.columnNames.add(new String("Current State"));
     this.columnNames.add(new String("Current Symbol"));
     this.columnNames.add(new String("Next State"));
@@ -139,14 +141,14 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
     return this.description.getText();
   }
 
-  public Vector getTransitions() {
+  public List getTransitions() {
     DefaultTableModel var1 = (DefaultTableModel)this.table.getModel();
-    Vector var2 = var1.getDataVector();
-    Vector var3 = new Vector();
+    List var2 = var1.getDataVector();
+    List var3 = new ArrayList();
 
     for(int var4 = 0; var4 < var2.size(); ++var4) {
       boolean var5 = false;
-      Vector var6 = (Vector)var2.get(var4);
+      List var6 = (Vector)var2.get(var4);
       String var7 = var6.get(0).toString();
       if (var7 == null || var7.equals("")) {
         var5 = true;
@@ -218,13 +220,13 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
         }
       } else if (var2.getName().equals("Generate Transition Diagram")) {
         if (this.machine.hasDiagram()) {
-          int var4 = JOptionPane.showConfirmDialog(this, "Are you sure you want to generate a new diagram?\n\nThis will replace your existing diagram", "TBIT VisuTuring", 0, 3, (Icon)null);
+          int var4 = JOptionPane.showConfirmDialog(this, "Are you sure you want to generate a new diagram?\n\nThis will replace your existing diagram", "VisuTuring", 0, 3, (Icon)null);
           if (var4 == 1) {
             return;
           }
         }
 
-        JOptionPane.showMessageDialog(this, "A transition diagram was automatically created for your Turing Machine by VisuTuring.", "TBIT VisuTuring", 1, (Icon)null);
+        JOptionPane.showMessageDialog(this, "A transition diagram was automatically created for your Turing Machine by VisuTuring.", "VisuTuring", 1, (Icon)null);
         this.machine.setHasDiagram(true);
         this.description.setVisible(true);
       }

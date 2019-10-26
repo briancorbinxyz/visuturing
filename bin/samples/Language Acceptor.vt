@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Language Acceptor</name>
 <description>Accepts strings of the form (aab)* where acceptance is denoted by a computation halting normally in the halting state.</description>
 <has-diagram>true</has-diagram>

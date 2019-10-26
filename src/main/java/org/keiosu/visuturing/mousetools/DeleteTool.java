@@ -14,11 +14,11 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.QuadCurve2D.Double;
-import java.util.Vector;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class DeleteTool extends MouseTool {
+public class DeleteTool extends AbstractMouseTool {
   private Transition currentTransition = null;
 
   public void preDraw(Graphics2D var1) {
@@ -68,7 +68,7 @@ public class DeleteTool extends MouseTool {
 
     if (this.currentTransition != null) {
       JOptionPane var2 = new JOptionPane();
-      int var3 = JOptionPane.showConfirmDialog((Component)null, "Are you sure you want to remove the transition: " + this.currentTransition.toString() + " ?", "tBIT VisuTuring - Transition Removal", 1);
+      int var3 = JOptionPane.showConfirmDialog((Component)null, "Are you sure you want to remove the transition: " + this.currentTransition.toString() + " ?", "VisuTuring - Transition Removal", 1);
       if (var3 == 0) {
         this.diagram.getCurrentMachine().removeTransition(this.currentTransition);
         this.diagram.repaint();
@@ -80,7 +80,7 @@ public class DeleteTool extends MouseTool {
   public void mouseMoved(MouseEvent var1) {
     Point var2 = var1.getPoint();
     Point2D var3 = this.diagram.toUser(new java.awt.geom.Point2D.Double(var2.getX(), var2.getY()));
-    Vector var4 = this.diagram.getCurrentMachine().getTransitions();
+    List var4 = this.diagram.getCurrentMachine().getTransitions();
 
     for(int var5 = 0; var5 < var4.size(); ++var5) {
       Transition var6 = (Transition)var4.get(var5);

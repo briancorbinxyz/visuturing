@@ -3,14 +3,8 @@ VisuTuring
 
 Turing Machine Simulator in Java
 
-Found my 3rd Year Bachelors Compsci Project and with all the recent Alan Turing hype, thought I'd share with the community. If there's interest I'll see if I can find and upload the actual source code.
-
-Download the bin folder and run the VisuTuring.jar file:
-
-```bash
-cd bin
-java -jar VisuTuring.jar
-```
+Originally my 3rd Year CompSci BSc project which I resurrected after Alan Turing hype from a film starring Mr. Cumberbatch,
+to share with the community.
 
 Overview
 -------------------

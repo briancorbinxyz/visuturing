@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Even-Odd (Unary)</name>
 <description>Takes a unary word as input and outputs 0 if it is odd and 1 if it is even.</description>
 <has-diagram>true</has-diagram>

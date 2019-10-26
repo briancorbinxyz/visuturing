@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
-public class StartupWizard extends VTDialog implements ActionListener {
+public class StartupWizard extends AbstractDialog implements ActionListener {
   private StartupWizardPanel wizard;
 
   public StartupWizard(VisuTuring var1) {

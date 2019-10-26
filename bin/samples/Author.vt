@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Author</name>
 <description>The word is accepted (reaches the halting state) if it is the same as the author of VisuTuring and halted otherwise.</description>
 <has-diagram>true</has-diagram>

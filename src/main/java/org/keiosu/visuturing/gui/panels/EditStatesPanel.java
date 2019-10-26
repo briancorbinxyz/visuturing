@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,7 +24,7 @@ import javax.swing.event.ListSelectionListener;
 public class EditStatesPanel extends VTPanel implements ActionListener, ListSelectionListener {
   JTextField stateField;
   JList stateList;
-  Vector states;
+  List states;
   JButton removeButton;
   JButton removeAllButton;
   TuringMachine machine;
@@ -31,14 +33,14 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
 
   public EditStatesPanel(TuringMachine var1) {
     super("espanel.gif");
-    this.states = new Vector(var1.getStates());
+    this.states = new ArrayList(var1.getStates());
     this.machine = var1;
     this.initialize();
     this.noAdditions = 0;
   }
 
   public boolean hasTransitions(String var1) {
-    Vector var2 = this.machine.getTransitions();
+    List var2 = this.machine.getTransitions();
     boolean var3 = false;
 
     for(int var4 = 0; var4 < var2.size(); ++var4) {
@@ -54,13 +56,12 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
 
   public void initialize() {
     if (this.states.size() <= 1) {
-      this.states = new Vector();
+      this.states = new ArrayList();
       this.states.add(new State("s"));
       this.states.add(new State("h"));
     }
 
-    this.stateList = new JList();
-    this.stateList.setListData(this.states);
+    this.stateList = new JList(this.states.toArray());
     JLayeredPane var1 = new JLayeredPane();
     this.panel.setLayout(new BorderLayout());
     this.panel.add(var1);
@@ -75,7 +76,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
     var3.setBounds(205, 16, 94, 20);
     JLabel var4 = new JLabel("States:");
     var4.setBounds(0, 49, 65, 20);
-    this.stateList = new JList(this.states);
+    this.stateList = new JList(this.states.toArray());
     this.stateList.addListSelectionListener(this);
     JScrollPane var5 = new JScrollPane(this.stateList);
     var5.setBounds(79, 48, 120, 170);
@@ -119,7 +120,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
             ++this.noAdditions;
           }
 
-          this.stateList.setListData(this.states);
+          this.stateList.setListData(this.states.toArray());
           this.stateField.setText("");
           if (!this.removeAllButton.isEnabled()) {
             this.removeAllButton.setEnabled(true);
@@ -132,13 +133,13 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
             JOptionPane.showMessageDialog(this, "The selected state has one or more transitions.\n\nPlease delete these before removing the state.", "VisuTuring - Integrity Protect", 0);
           } else {
             this.states.remove(var6);
-            this.stateList.setListData(this.states);
+            this.stateList.setListData(this.states.toArray());
             this.removeButton.setEnabled(false);
           }
         }
       } else if (var2.getName().equals("Remove All")) {
         boolean var7 = false;
-        Vector var8 = new Vector();
+        List var8 = new ArrayList();
 
         for(var5 = 0; var5 < this.states.size(); ++var5) {
           if (!((State)this.states.get(var5)).getName().equals("s") && !((State)this.states.get(var5)).getName().equals("h")) {
@@ -152,7 +153,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
         }
 
         this.states = var8;
-        this.stateList.setListData(this.states);
+        this.stateList.setListData(this.states.toArray());
         if (var7) {
           JOptionPane.showMessageDialog(this, "One or more of the states have transitions and were not removed.\n\nPlease delete these tranistions before removing the state(s).", "VisuTuring - Integrity Protect", 0);
         }
@@ -188,7 +189,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
 
   }
 
-  public Vector getStates() {
+  public List getStates() {
     return this.states;
   }
 }

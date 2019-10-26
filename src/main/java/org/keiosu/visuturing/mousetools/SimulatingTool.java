@@ -14,7 +14,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Ellipse2D.Double;
 
-public class SimulatingTool extends MouseTool {
+public class SimulatingTool extends AbstractMouseTool {
   private TuringMachine machine;
   private State currentState;
   private Transition currentTransition;

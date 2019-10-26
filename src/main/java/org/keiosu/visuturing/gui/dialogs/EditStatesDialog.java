@@ -4,9 +4,10 @@ import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditStatesPanel;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Vector;
 
-public class EditStatesDialog extends VTDialog implements ActionListener {
+public class EditStatesDialog extends AbstractDialog implements ActionListener {
   private EditStatesPanel stateEditor;
 
   public EditStatesDialog(Frame var1, TuringMachine var2) {
@@ -15,7 +16,7 @@ public class EditStatesDialog extends VTDialog implements ActionListener {
     this.init(this.stateEditor);
   }
 
-  public Vector getStates() {
+  public List getStates() {
     return this.stateEditor.getStates();
   }
 }

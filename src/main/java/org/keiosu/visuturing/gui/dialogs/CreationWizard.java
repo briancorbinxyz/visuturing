@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class CreationWizard extends VTDialog implements ActionListener {
+public class CreationWizard extends AbstractDialog implements ActionListener {
   private TuringMachine tm;
   public static final String NEXT_BUTTON = "Next >>";
   public static final String BACK_BUTTON = "<< Back";

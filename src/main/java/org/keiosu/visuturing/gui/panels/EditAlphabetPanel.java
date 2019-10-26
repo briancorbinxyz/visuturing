@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,7 +23,7 @@ import javax.swing.event.ListSelectionListener;
 public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSelectionListener {
   JTextField symbolField;
   JList alphabetList;
-  Vector alphabet;
+  List alphabet;
   JButton removeButton;
   JButton removeAllButton;
   TuringMachine machine;
@@ -43,8 +45,8 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
     var4.setBounds(205, 16, 95, 20);
     JLabel var5 = new JLabel("Alphabet:");
     var5.setBounds(0, 49, 65, 20);
-    this.alphabet = new Vector(var1.getAlphabet());
-    this.alphabetList = new JList(this.alphabet);
+    this.alphabet = new ArrayList(var1.getAlphabet());
+    this.alphabetList = new JList(this.alphabet.toArray());
     this.alphabetList.addListSelectionListener(this);
     this.alphabetList.setFont(new Font("sanserif", 0, 14));
     JScrollPane var6 = new JScrollPane(this.alphabetList);
@@ -84,7 +86,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
   }
 
   public boolean hasTransitions(char var1) {
-    Vector var2 = this.machine.getTransitions();
+    List var2 = this.machine.getTransitions();
     boolean var3 = false;
 
     for(int var4 = 0; var4 < var2.size(); ++var4) {
@@ -108,7 +110,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
             this.alphabet.add(var3);
           }
 
-          this.alphabetList.setListData(this.alphabet);
+          this.alphabetList.setListData(this.alphabet.toArray());
           this.symbolField.setText("");
           if (!this.removeAllButton.isEnabled()) {
             this.removeAllButton.setEnabled(true);
@@ -119,7 +121,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
         if (var7 > -1) {
           if (!this.hasTransitions(((String)this.alphabet.get(var7)).charAt(0))) {
             this.alphabet.remove(var7);
-            this.alphabetList.setListData(this.alphabet);
+            this.alphabetList.setListData(this.alphabet.toArray());
             var2.setEnabled(false);
           } else {
             JOptionPane.showMessageDialog(this, "The selected symbols is involved in one or more transitions.\n\nPlease delete these before removing the symbol.", "VisuTuring - Integrity Protect", 0);
@@ -127,7 +129,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
         }
       } else if (var2.getName().equals("Remove All")) {
         boolean var8 = false;
-        Vector var4 = new Vector();
+        List var4 = new ArrayList();
 
         for(int var5 = 0; var5 < this.alphabet.size(); ++var5) {
           char var6 = ((String)this.alphabet.get(var5)).charAt(0);
@@ -140,7 +142,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
         }
 
         this.alphabet = var4;
-        this.alphabetList.setListData(this.alphabet);
+        this.alphabetList.setListData(this.alphabet.toArray());
         var2.setEnabled(false);
         if (var8) {
           JOptionPane.showMessageDialog(this, "One or more of the selected symbols was involved\nin one or more transitions.\n\nPlease delete these before removing the symbol(s).", "VisuTuring - Integrity Protect", 0);
@@ -176,7 +178,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
 
   }
 
-  public Vector getAlphabet() {
+  public List getAlphabet() {
     return this.alphabet;
   }
 
@@ -198,7 +200,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
       this.alphabet.add(var1);
     }
 
-    this.alphabetList.setListData(this.alphabet);
+    this.alphabetList.setListData(this.alphabet.toArray());
   }
 
   boolean isStandardSymbol(String var1) {

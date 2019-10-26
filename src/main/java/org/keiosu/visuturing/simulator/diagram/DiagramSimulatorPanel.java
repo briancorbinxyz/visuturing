@@ -6,7 +6,7 @@ import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.diagram.DiagramEditor;
 import org.keiosu.visuturing.mousetools.SimulatingTool;
-import org.keiosu.visuturing.simulator.Simulator;
+import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,8 +25,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Vector;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -40,7 +41,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
-public class DiagramSimulator extends Simulator implements Runnable, ComponentListener, FocusListener {
+public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Runnable, ComponentListener, FocusListener {
   private JRadioButton ndFirst;
   private JRadioButton ndLast;
   private JRadioButton ndRandom;
@@ -61,8 +62,8 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
   private JSplitPane sp;
   private int noConfigs;
 
-  public DiagramSimulator(TuringMachine var1) {
-    this.machine = var1;
+  public DiagramSimulatorPanel(TuringMachine turingMachine) {
+    super(turingMachine);
     this.addFocusListener(this);
     this.currentTransition = null;
     this.speed = 1.0D;
@@ -88,32 +89,31 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
     this.ndPanel.add(this.ndChoose);
     var4.setSelected(this.ndRandom.getModel(), true);
     var2.add(this.ndPanel, "North");
-    if (var1.isDeterministic()) {
+    if (turingMachine.isDeterministic()) {
       this.ndPanel.setVisible(false);
     }
 
-    if (!var1.hasDiagram()) {
-      var1.generateDiagram();
+    if (!turingMachine.hasDiagram()) {
+      turingMachine.generateDiagram();
     }
 
-    this.diagram = new DiagramEditor(var1);
+    this.diagram = new DiagramEditor(turingMachine);
     this.simTool = new SimulatingTool(this.diagram);
     this.diagram.setTool(this.simTool);
     this.diagram.setGrid(false);
     this.diagram.setPreferredSize(this.diagram.getExtents());
     this.diagram.addComponentListener(this);
     var2.add(this.diagram, "Center");
-    Vector var5 = new Vector();
-    var5.add(new String("Input"));
-    var5.add(new String("Output"));
-    Vector var6 = new Vector();
-    Vector var7 = new Vector();
+    List<String> headers = new ArrayList<String>(2);
+    headers.add("Input");
+    headers.add("Output");
+    List var7 = new ArrayList();
 
     for(int var8 = 0; var8 < 2; ++var8) {
       var7.add(new String(""));
     }
 
-    this.resultsTable = new JTable(var6, var5);
+    this.resultsTable = new JTable(new Object[][]{}, headers.toArray());
     this.resultsTable.setFont(new Font("Helvetica", 0, 14));
     JScrollPane var13 = new JScrollPane(this.resultsTable);
     var3.add(var13);
@@ -191,10 +191,10 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
 
         Thread.sleep((long)(1000.0D / this.speed));
         this.simTool.setConfig((Configuration)null);
-        Vector var2 = this.machine.getNextConfig(this.config);
+        List var2 = this.machine.getNextConfig(this.config);
         int var3 = -1;
         this.prevConfig = this.config;
-        Vector var8;
+        List var8;
         if (var2.size() == 1) {
           this.config = (Configuration)var2.get(0);
           if (this.config != null) {
@@ -215,7 +215,7 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
             this.config = (Configuration)var2.get(var3);
           } else {
             var8 = this.machine.getTransitions(this.config);
-            DiagramSimulator.ChoiceDialog var5 = new DiagramSimulator.ChoiceDialog(new Frame(), "Choose a transition", var8);
+            DiagramSimulatorPanel.ChoiceDialog var5 = new DiagramSimulatorPanel.ChoiceDialog(new Frame(), "Choose a transition", var8);
             var5.setVisible(true);
             if (var5.wasStopped()) {
               this.stop();
@@ -281,7 +281,7 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
   }
 
   private void addResult(Configuration var1) {
-    Vector var2 = new Vector();
+    List var2 = new ArrayList();
     var2.add(this.startWord);
     if (var1.getState().equals("h")) {
       this.computationText.setText(this.computationText.getText() + " [halts on input] " + this.noConfigs + " steps");
@@ -294,7 +294,7 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
     }
 
     DefaultTableModel var3 = (DefaultTableModel)this.resultsTable.getModel();
-    var3.addRow(var2);
+    var3.addRow(var2.toArray());
   }
 
   public void componentChanged(ComponentEvent var1) {
@@ -357,7 +357,7 @@ public class DiagramSimulator extends Simulator implements Runnable, ComponentLi
     private int choice;
     private boolean stopped;
 
-    public ChoiceDialog(Frame var2, String var3, Vector var4) {
+    public ChoiceDialog(Frame var2, String var3, List var4) {
       super(var2, var3, true);
       Container var5 = this.getContentPane();
       this.choice = 0;

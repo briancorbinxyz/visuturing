@@ -3,9 +3,10 @@ package org.keiosu.visuturing.gui.dialogs;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditAlphabetPanel;
 import java.awt.Frame;
+import java.util.List;
 import java.util.Vector;
 
-public class EditAlphabetDialog extends VTDialog {
+public class EditAlphabetDialog extends AbstractDialog {
   private EditAlphabetPanel alphabetEditor;
 
   public EditAlphabetDialog(Frame var1, TuringMachine var2) {
@@ -14,7 +15,7 @@ public class EditAlphabetDialog extends VTDialog {
     this.init(this.alphabetEditor);
   }
 
-  public Vector getAlphabet() {
+  public List getAlphabet() {
     return this.alphabetEditor.getAlphabet();
   }
 }

@@ -17,12 +17,13 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class SelectTool extends MouseTool {
+public class SelectTool extends AbstractMouseTool {
   private boolean overHandle = false;
   private Point lastPoint;
   public static final Dimension HANDLE_DIMENSION = new Dimension(10, 10);
@@ -37,7 +38,7 @@ public class SelectTool extends MouseTool {
   public void mousePressed(MouseEvent var1) {
     Point var2 = var1.getPoint();
     Point2D var3 = this.diagram.toUser(new Double(var2.getX(), var2.getY()));
-    Vector var4 = this.diagram.getCurrentMachine().getStates();
+    List var4 = this.diagram.getCurrentMachine().getStates();
     State var5 = this.diagram.getSelectedState();
     Transition var6 = this.diagram.getSelectedTransition();
 
@@ -80,7 +81,7 @@ public class SelectTool extends MouseTool {
       }
 
       if (!this.overHandle) {
-        Vector var11 = this.diagram.getCurrentMachine().getTransitions();
+        List var11 = this.diagram.getCurrentMachine().getTransitions();
 
         for(int var13 = 0; var13 < var11.size(); ++var13) {
           Transition var14 = (Transition)var11.get(var13);
@@ -110,7 +111,7 @@ public class SelectTool extends MouseTool {
       this.diagram.setSelectedState((State)null);
       this.diagram.repaint();
       TuringMachine var10 = this.diagram.getCurrentMachine();
-      Vector var11 = var10.getTransitions();
+      List var11 = var10.getTransitions();
 
       for(int var12 = 0; var12 < var11.size(); ++var12) {
         Transition var13 = (Transition)var11.get(var12);
@@ -158,7 +159,7 @@ public class SelectTool extends MouseTool {
       var9.setLocation(var9.getX() + var5, var9.getY() + var7);
       var3.setLocation(var9);
       this.diagram.repaint();
-      Vector var10 = this.diagram.getCurrentMachine().getTransitions();
+      List var10 = this.diagram.getCurrentMachine().getTransitions();
 
       for(int var11 = 0; var11 < var10.size(); ++var11) {
         Transition var12 = (Transition)var10.get(var11);
@@ -191,7 +192,7 @@ public class SelectTool extends MouseTool {
   public void mouseMoved(MouseEvent var1) {
     Point var2 = var1.getPoint();
     Point2D var3 = this.diagram.toUser(new Double(var2.getX(), var2.getY()));
-    Vector var4 = this.diagram.getCurrentMachine().getStates();
+    List var4 = this.diagram.getCurrentMachine().getStates();
 
     for(int var5 = 0; var5 < var4.size(); ++var5) {
       State var6 = (State)var4.get(var5);

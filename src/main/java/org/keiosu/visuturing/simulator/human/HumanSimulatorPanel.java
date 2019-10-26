@@ -3,7 +3,8 @@ package org.keiosu.visuturing.simulator.human;
 import org.keiosu.visuturing.core.Configuration;
 import org.keiosu.visuturing.core.Symbols;
 import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.simulator.Simulator;
+import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -15,11 +16,11 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.awt.image.ImageObserver;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class HumanSimulator extends Simulator implements Runnable, ImageObserver {
+public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runnable, ImageObserver {
   private Hand hand;
   private Tape tape;
   private int fps;
@@ -110,8 +111,8 @@ public class HumanSimulator extends Simulator implements Runnable, ImageObserver
     repaint();
   }
 
-  public HumanSimulator(TuringMachine turingMachine) {
-    machine = turingMachine;
+  public HumanSimulatorPanel(TuringMachine turingMachine) {
+    super(turingMachine);
     setBackground(Color.WHITE);
     reset();
     Toolkit var2 = Toolkit.getDefaultToolkit();
@@ -223,7 +224,7 @@ public class HumanSimulator extends Simulator implements Runnable, ImageObserver
         lastPaused = true;
       } else {
         lastPaused = false;
-        Vector var1 = machine.getNextConfig(config);
+        List var1 = machine.getNextConfig(config);
         Configuration var2 = null;
         if (var1.size() > 0) {
           Random var3 = new Random();

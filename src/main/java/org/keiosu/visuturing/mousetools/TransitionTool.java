@@ -15,12 +15,12 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
-import java.util.Vector;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class TransitionTool extends MouseTool {
+public class TransitionTool extends AbstractMouseTool {
   private Transition newTrans;
   private int mouseClicks = 0;
   private TransitionFrame transitionEditor;
@@ -48,13 +48,13 @@ public class TransitionTool extends MouseTool {
 
     this.currentPoint = var1.getPoint();
     Point2D var2 = this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-    Vector var3 = this.diagram.getCurrentMachine().getStates();
+    List var3 = this.diagram.getCurrentMachine().getStates();
 
     for(int var4 = 0; var4 < var3.size(); ++var4) {
       State var5 = (State)var3.get(var4);
       if (var5.contains(var2)) {
         if (var5.getName().equals("h") && this.mouseClicks == 0) {
-          JOptionPane.showMessageDialog((Component)null, "You cannot create transitions out of the halting state.", "TBIT VisuTuring", 0, (Icon)null);
+          JOptionPane.showMessageDialog((Component)null, "You cannot create transitions out of the halting state.", "VisuTuring", 0, (Icon)null);
           return;
         }
 
@@ -114,9 +114,13 @@ public class TransitionTool extends MouseTool {
   }
 
   public void mouseDragged(MouseEvent var1) {
+    mouseEvent(var1);
+  }
+
+  private void mouseEvent(MouseEvent var1) {
     this.currentPoint = var1.getPoint();
     Point2D var2 = this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-    Vector var3 = this.diagram.getCurrentMachine().getStates();
+    List var3 = this.diagram.getCurrentMachine().getStates();
 
     for(int var4 = 0; var4 < var3.size(); ++var4) {
       State var5 = (State)var3.get(var4);
@@ -131,20 +135,7 @@ public class TransitionTool extends MouseTool {
   }
 
   public void mouseMoved(MouseEvent var1) {
-    this.currentPoint = var1.getPoint();
-    Point2D var2 = this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-    Vector var3 = this.diagram.getCurrentMachine().getStates();
-
-    for(int var4 = 0; var4 < var3.size(); ++var4) {
-      State var5 = (State)var3.get(var4);
-      if (var5.contains(var2)) {
-        var2 = this.diagram.toWorld(var5.getLocation());
-        this.currentPoint = new Point((int)var2.getX(), (int)var2.getY());
-        break;
-      }
-    }
-
-    this.diagram.repaint();
+    mouseEvent(var1);
   }
 
   public void postDraw(Graphics2D var1) {

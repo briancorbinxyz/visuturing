@@ -1,7 +1,7 @@
 package org.keiosu.visuturing.gui.panels;
 
 import org.keiosu.visuturing.diagram.DiagramEditor;
-import org.keiosu.visuturing.gui.dialogs.VTDialog;
+import org.keiosu.visuturing.gui.dialogs.AbstractDialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class DiagramPrinter extends VTDialog implements ChangeListener, KeyListener {
+public class DiagramPrinter extends AbstractDialog implements ChangeListener, KeyListener {
   private PrintableDiagram diagram;
   private OrientationGraphic og;
   private PreviewGraphic pg;

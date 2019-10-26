@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class WelcomeDialog extends VTDialog {
+public class WelcomeDialog extends AbstractDialog {
   static final Dimension INFOBOX_SIZE = new Dimension(200, 150);
   JTextArea infoBox;
 
