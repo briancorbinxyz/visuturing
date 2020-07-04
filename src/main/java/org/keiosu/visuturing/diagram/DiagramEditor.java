@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.diagram;
 
 import org.keiosu.visuturing.core.State;
+import org.keiosu.visuturing.core.Symbols;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.DiagramPrinter;
@@ -94,7 +95,7 @@ public class DiagramEditor extends JPanel {
     double var3 = var1.getLocation().getX();
     double var5 = var1.getLocation().getY();
     Double var7 = new Double(var3 - 20.0D, var5 - 20.0D, 40.0D, 40.0D);
-    if (var1.getName().equals("h")) {
+    if (var1.getName().equals(Symbols.STATE_HALTING_STATE)) {
       var2.setColor(HALTING_STATE_COLOUR);
     } else if (this.selectedState == var1) {
       var2.setColor(SELECTED_STATE_COLOUR);
@@ -105,7 +106,7 @@ public class DiagramEditor extends JPanel {
     var2.fill(var7);
     var2.setColor(Color.BLACK);
     var2.draw(var7);
-    if (var1.getName().equals("h")) {
+    if (var1.getName().equals(Symbols.STATE_HALTING_STATE)) {
       var2.draw(new Double(var3 - 20.0D + 5.0D, var5 - 20.0D + 5.0D, 30.0D, 30.0D));
     }
 
@@ -118,7 +119,7 @@ public class DiagramEditor extends JPanel {
       var2.drawString(var1.getName(), (float)(var3 - var9 / 2.0D), (float)(var5 + 40.0D));
     }
 
-    if (var1.getName().equals("s")) {
+    if (var1.getName().equals(Symbols.STATE_BEGINNING_STATE)) {
       var2.draw(new java.awt.geom.Line2D.Double(var3 - 20.0D - 12.0D, var5 - 12.0D, var3 - 20.0D, var5));
       var2.draw(new java.awt.geom.Line2D.Double(var3 - 20.0D - 12.0D, var5 + 12.0D, var3 - 20.0D, var5));
     }
@@ -394,7 +395,7 @@ public class DiagramEditor extends JPanel {
     Point2D var3 = var1.getP2();
     Point2D var4 = var1.getControlPoint();
     if (var1.getCurrentState().equals(var1.getNextState())) {
-      Point2D var25 = this.currentMachine.getState(var1.getCurrentState()).getLocation();
+      Point2D var25 = this.currentMachine.stateFor(var1.getCurrentState()).getLocation();
       double var6 = Math.sqrt((var4.getX() - var25.getX()) * (var4.getX() - var25.getX()) + (var4.getY() - var25.getY()) * (var4.getY() - var25.getY()));
       double var8 = Math.sqrt(3600.0D + var6 * var6);
       double var10 = Math.atan(60.0D / var6);

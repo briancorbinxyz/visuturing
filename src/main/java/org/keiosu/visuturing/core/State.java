@@ -8,7 +8,7 @@ import java.awt.geom.Ellipse2D.Double;
 
 public class State implements XmlElement {
   private String name;
-  private Point2D location;
+  private Point2D location; // NOSONAR
 
   public State(String name, Point2D location) {
     this.name = name;

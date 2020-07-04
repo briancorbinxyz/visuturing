@@ -4,57 +4,56 @@ import org.keiosu.visuturing.xml.XmlElement;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.awt.geom.QuadCurve2D;
+import java.util.*;
 
 /**
  * The star of the show!
  */
 public class TuringMachine implements XmlElement {
+
+  private static final String DEFAULT_MACHINE_NAME = "-untitled-";
+  private static final String DEFAULT_MACHINE_DESCRIPTION = "-enter a description-";
+
   private String name;
   private String description;
   private List<Transition> transitions;
   private List<String> alphabet;
   private List<State> states;
-  private transient boolean hasDiagram;
-  private transient boolean changed;
+  private boolean hasDiagram;
+  private transient volatile boolean changed; // NOSONAR
 
-  public TuringMachine(String name, String description, List transitions, List alphabet, List states) {
+  public TuringMachine(String name, String description, List<Transition> transitions, List<String> alphabet, List<State> states) {
     this.name = name;
     this.description = description;
     this.transitions = transitions;
     this.alphabet = alphabet;
     this.states = states;
-    this.hasDiagram = false;
-    this.changed = false;
   }
 
   public TuringMachine() {
-    this.name = "-untitled-";
-    this.description = "-enter a description-";
-    this.transitions = new ArrayList<Transition>();
-    this.states = new ArrayList<State>();
-    this.states.add(new State("s"));
-    this.states.add(new State("h"));
-    this.alphabet = new ArrayList();
-    this.alphabet.add(String.valueOf(Symbols.LEFT_END_MARKER));
-    this.alphabet.add(String.valueOf(Symbols.SPACE));
-    this.hasDiagram = false;
-    this.changed = false;
+    this.name = DEFAULT_MACHINE_NAME;
+    this.description = DEFAULT_MACHINE_DESCRIPTION;
+    this.transitions = new ArrayList<>();
+    this.states = new ArrayList<>();
+    this.states.add(new State(Symbols.STATE_BEGINNING_STATE));
+    this.states.add(new State(Symbols.STATE_HALTING_STATE));
+    this.alphabet = List.of(
+        String.valueOf(Symbols.LEFT_END_MARKER),
+        String.valueOf(Symbols.SPACE)
+    );
   }
 
   public boolean isDeterministic() {
-    List var1 = new ArrayList(this.alphabet);
-    var1.remove("⊳");
+    List<String> tempAlphabet = new ArrayList<>(this.alphabet);
+    tempAlphabet.remove(String.valueOf(Symbols.LEFT_END_MARKER));
 
-    for(int var2 = 0; var2 < this.states.size(); ++var2) {
-      State var3 = (State)this.states.get(var2);
-      if (!var3.getName().equals("h")) {
-        for(int var4 = 0; var4 < var1.size(); ++var4) {
-          Configuration var5 = new Configuration(var3.getName(), (String)var1.get(var4), 0);
-          List var6 = this.getNextConfig(var5);
-          if (var6.size() == 0 || var6.size() > 1) {
+    for (State state : this.states) {
+      if (!state.getName().equals(Symbols.STATE_HALTING_STATE)) {
+        for (String s : tempAlphabet) {
+          Configuration configuration = new Configuration(state.getName(), s, 0);
+          List<Configuration> possibleNextConfigurations = this.getNextConfig(configuration);
+          if (possibleNextConfigurations.size() != 1) {
             return false;
           }
         }
@@ -68,152 +67,142 @@ public class TuringMachine implements XmlElement {
     return this.changed;
   }
 
-  public void setChanged(boolean var1) {
-    this.changed = var1;
+  public void setChanged(boolean changed) {
+    this.changed = changed;
   }
 
   public boolean hasDiagram() {
     return this.hasDiagram;
   }
 
-  public void setHasDiagram(boolean var1) {
-    if (var1 != this.hasDiagram) {
+  public void setHasDiagram(boolean hasDiagram) {
+    if (hasDiagram != this.hasDiagram) {
       this.changed = true;
     }
 
-    this.hasDiagram = var1;
+    this.hasDiagram = hasDiagram;
   }
 
-  public TuringMachine(TuringMachine var1) {
-    if (this != var1) {
-      this.name = var1.name;
-      this.description = var1.description;
-      this.transitions = var1.transitions;
-      this.alphabet = var1.alphabet;
-      this.states = var1.states;
-      this.hasDiagram = var1.hasDiagram;
+  public TuringMachine(TuringMachine other) {
+    if (this != other) {
+      this.name = other.name;
+      this.description = other.description;
+      this.transitions = new ArrayList<>(other.transitions);
+      this.alphabet = new ArrayList<>(other.alphabet);
+      this.states = new ArrayList<>(other.states);
+      this.hasDiagram = other.hasDiagram;
     }
-
   }
 
-  public List getTransitions(Configuration var1) {
-    List var2 = new ArrayList();
-    if (var1 == null) {
+  public List<Transition> nextTransitionsFor(Configuration configuration) {
+    List<Transition> possibleTransitions = new ArrayList<>();
+    if (configuration == null) {
       return this.transitions;
     } else {
-      char var3 = 8852;
-      if (var1.getIndex() < 0) {
-        var3 = 8883;
-      } else if (var1.getWord() == null) {
-        var3 = 8852;
-        var1.setWord(Character.toString(Symbols.SPACE));
-      } else if (var1.getIndex() < var1.getWord().length()) {
-        var3 = var1.getWord().charAt(var1.getIndex());
-      }
-
-      for(int var4 = 0; var4 < this.transitions.size(); ++var4) {
-        Transition var5 = (Transition)this.transitions.get(var4);
-        if (var5.getCurrentState().equals(var1.getState()) && var5.getCurrentSymbol() == var3) {
-          var2.add(var5);
+      for (Transition transition : this.transitions) {
+        if (transition.getCurrentState().equals(configuration.getState()) &&
+            transition.getCurrentSymbol() == currentSymbolFor(configuration)) {
+          possibleTransitions.add(transition);
         }
       }
 
-      return var2;
+      return possibleTransitions;
     }
   }
 
-  public List getNextConfig(Configuration var1) {
-    List var2 = new ArrayList();
-    if (var1 == null) {
-      return var2;
+  public List<Configuration> getNextConfig(Configuration configuration) {
+    if (configuration == null) {
+      return Collections.emptyList();
+    }
+
+    List<Configuration> possibleConfigurations = new ArrayList<>();
+    char nextSymbol = currentSymbolFor(configuration);
+    for (Transition transition : transitions) {
+      if (transition.getCurrentState().equals(configuration.getState()) && transition.getCurrentSymbol() == nextSymbol) {
+        Configuration nextConfiguration = computeNextConfigurationFrom(configuration, nextSymbol, transition);
+
+        if (nextConfiguration.getIndex() > nextConfiguration.getWord().length() - 1) {
+          nextConfiguration.setWord(nextConfiguration.getWord() + Symbols.SPACE);
+        }
+
+        Symbols.trimToHead(nextConfiguration);
+        possibleConfigurations.add(nextConfiguration);
+      }
+    }
+
+    if (nextSymbol == Symbols.LEFT_END_MARKER && possibleConfigurations.isEmpty()) {
+      Configuration defaultConfiguration = new Configuration(configuration);
+      defaultConfiguration.setIndex(0);
+      possibleConfigurations.add(defaultConfiguration);
+    }
+
+    return possibleConfigurations;
+  }
+
+  private Configuration computeNextConfigurationFrom(Configuration configuration, char nextSymbol, Transition transition) {
+    Configuration nextConfiguration = new Configuration(configuration);
+    nextConfiguration.setState(transition.getNextState());
+    String word;
+    if (transition.getTask() != Symbols.RIGHT_ARROW && nextSymbol != Symbols.LEFT_END_MARKER) {
+      if (transition.getTask() == Symbols.LEFT_ARROW) {
+        nextConfiguration.setIndex(nextConfiguration.getIndex() - 1);
+      } else {
+        word = nextConfiguration.getWord().substring(0, nextConfiguration.getIndex()) + transition.getTask();
+        if (nextConfiguration.getIndex() < nextConfiguration.getWord().length() - 1) {
+          word = word + nextConfiguration.getWord().substring(nextConfiguration.getIndex() + 1);
+        }
+        nextConfiguration.setWord(word);
+      }
     } else {
-      char var3 = 8852;
-      if (var1.getIndex() < 0) {
-        var3 = 8883;
-      } else if (var1.getWord() == null) {
-        var3 = 8852;
-        var1.setWord(Character.toString(Symbols.SPACE));
-      } else if (var1.getIndex() < var1.getWord().length()) {
-        var3 = var1.getWord().charAt(var1.getIndex());
+      nextConfiguration.setIndex(nextConfiguration.getIndex() + 1);
+      if (nextConfiguration.getIndex() > nextConfiguration.getWord().length() - 1) {
+        word = nextConfiguration.getWord() + Symbols.SPACE;
+        nextConfiguration.setWord(word);
       }
+    }
+    return nextConfiguration;
+  }
 
-      for(int var4 = 0; var4 < this.transitions.size(); ++var4) {
-        Transition var5 = (Transition)this.transitions.get(var4);
-        if (var5.getCurrentState().equals(var1.getState()) && var5.getCurrentSymbol() == var3) {
-          Configuration var6 = new Configuration(var1);
-          var6.setState(var5.getNextState());
-          String var7;
-          if (var5.getTask() != 8594 && var3 != 8883) {
-            if (var5.getTask() == 8592) {
-              var6.setIndex(var6.getIndex() - 1);
-            } else {
-              var7 = "";
-              var7 = var6.getWord().substring(0, var6.getIndex()) + var5.getTask();
-              if (var6.getIndex() < var6.getWord().length() - 1) {
-                var7 = var7 + var6.getWord().substring(var6.getIndex() + 1);
-              }
-
-              var6.setWord(var7);
-            }
-          } else {
-            var6.setIndex(var6.getIndex() + 1);
-            if (var6.getIndex() > var6.getWord().length() - 1) {
-              var7 = var6.getWord() + Symbols.SPACE;
-              var6.setWord(var7);
-            }
-          }
-
-          if (var6.getIndex() > var6.getWord().length() - 1) {
-            var6.setWord(var6.getWord() + Symbols.SPACE);
-          }
-
-          if (var6 != null) {
-            Symbols.trimToHead(var6);
-          }
-
-          var2.add(var6);
-        }
-      }
-
-      if (var3 == 8883 && var2.size() == 0) {
-        Configuration var8 = new Configuration(var1);
-        var8.setIndex(0);
-        var2.add(var8);
-      }
-
-      return var2;
+  private char currentSymbolFor(Configuration configuration) {
+    if (configuration.getIndex() < 0) {
+      return Symbols.LEFT_END_MARKER;
+    } else if (configuration.getWord() == null) {
+      configuration.setWord(String.valueOf(Symbols.SPACE));
+      return Symbols.SPACE;
+    } else if (configuration.getIndex() < configuration.getWord().length()) {
+      return configuration.getWord().charAt(configuration.getIndex());
+    } else {
+      return Symbols.SPACE;
     }
   }
 
-  public void setName(String var1) {
-    if (!var1.equals(this.name)) {
+  public void setName(String name) {
+    if (!name.equals(this.name)) {
       this.changed = true;
     }
-
-    this.name = var1;
+    this.name = name;
   }
 
-  public void setDescription(String var1) {
-    if (!var1.equals(this.description)) {
+  public void setDescription(String description) {
+    if (!description.equals(this.description)) {
       this.changed = true;
     }
-
-    this.description = var1;
+    this.description = description;
   }
 
-  public void setTransitions(List var1) {
+  public void setTransitions(List<Transition> transitions) {
     this.changed = true;
-    this.transitions = var1;
+    this.transitions = transitions;
   }
 
-  public void setAlphabet(List var1) {
+  public void setAlphabet(List<String> alphabet) {
     this.changed = true;
-    this.alphabet = var1;
+    this.alphabet = alphabet;
   }
 
-  public void setStates(List var1) {
+  public void setStates(List<State> states) {
     this.changed = true;
-    this.states = var1;
+    this.states = states;
   }
 
   public String getName() {
@@ -224,15 +213,15 @@ public class TuringMachine implements XmlElement {
     return this.description;
   }
 
-  public List getTransitions() {
+  public List<Transition> getTransitions() {
     return this.transitions;
   }
 
-  public List getAlphabet() {
+  public List<String> getAlphabet() {
     return this.alphabet;
   }
 
-  public List getStates() {
+  public List<State> getStates() {
     return this.states;
   }
 
@@ -241,7 +230,6 @@ public class TuringMachine implements XmlElement {
       this.changed = true;
       this.transitions.add(var1);
     }
-
   }
 
   public void removeTransition(Transition var1) {
@@ -249,11 +237,10 @@ public class TuringMachine implements XmlElement {
     this.transitions.remove(var1);
   }
 
-  public State getState(String var1) {
-    for(int var2 = 0; var2 < this.states.size(); ++var2) {
-      State var3 = (State)this.states.get(var2);
-      if (var3.getName().equals(var1)) {
-        return var3;
+  public State stateFor(String stateAsString) {
+    for (State state : this.states) {
+      if (state.getName().equals(stateAsString)) {
+        return state;
       }
     }
 
@@ -261,90 +248,72 @@ public class TuringMachine implements XmlElement {
   }
 
   public String toXml() {
-    StringBuffer var1 = new StringBuffer();
-    var1.append("<turing-machine>\n");
-    var1.append("<name>" + this.name + "</name>\n");
-    var1.append("<description>" + this.description + "</description>\n");
-    var1.append("<has-diagram>" + this.hasDiagram + "</has-diagram>\n");
-    var1.append("<states>\n");
-
-    int var2;
-    for(var2 = 0; var2 < this.states.size(); ++var2) {
-      State var3 = (State)this.states.get(var2);
-      var1.append(var3.toXml());
+    StringBuilder xml = new StringBuilder();
+    xml.append("<turing-machine>\n");
+    xml.append("<name>").append(this.name).append("</name>\n");
+    xml.append("<description>").append(this.description).append("</description>\n");
+    xml.append("<has-diagram>").append(this.hasDiagram).append("</has-diagram>\n");
+    xml.append("<states>\n");
+    for (State state : this.states) {
+      xml.append(state.toXml());
     }
-
-    var1.append("</states>\n");
-    var1.append("<alphabet>\n");
-
-    for(var2 = 0; var2 < this.alphabet.size(); ++var2) {
-      String var4 = (String)this.alphabet.get(var2);
-      var1.append("<symbol>" + Symbols.toUnicode(var4.charAt(0)) + "</symbol>\n");
+    xml.append("</states>\n");
+    xml.append("<alphabet>\n");
+    for (String symbol : this.alphabet) {
+      xml.append("<symbol>").append(Symbols.toUnicode(symbol.charAt(0))).append("</symbol>\n");
     }
-
-    var1.append("</alphabet>\n");
-    var1.append("<transitions>\n");
-
-    for(var2 = 0; var2 < this.transitions.size(); ++var2) {
-      Transition var5 = (Transition)this.transitions.get(var2);
-      var1.append(var5.toXml());
+    xml.append("</alphabet>\n");
+    xml.append("<transitions>\n");
+    for (Transition transition : this.transitions) {
+      xml.append(transition.toXml());
     }
-
-    var1.append("</transitions>\n");
-    var1.append("</turing-machine>\n");
-    return var1.toString();
+    xml.append("</transitions>\n");
+    xml.append("</turing-machine>\n");
+    return xml.toString();
   }
 
   public void generateDiagram() {
-    int var5 = this.states.size();
-    int var6 = 50 * var5;
-    HashMap var7 = new HashMap();
+    int noStates = this.states.size();
+    int maxHeight = 50 * noStates;
+    Map<Double, Double> spacingMap = new HashMap<>();
 
-    int var8;
-    for(var8 = 0; var8 < var5; ++var8) {
-      State var9 = (State)this.states.get(var8);
-      var9.setLocation(new Point(50 + var8 * 5 * 40, var6));
+    for(int i = 0; i < noStates; ++i) {
+      this.states.get(i).setLocation(new Point(50 + i * 5 * 40, maxHeight));
     }
 
-    var8 = this.transitions.size();
-
-    for(int var20 = 0; var20 < var8; ++var20) {
-      Transition var10 = (Transition)this.transitions.get(var20);
-      double var11 = this.getState(var10.getCurrentState()).getLocation().getX();
-      double var13 = this.getState(var10.getNextState()).getLocation().getX();
-      Double var15 = (Double)var7.get(new Double(var11 + var13));
-      if (var15 == null) {
-        var15 = new Double(1.0D);
+    for (Transition transition : this.transitions) {
+      double xFromState = this.stateFor(transition.getCurrentState()).getLocation().getX();
+      double xToState = this.stateFor(transition.getNextState()).getLocation().getX();
+      Double curveRatio = spacingMap.get(xFromState + xToState);
+      if (curveRatio == null) {
+        curveRatio = 1.0D;
       } else {
-        var15 = new Double(var15 + 1.0D);
+        curveRatio = curveRatio + 1.0D;
+      }
+      spacingMap.put(xFromState + xToState, curveRatio);
+      Point2D locationFromState = this.stateFor(transition.getCurrentState()).getLocation();
+      Point2D locationToState = this.stateFor(transition.getNextState()).getLocation();
+      Point2D curveCenterPoint;
+      if (!transition.getCurrentState().equals(transition.getNextState())) {
+        curveCenterPoint = new Point((int) (xFromState + (xToState - xFromState) / 2.0D), (int) ((double) maxHeight + (xToState - xFromState) / curveRatio / 2.0D));
+      } else if (curveRatio % 2.0D == 0.0D) {
+        curveCenterPoint = new Point2D.Double(xFromState, (double) maxHeight - curveRatio * 60.0D);
+      } else {
+        curveCenterPoint = new Point2D.Double(xFromState, (double) maxHeight + curveRatio * 60.0D);
       }
 
-      var7.put(new Double(var11 + var13), var15);
-      Point2D var16 = this.getState(var10.getCurrentState()).getLocation();
-      Point2D var18 = this.getState(var10.getNextState()).getLocation();
-      Object var17;
-      if (!var10.getCurrentState().equals(var10.getNextState())) {
-        var17 = new Point((int)(var11 + (var13 - var11) / 2.0D), (int)((double)var6 + (var13 - var11) / var15 / 2.0D));
-      } else if (var15 % 2.0D == 0.0D) {
-        var17 = new java.awt.geom.Point2D.Double(var11, (double)var6 - var15 * 60.0D);
-      } else {
-        var17 = new java.awt.geom.Point2D.Double(var11, (double)var6 + var15 * 60.0D);
-      }
-
-      java.awt.geom.QuadCurve2D.Double var19 = new java.awt.geom.QuadCurve2D.Double();
-      var19.setCurve(var16, (Point2D)var17, var18);
-      var10.setEdge(var19);
+      QuadCurve2D.Double var19 = new QuadCurve2D.Double();
+      var19.setCurve(locationFromState, curveCenterPoint, locationToState);
+      transition.setEdge(var19);
     }
-
     this.hasDiagram = true;
     this.changed = true;
   }
 
-  public Transition getEqualTransition(Transition var1) {
-    for(int var2 = 0; var2 < this.transitions.size(); ++var2) {
-      Transition var3 = (Transition)this.transitions.get(var2);
-      if (var3.isEqualTo(var1)) {
-        return var3;
+  public Transition getEqualTransition(Transition other) {
+    for (Transition transition : this.transitions) {
+      if (transition.isEqualTo(other)) {
+        return transition;
       }
     }
 

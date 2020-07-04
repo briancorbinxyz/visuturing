@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.gui.panels;
 
 import org.keiosu.visuturing.core.State;
+import org.keiosu.visuturing.core.Symbols;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 
@@ -57,8 +58,8 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
   public void initialize() {
     if (this.states.size() <= 1) {
       this.states = new ArrayList();
-      this.states.add(new State("s"));
-      this.states.add(new State("h"));
+      this.states.add(new State(Symbols.STATE_BEGINNING_STATE));
+      this.states.add(new State(Symbols.STATE_HALTING_STATE));
     }
 
     this.stateList = new JList(this.states.toArray());
@@ -115,7 +116,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
             }
           }
 
-          if (!var4 && !var3.equals("h") && !var3.equals("s")) {
+          if (!var4 && !var3.equals(Symbols.STATE_HALTING_STATE) && !var3.equals(Symbols.STATE_BEGINNING_STATE)) {
             this.states.add(new State(var3, new Point(100 * (this.noAdditions + 1), 50)));
             ++this.noAdditions;
           }
@@ -142,7 +143,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
         List var8 = new ArrayList();
 
         for(var5 = 0; var5 < this.states.size(); ++var5) {
-          if (!((State)this.states.get(var5)).getName().equals("s") && !((State)this.states.get(var5)).getName().equals("h")) {
+          if (!((State)this.states.get(var5)).getName().equals(Symbols.STATE_BEGINNING_STATE) && !((State)this.states.get(var5)).getName().equals(Symbols.STATE_HALTING_STATE)) {
             if (this.hasTransitions(((State)this.states.get(var5)).getName())) {
               var7 = true;
               var8.add((State)this.states.get(var5));
@@ -172,7 +173,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
     int var1 = this.stateList.getSelectedIndex();
     if (var1 > -1) {
       String var2 = ((State)this.states.get(var1)).getName();
-      if (!var2.equals("s") && !var2.equals("h")) {
+      if (!var2.equals(Symbols.STATE_BEGINNING_STATE) && !var2.equals(Symbols.STATE_HALTING_STATE)) {
         this.removeButton.setEnabled(true);
       } else {
         this.removeButton.setEnabled(false);

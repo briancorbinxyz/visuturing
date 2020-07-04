@@ -112,6 +112,6 @@ public class TransitionFrame extends JDialog implements ActionListener {
       this.transition.setTask(Symbols.SPACE);
     }
 
-    return this.transition.getCurrentSymbol() == 8883 && this.transition.getTask() != 8594 ? null : this.transition;
+    return this.transition.getCurrentSymbol() == Symbols.LEFT_END_MARKER && this.transition.getTask() != Symbols.RIGHT_ARROW ? null : this.transition;
   }
 }

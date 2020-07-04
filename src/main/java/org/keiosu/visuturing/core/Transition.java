@@ -10,13 +10,13 @@ import java.util.Objects;
 
 public class Transition implements XmlElement {
   private String currentState;
-  private char currentSymbol;
   private String nextState;
+  private char currentSymbol;
   private char task;
   private QuadCurve2D edge;
 
-  public Transition(String var1, char var2, String var3, char var4) {
-    this(var1, var2, var3, var4, new Point(), new Point(), new Point());
+  public Transition(String currentState, char currentSymbol, String nextState, char task) {
+    this(currentState, currentSymbol, nextState, task, new Point(), new Point(), new Point());
   }
 
   public void setEdge(QuadCurve2D edge) {
@@ -68,13 +68,13 @@ public class Transition implements XmlElement {
     this.edge.setCurve(startPoint, controlPoint, endPoint);
   }
 
-  public Transition(Transition var1) {
-    if (this != var1) {
-      this.currentState = var1.currentState;
-      this.currentSymbol = var1.currentSymbol;
-      this.nextState = var1.nextState;
-      this.task = var1.task;
-      this.edge = var1.edge;
+  public Transition(Transition other) {
+    if (this != other) {
+      this.currentState = other.currentState;
+      this.currentSymbol = other.currentSymbol;
+      this.nextState = other.nextState;
+      this.task = other.task;
+      this.edge = other.edge;
     }
 
   }

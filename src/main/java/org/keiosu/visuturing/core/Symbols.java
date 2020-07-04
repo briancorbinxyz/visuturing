@@ -2,11 +2,15 @@ package org.keiosu.visuturing.core;
 
 public class Symbols {
 
-  public static final char UNDERLINER = '\u0332';
+  public static final String STATE_BEGINNING_STATE = "s";
+  public static final String STATE_HALTING_STATE = "h";
+
+  static final char CURRENT_CHARACTER_UNDERLINER = '\u0332';
+
   public static final char RIGHT_ARROW = '\u2192';
   public static final char LEFT_ARROW = '\u2190';
   public static final char SPACE = '\u2423';
-  public static final char LEFT_END_MARKER = '\u201d';
+  public static final char LEFT_END_MARKER = '\u22B3';
   public static final char ASSERTION = '\u00a6';
 
   private Symbols() {

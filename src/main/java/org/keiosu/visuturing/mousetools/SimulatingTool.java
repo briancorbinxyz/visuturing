@@ -76,7 +76,7 @@ public class SimulatingTool extends AbstractMouseTool {
 
   public void setConfig(Configuration var1) {
     if (var1 != null) {
-      State var2 = this.machine.getState(var1.getState());
+      State var2 = this.machine.stateFor(var1.getState());
       this.currentState = var2;
     } else {
       this.currentState = null;

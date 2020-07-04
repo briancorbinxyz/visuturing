@@ -53,7 +53,7 @@ public class TransitionTool extends AbstractMouseTool {
     for(int var4 = 0; var4 < var3.size(); ++var4) {
       State var5 = (State)var3.get(var4);
       if (var5.contains(var2)) {
-        if (var5.getName().equals("h") && this.mouseClicks == 0) {
+        if (var5.getName().equals(Symbols.STATE_HALTING_STATE) && this.mouseClicks == 0) {
           JOptionPane.showMessageDialog((Component)null, "You cannot create transitions out of the halting state.", "VisuTuring", 0, (Icon)null);
           return;
         }

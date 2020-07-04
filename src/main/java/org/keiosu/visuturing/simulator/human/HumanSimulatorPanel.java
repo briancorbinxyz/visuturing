@@ -98,10 +98,10 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
     speed = 1.0D;
     Point2D tapeLocation = new Double(300.0D, 115.0D);
     tape = new Tape(tapeLocation);
-    currentState = "s";
+    currentState = Symbols.STATE_BEGINNING_STATE;
     config = new Configuration(currentState, inputWord, 0);
     Symbols.trimToHead(config);
-    charWaiting = 8592;
+    charWaiting = Symbols.LEFT_ARROW;
     message = "";
     lastPaused = false;
     initializingTape = false;
@@ -176,10 +176,10 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         }
 
         if (hand.finishedAnimation()) {
-          if (charWaiting != 8592 && charWaiting != 8883) {
+          if (charWaiting != Symbols.LEFT_ARROW && charWaiting != Symbols.LEFT_END_MARKER) {
             tape.write(charWaiting, tape.cellAtPoint(hand.getLocation()));
             repaint();
-            charWaiting = 8592;
+            charWaiting = Symbols.LEFT_ARROW;
           }
 
           nextAction();
@@ -213,7 +213,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
       }
 
     } else {
-      if (config.getState().equals("h")) {
+      if (config.getState().equals(Symbols.STATE_HALTING_STATE)) {
         message = "[halted]";
         pause();
         repaint();
@@ -246,7 +246,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
             }
           } else {
             charWaiting = var2.getWord().charAt(var2.getIndex());
-            if (charWaiting != 8883) {
+            if (charWaiting != Symbols.LEFT_END_MARKER) {
               hand.squiggle(10, tape.getCellBounds());
             }
           }

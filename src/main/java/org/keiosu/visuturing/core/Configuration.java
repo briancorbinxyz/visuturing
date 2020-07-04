@@ -20,14 +20,14 @@ public class Configuration {
   }
 
   public String toString() {
-    return "(" + state + "," + tapeConfiguration() + ")";
+    return "(" + state + "," + asTapeRepresentation() + ")";
   }
 
-  private String tapeConfiguration() {
+  private String asTapeRepresentation() {
     if (index < word.length()) {
-      return Symbols.LEFT_END_MARKER + word.substring(0, index + 1) + Symbols.UNDERLINER + word.substring(index + 1);
+      return Symbols.LEFT_END_MARKER + word.substring(0, index + 1) + Symbols.CURRENT_CHARACTER_UNDERLINER + word.substring(index + 1);
     } else {
-      return Symbols.LEFT_END_MARKER + word.substring(0, index) + Symbols.SPACE + Symbols.UNDERLINER;
+      return Symbols.LEFT_END_MARKER + word.substring(0, index) + Symbols.SPACE + Symbols.CURRENT_CHARACTER_UNDERLINER;
     }
   }
 
@@ -39,7 +39,7 @@ public class Configuration {
     this.word = word;
   }
 
-  public void setIndex(int index) {
+  void setIndex(int index) {
     this.index = index;
   }
 

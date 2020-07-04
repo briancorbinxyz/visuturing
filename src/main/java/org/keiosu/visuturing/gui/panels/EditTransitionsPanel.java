@@ -61,7 +61,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
     List var9 = new ArrayList();
 
     for(int var10 = 0; var10 < states.size(); ++var10) {
-      if (!((State)states.get(var10)).getName().equals("h")) {
+      if (!((State)states.get(var10)).getName().equals(Symbols.STATE_HALTING_STATE)) {
         var9.add(((State)states.get(var10)).getName());
       }
     }
@@ -181,8 +181,8 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
 
       if (!var5) {
         Transition var13 = new Transition(var7, var9, var10, var12);
-        Point2D var14 = this.machine.getState(var7).getLocation();
-        Point2D var15 = this.machine.getState(var10).getLocation();
+        Point2D var14 = this.machine.stateFor(var7).getLocation();
+        Point2D var15 = this.machine.stateFor(var10).getLocation();
         Double var16 = new Double(var14.getX() + (var15.getX() - var14.getX()) / 2.0D, var14.getY() + (var15.getY() - var14.getY()) / 2.0D);
         java.awt.geom.QuadCurve2D.Double var17 = new java.awt.geom.QuadCurve2D.Double();
         var17.setCurve(var14, var16, var15);

@@ -207,7 +207,7 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
 
     for(int var6 = 0; var6 < var2.size(); ++var6) {
       String var7 = (String)var2.get(var6);
-      if (var7.charAt(0) != 8883) {
+      if (var7.charAt(0) != Symbols.LEFT_END_MARKER) {
         JMenuItem var8 = new JMenuItem(var7);
         var8.setFont(var3);
         var8.setName(var7);

@@ -149,7 +149,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
 
     if (this.runner == null) {
       this.noConfigs = 0;
-      this.config = new Configuration("s", this.inputWord, 0);
+      this.config = new Configuration(Symbols.STATE_BEGINNING_STATE, this.inputWord, 0);
       this.startWord = new String(this.inputWord);
       this.computationText.setText(" ");
       this.addComputation(this.config);
@@ -210,7 +210,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
             var3 = var4.nextInt(var2.size());
             this.config = (Configuration)var2.get(var3);
           } else {
-            var8 = this.machine.getTransitions(this.config);
+            var8 = this.machine.nextTransitionsFor(this.config);
             DiagramSimulatorPanel.ChoiceDialog var5 = new DiagramSimulatorPanel.ChoiceDialog(new Frame(), "Choose a transition", var8);
             var5.setVisible(true);
             if (var5.wasStopped()) {
@@ -232,7 +232,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
         }
 
         if (var2.size() != 0 && var3 > -1) {
-          var8 = this.machine.getTransitions(this.prevConfig);
+          var8 = this.machine.nextTransitionsFor(this.prevConfig);
           this.currentTransition = (Transition)var8.get(var3);
         }
 
@@ -248,7 +248,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
         this.currentTransition = null;
         this.simTool.setTransition(this.currentTransition);
         this.simTool.setConfig(this.config);
-        if (this.config.getState().equals("h")) {
+        if (this.config.getState().equals(Symbols.STATE_HALTING_STATE)) {
           this.stopped = true;
           this.addResult(this.config);
           this.diagram.repaint();
@@ -279,7 +279,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
   private void addResult(Configuration configuration) {
     var resultTableRow = new ArrayList<String>(2);
     resultTableRow.add(startWord);
-    if (configuration.getState().equals("h")) {
+    if (configuration.getState().equals(Symbols.STATE_HALTING_STATE)) {
       computationText.setText(computationText.getText() + " [halts on input] " + noConfigs + " steps");
       computationText.setCaretPosition(computationText.getText().length());
       resultTableRow.add(Symbols.trim(configuration.getWord()));
