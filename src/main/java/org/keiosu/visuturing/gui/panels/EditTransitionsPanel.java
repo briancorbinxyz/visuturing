@@ -31,29 +31,28 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
   JButton diagramButton;
   JTable table;
   TuringMachine machine;
-  List columnNames;
+  List<String> columnNames;
   public static final String ADD_TRANSITION_BUTTON = "Add Transition";
   public static final String REMOVE_TRANSITION_BUTTON = "Remove Transition";
   public static final String GENERATE_BUTTON = "Generate Transition Diagram";
 
   public void refresh() {
-    List<Object[]> rows = new ArrayList();
-    List transitions = this.machine.getTransitions();
-    List states = this.machine.getStates();
-    List alphabet = new ArrayList(this.machine.getAlphabet());
+    List<Object[]> rows = new ArrayList<>();
+    List<Transition> transitions = this.machine.getTransitions();
+    List<State> states = this.machine.getStates();
+    List<String> alphabet = new ArrayList<>(this.machine.getAlphabet());
 
-    for(int i = 0; i < transitions.size(); ++i) {
-      List var6 = new ArrayList(4);
-      Transition var7 = (Transition)transitions.get(i);
-      var6.add(var7.getCurrentState());
-      var6.add("" + var7.getCurrentSymbol());
-      var6.add(var7.getNextState());
-      var6.add("" + var7.getTask());
-      rows.add(var6.toArray());
+    for (Transition transition : transitions) {
+      List<String> columnValues = new ArrayList<>(4);
+      columnValues.add(transition.getCurrentState());
+      columnValues.add("" + transition.getCurrentSymbol());
+      columnValues.add(transition.getNextState());
+      columnValues.add("" + transition.getTask());
+      rows.add(columnValues.toArray());
     }
 
     DefaultTableModel var18 = (DefaultTableModel)this.table.getModel();
-    var18.setDataVector((Object[][])rows.toArray(), this.columnNames.toArray());
+    var18.setDataVector(rows.toArray(new Object[][]{}), this.columnNames.toArray());
     TableColumn var19 = this.table.getColumnModel().getColumn(2);
     JComboBox var20 = new JComboBox(states.toArray());
     var19.setCellEditor(new DefaultCellEditor(var20));

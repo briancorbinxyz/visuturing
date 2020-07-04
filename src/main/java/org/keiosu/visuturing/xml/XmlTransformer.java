@@ -25,6 +25,6 @@ public class XmlTransformer {
 
   private String xmlHeader() {
     return "<?xml version=\"1.0\" ?>\n\n" +
-           "<?program name='VisuTuring' version='2.0' ?>";
+           "<?program name='VisuTuring' version='2.0.0' ?>";
   }
 }
