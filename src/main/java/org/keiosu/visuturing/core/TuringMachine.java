@@ -302,9 +302,9 @@ public class TuringMachine implements XmlElement {
         curveCenterPoint = new Point2D.Double(xFromState, (double) maxHeight + curveRatio * 60.0D);
       }
 
-      QuadCurve2D.Double var19 = new QuadCurve2D.Double();
-      var19.setCurve(locationFromState, curveCenterPoint, locationToState);
-      transition.setEdge(var19);
+      QuadCurve2D.Double transitionEdge = new QuadCurve2D.Double();
+      transitionEdge.setCurve(locationFromState, curveCenterPoint, locationToState);
+      transition.setEdge(transitionEdge);
     }
     this.hasDiagram = true;
     this.changed = true;

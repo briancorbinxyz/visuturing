@@ -25,7 +25,7 @@ public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
       String var2 = var1.getName().toLowerCase();
 
       for(int var3 = this.validExtensions.size() - 1; var3 >= 0; --var3) {
-        if (var2.endsWith((String)this.validExtensions.get(var3))) {
+        if (var2.endsWith(this.validExtensions.get(var3))) {
           return true;
         }
       }
@@ -44,7 +44,7 @@ public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
 
   public boolean accept(File var1, String var2) {
     for(int var3 = this.validExtensions.size() - 1; var3 >= 0; --var3) {
-      if (var2.endsWith((String)this.validExtensions.get(var3))) {
+      if (var2.endsWith(this.validExtensions.get(var3))) {
         return true;
       }
     }

@@ -325,11 +325,11 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
               } else if (var4.equals("Save All")) {
                 this.saveAll();
               } else if (var4.equals("Open Sample...")) {
-                SampleDialog var16 = new SampleDialog();
-                var16.setVisible(true);
-                String var6 = var16.getSelectedFile();
-                if (!var16.wasCancelled() && var6 != null) {
-                  this.open(new File("samples/" + var6));
+                SampleDialog sampleDialog = new SampleDialog();
+                sampleDialog.setVisible(true);
+                File selectedFile = sampleDialog.getSelectedFile();
+                if (!sampleDialog.wasCancelled() && selectedFile != null) {
+                  this.open(selectedFile);
                 }
               } else if (var4.equals("Open...")) {
                 this.chooser.setCurrentDirectory(new File("My Turing Machines"));

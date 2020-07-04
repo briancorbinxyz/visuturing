@@ -10,6 +10,11 @@ import java.awt.Frame;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,19 +26,19 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class SampleDialog extends AbstractDialog implements ListSelectionListener, MouseListener {
-  private JList mylist;
+  private JList<String> mylist;
   private String selectedFile = null;
-  public static final String SAMPLE_DIR = "samples/";
+  private static final String SAMPLE_DIR = "samples/";
 
   public SampleDialog() {
     super(new Frame(), "Select a Sample Turing Machine");
     ImageIcon[] var1 = new ImageIcon[2];
     JPanel var2 = new JPanel(new BorderLayout());
-    String[] var3 = this.getFileList("samples/");
-    if (var3 != null) {
-      this.mylist = new JList(var3);
+    String[] fileList = this.getFileList();
+    if (fileList != null && fileList.length > 0) {
+      this.mylist = new JList<>(fileList);
     } else {
-      this.mylist = new JList();
+      this.mylist = new JList<>();
     }
 
     this.mylist.setSelectionMode(0);
@@ -54,15 +59,17 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
     this.init(var2);
   }
 
-  public String[] getFileList(String var1) {
-    VisuTuringFileFilter var2 = new VisuTuringFileFilter();
-    var2.addExtension("vt");
+  private String[] getFileList() {
+    VisuTuringFileFilter fileFilter = new VisuTuringFileFilter();
+    fileFilter.addExtension("vt");
 
     try {
-      File var3 = new File(var1);
-      return var3.isDirectory() ? var3.list(var2) : null;
-    } catch (Exception var4) {
-      return null;
+      URL sampleUrl = Objects.requireNonNull(SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
+      Path path = Paths.get(sampleUrl.toURI());
+      File directory = path.toFile();
+      return directory.isDirectory() ? directory.list(fileFilter) : new String []{};
+    } catch (Exception ignore) {
+      return new String[]{};
     }
   }
 
@@ -77,8 +84,15 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
 
   }
 
-  public String getSelectedFile() {
-    return this.selectedFile;
+  public File getSelectedFile() {
+    try {
+      URL sampleUrl = Objects.requireNonNull(SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
+      Path path = null;
+      path = Paths.get(sampleUrl.toURI()).resolve(this.selectedFile);
+      return path.toFile();
+    } catch (URISyntaxException e) {
+      return null;
+    }
   }
 
   public void valueChanged(ListSelectionEvent var1) {
