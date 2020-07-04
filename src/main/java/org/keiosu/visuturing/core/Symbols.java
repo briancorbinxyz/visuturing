@@ -27,7 +27,7 @@ public class Symbols {
   }
 
   public static String trim(String word) {
-    return word == null || word.isEmpty() ? word : trim(word, word.length());
+    return word == null || word.isEmpty() ? word : trim(word, 0);
   }
 
   public static void trimToHead(Configuration configuration) {
@@ -37,13 +37,13 @@ public class Symbols {
     }
   }
 
-  private static String trim(String word, int configurationIndex) {
+  private static String trim(String word, int minIndex) {
     String trimmedWord = word;
-    if (word.length() > 0 && word.charAt(word.length() - 1) == SPACE) {
+    if (!word.isEmpty() && word.charAt(word.length() - 1) == SPACE) {
       int index = word.length() - 1;
       char charAtIndex = word.charAt(index);
 
-      while(charAtIndex == SPACE && index > configurationIndex) {
+      while(charAtIndex == SPACE && index > minIndex) {
         trimmedWord  = trimmedWord.substring(0, index--);
         if (index > -1) {
           charAtIndex = trimmedWord.charAt(index);

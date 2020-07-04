@@ -386,7 +386,7 @@ public class DiagramEditor extends JPanel {
     this.setSelectedTransition((Transition)null);
     Dimension var2 = this.getExtents();
     BufferedImage var3 = this.makeBuffer((int)var2.getWidth(), (int)var2.getHeight());
-    Persistence.saveJPEG(var3, var1.toString(), 1.0F);
+    Persistence.saveJPEG(var3, var1.toString());
   }
 
   public Shape getGraphicEdge(Transition var1) {

@@ -20,6 +20,7 @@ public class XmlTransformer {
   public void transform(XmlElement xmlElement, OutputStream outputStream) throws TransformerException {
     String xmlHeader = xmlHeader();
     this.stylesheet.transform(new StreamSource(new StringReader(xmlHeader + "\n\n" + xmlElement.toXml())), new StreamResult(outputStream));
+
   }
 
   private String xmlHeader() {

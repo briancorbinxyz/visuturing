@@ -33,30 +33,30 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
   JTabbedPane tp;
   DescriptionPanel descPanel;
 
-  public VTFrame(InternalFrameListener var1, ActionListener var2, TuringMachine var3, int var4) {
-    super(var3.getName(), true, true, true, true);
-    this.listener = var2;
-    this.machine = var3;
-    var3.setChanged(false);
-    this.fileName = "-untitled-";
+  public VTFrame(InternalFrameListener frameListener, ActionListener actionListener, TuringMachine turingMachine, int var4) {
+    super(turingMachine.getName(), true, true, true, true);
+    this.listener = actionListener;
+    this.machine = turingMachine;
+    turingMachine.setChanged(false);
+    this.fileName = UNSAVED_FILENAME;
     this.setSize(DEFAULT_FRAME_SIZE);
     this.setDefaultCloseOperation(0);
     this.setFrameIcon(this.createImageIcon("bitmaps/vticons.jpg"));
-    this.descPanel = new DescriptionPanel(var3);
-    this.diagramEditor = new DiagramPanel(var2, var3);
-    this.simulator = new MainSimulationPanel(var2, new DiagramSimulatorPanel(var3));
-    this.humanSimulator = new MainSimulationPanel(var2, new HumanSimulatorPanel(var3));
+    this.descPanel = new DescriptionPanel(turingMachine);
+    this.diagramEditor = new DiagramPanel(actionListener, turingMachine);
+    this.simulator = new MainSimulationPanel(actionListener, new DiagramSimulatorPanel(turingMachine));
+    this.humanSimulator = new MainSimulationPanel(actionListener, new HumanSimulatorPanel(turingMachine));
     Container var5 = this.getContentPane();
     var5.setLayout(new BorderLayout());
     this.tp = new JTabbedPane(1, 1);
     this.tp.addTab("Description", this.descPanel);
-    this.tp.addTab("Diagram", this.diagramEditor);
-    this.tp.addTab("AbstractSimulatorPanel", this.simulator);
-    this.tp.addTab("Human AbstractSimulatorPanel", this.humanSimulator);
+    this.tp.addTab("Diagram Editor", this.diagramEditor);
+    this.tp.addTab("State Simulator", this.simulator);
+    this.tp.addTab("Human Simulator", this.humanSimulator);
     this.tp.setSelectedIndex(var4);
     this.tp.addChangeListener(this);
     var5.add(this.tp, "Center");
-    this.addInternalFrameListener(var1);
+    this.addInternalFrameListener(frameListener);
   }
 
   ImageIcon createImageIcon(String var1) {

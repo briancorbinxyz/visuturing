@@ -42,16 +42,16 @@ import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Runnable, ComponentListener, FocusListener {
-  private JRadioButton ndFirst;
-  private JRadioButton ndLast;
-  private JRadioButton ndRandom;
-  private JRadioButton ndChoose;
+  private JRadioButton nonDeterminismChooseFirstButton;
+  private JRadioButton nonDeterminismChooseLastButton;
+  private JRadioButton nonDeterminismRandomButtom;
+  private JRadioButton nonDeterminismChoiceButton;
   private JTable resultsTable;
   private DiagramEditor diagram;
   private SimulatingTool simTool;
   private Configuration config;
   private Configuration prevConfig;
-  private JPanel ndPanel;
+  private JPanel nonDeterminismPanel;
   private JTextArea computationText;
   private JScrollPane computationScroller;
   private Transition currentTransition;
@@ -61,6 +61,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
   private Thread runner;
   private JSplitPane sp;
   private int noConfigs;
+  private final DefaultTableModel resultsTableModel;
 
   public DiagramSimulatorPanel(TuringMachine turingMachine) {
     super(turingMachine);
@@ -69,28 +70,28 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     this.speed = 1.0D;
     this.noConfigs = 0;
     this.setLayout(new BorderLayout(0, 0));
-    JPanel var2 = new JPanel(new BorderLayout());
-    JPanel var3 = new JPanel(new BorderLayout());
-    this.ndPanel = new JPanel(new FlowLayout());
-    this.ndPanel.setBorder(BorderFactory.createTitledBorder("Non-Determinism"));
-    this.ndPanel.add(new JLabel("ALWAYS choose: "));
-    ButtonGroup var4 = new ButtonGroup();
-    this.ndFirst = new JRadioButton("First Transition");
-    var4.add(this.ndFirst);
-    this.ndPanel.add(this.ndFirst);
-    this.ndLast = new JRadioButton("Last Transition");
-    var4.add(this.ndLast);
-    this.ndPanel.add(this.ndLast);
-    this.ndRandom = new JRadioButton("Random Transition");
-    var4.add(this.ndRandom);
-    this.ndPanel.add(this.ndRandom);
-    this.ndChoose = new JRadioButton("Prompted Transition");
-    var4.add(this.ndChoose);
-    this.ndPanel.add(this.ndChoose);
-    var4.setSelected(this.ndRandom.getModel(), true);
-    var2.add(this.ndPanel, "North");
+    JPanel leftPane = new JPanel(new BorderLayout());
+    JPanel rightPane = new JPanel(new BorderLayout());
+    this.nonDeterminismPanel = new JPanel(new FlowLayout());
+    this.nonDeterminismPanel.setBorder(BorderFactory.createTitledBorder("Non-Determinism"));
+    this.nonDeterminismPanel.add(new JLabel("Always Choose: "));
+    ButtonGroup nonDeterminismButtonGroup = new ButtonGroup();
+    this.nonDeterminismChooseFirstButton = new JRadioButton("First Transition");
+    nonDeterminismButtonGroup.add(this.nonDeterminismChooseFirstButton);
+    this.nonDeterminismPanel.add(this.nonDeterminismChooseFirstButton);
+    this.nonDeterminismChooseLastButton = new JRadioButton("Last Transition");
+    nonDeterminismButtonGroup.add(this.nonDeterminismChooseLastButton);
+    this.nonDeterminismPanel.add(this.nonDeterminismChooseLastButton);
+    this.nonDeterminismRandomButtom = new JRadioButton("Random Transition");
+    nonDeterminismButtonGroup.add(this.nonDeterminismRandomButtom);
+    this.nonDeterminismPanel.add(this.nonDeterminismRandomButtom);
+    this.nonDeterminismChoiceButton = new JRadioButton("Prompted Transition");
+    nonDeterminismButtonGroup.add(this.nonDeterminismChoiceButton);
+    this.nonDeterminismPanel.add(this.nonDeterminismChoiceButton);
+    nonDeterminismButtonGroup.setSelected(this.nonDeterminismRandomButtom.getModel(), true);
+    leftPane.add(this.nonDeterminismPanel, "North");
     if (turingMachine.isDeterministic()) {
-      this.ndPanel.setVisible(false);
+      this.nonDeterminismPanel.setVisible(false);
     }
 
     if (!turingMachine.hasDiagram()) {
@@ -103,27 +104,22 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     this.diagram.setGrid(false);
     this.diagram.setPreferredSize(this.diagram.getExtents());
     this.diagram.addComponentListener(this);
-    var2.add(this.diagram, "Center");
+    leftPane.add(this.diagram, "Center");
     List<String> headers = new ArrayList<String>(2);
     headers.add("Input");
     headers.add("Output");
-    List var7 = new ArrayList();
-
-    for(int var8 = 0; var8 < 2; ++var8) {
-      var7.add(new String(""));
-    }
-
-    this.resultsTable = new JTable(new Object[][]{}, headers.toArray());
+    resultsTableModel = new DefaultTableModel(new Object[][]{}, headers.toArray());
+    this.resultsTable = new JTable(resultsTableModel);
     this.resultsTable.setFont(new Font("Helvetica", 0, 14));
     JScrollPane var13 = new JScrollPane(this.resultsTable);
-    var3.add(var13);
+    rightPane.add(var13);
     this.computationText = new JTextArea(" ");
     this.computationText.setFont(new Font("Helvetica", 0, 14));
     this.computationText.setBackground(Color.white);
     this.computationScroller = new JScrollPane(this.computationText, 20, 32);
     this.computationScroller.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Computation"));
-    var3.add(this.computationScroller, "South");
-    this.sp = new JSplitPane(1, var2, var3);
+    rightPane.add(this.computationScroller, "South");
+    this.sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
     this.add(this.sp);
     double var9 = Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.75D;
     double var11 = this.diagram.getPreferredSize().getWidth();
@@ -203,13 +199,13 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
 
           var3 = 0;
         } else if (var2.size() > 1) {
-          if (this.ndFirst.isSelected()) {
+          if (this.nonDeterminismChooseFirstButton.isSelected()) {
             this.config = (Configuration)var2.get(0);
             var3 = 0;
-          } else if (this.ndLast.isSelected()) {
+          } else if (this.nonDeterminismChooseLastButton.isSelected()) {
             var3 = var2.size() - 1;
             this.config = (Configuration)var2.get(var3);
-          } else if (this.ndRandom.isSelected()) {
+          } else if (this.nonDeterminismRandomButtom.isSelected()) {
             Random var4 = new Random();
             var3 = var4.nextInt(var2.size());
             this.config = (Configuration)var2.get(var3);
@@ -280,21 +276,19 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     }
   }
 
-  private void addResult(Configuration var1) {
-    List var2 = new ArrayList();
-    var2.add(this.startWord);
-    if (var1.getState().equals("h")) {
-      this.computationText.setText(this.computationText.getText() + " [halts on input] " + this.noConfigs + " steps");
-      this.computationText.setCaretPosition(this.computationText.getText().length());
-      var2.add(Symbols.trim(var1.getWord()));
+  private void addResult(Configuration configuration) {
+    var resultTableRow = new ArrayList<String>(2);
+    resultTableRow.add(startWord);
+    if (configuration.getState().equals("h")) {
+      computationText.setText(computationText.getText() + " [halts on input] " + noConfigs + " steps");
+      computationText.setCaretPosition(computationText.getText().length());
+      resultTableRow.add(Symbols.trim(configuration.getWord()));
     } else {
-      this.computationText.setText(this.computationText.getText() + " [stuck] " + this.noConfigs + " steps");
-      this.computationText.setCaretPosition(this.computationText.getText().length());
-      var2.add("");
+      computationText.setText(computationText.getText() + " [stuck] " + noConfigs + " steps");
+      computationText.setCaretPosition(computationText.getText().length());
+      resultTableRow.add("");
     }
-
-    DefaultTableModel var3 = (DefaultTableModel)this.resultsTable.getModel();
-    var3.addRow(var2.toArray());
+    resultsTableModel.addRow(resultTableRow.toArray());
   }
 
   public void componentChanged(ComponentEvent var1) {
@@ -343,11 +337,11 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
 
   public void refresh() {
     if (this.machine.isDeterministic()) {
-      if (this.ndPanel.isVisible()) {
-        this.ndPanel.setVisible(false);
+      if (this.nonDeterminismPanel.isVisible()) {
+        this.nonDeterminismPanel.setVisible(false);
       }
-    } else if (!this.ndPanel.isVisible()) {
-      this.ndPanel.setVisible(true);
+    } else if (!this.nonDeterminismPanel.isVisible()) {
+      this.nonDeterminismPanel.setVisible(true);
     }
 
     this.zoomDiagram();

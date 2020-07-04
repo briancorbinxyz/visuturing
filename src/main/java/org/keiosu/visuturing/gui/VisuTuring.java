@@ -498,8 +498,6 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
   }
 
   public static void main(String[] var0) {
-    System.out.println("Loading VisuTuring © 2003-2004 - Brian L A Corbin - ...");
-    System.out.println("\n\n``I verify that I am the sole author of this program,\n     except where explicitly stated to the contrary''");
     new VisuTuring();
   }
 

@@ -18,6 +18,7 @@ import java.io.FileWriter;
 
 import java.io.IOException;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -26,6 +27,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,7 +37,9 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 public class Persistence {
-  public Persistence() {
+  private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private Persistence() {
+    // do nothing
   }
 
   public static String trimExtension(String var0) {
@@ -242,19 +247,11 @@ public class Persistence {
     return new java.awt.geom.QuadCurve2D.Double(var1.getX(), var1.getY(), var3.getX(), var3.getY(), var2.getX(), var2.getY());
   }
 
-  public static void saveJPEG(BufferedImage var0, String var1, float var2) {
-    try {
-      if (!var1.endsWith(".jpg")) {
-        var1 = var1 + ".jpg";
-      }
-
-      FileOutputStream var3 = new FileOutputStream(var1);
-      ImageIO.write(var0, "jpeg", var3);
-      var3.close();
-
-    } catch (IOException var6) {
-      System.out.println("IO Error on output: " + var6);
+  public static void saveJPEG(BufferedImage image, String filename) {
+    try (FileOutputStream imageFile = new FileOutputStream(filename.endsWith(".jpg") ? filename : filename + ".jpg")) {
+      ImageIO.write(image, "jpeg", imageFile);
+    } catch (IOException e) {
+      LOGGER.atError().addArgument(e).log("Failed to save image.");
     }
-
   }
 }

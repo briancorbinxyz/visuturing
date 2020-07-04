@@ -8,21 +8,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The star of the show!
+ */
 public class TuringMachine implements XmlElement {
   private String name;
   private String description;
-  private List transitions;
-  private List alphabet;
-  private List states;
-  private boolean hasDiagram;
-  private boolean changed;
+  private List<Transition> transitions;
+  private List<String> alphabet;
+  private List<State> states;
+  private transient boolean hasDiagram;
+  private transient boolean changed;
 
-  public TuringMachine(String var1, String var2, List var3, List var4, List var5) {
-    this.name = var1;
-    this.description = var2;
-    this.transitions = var3;
-    this.alphabet = var4;
-    this.states = var5;
+  public TuringMachine(String name, String description, List transitions, List alphabet, List states) {
+    this.name = name;
+    this.description = description;
+    this.transitions = transitions;
+    this.alphabet = alphabet;
+    this.states = states;
     this.hasDiagram = false;
     this.changed = false;
   }
@@ -30,13 +33,13 @@ public class TuringMachine implements XmlElement {
   public TuringMachine() {
     this.name = "-untitled-";
     this.description = "-enter a description-";
-    this.transitions = new ArrayList();
-    this.states = new ArrayList();
+    this.transitions = new ArrayList<Transition>();
+    this.states = new ArrayList<State>();
     this.states.add(new State("s"));
     this.states.add(new State("h"));
     this.alphabet = new ArrayList();
-    this.alphabet.add(new String("⊳"));
-    this.alphabet.add(new String("⊔"));
+    this.alphabet.add(String.valueOf(Symbols.LEFT_END_MARKER));
+    this.alphabet.add(String.valueOf(Symbols.SPACE));
     this.hasDiagram = false;
     this.changed = false;
   }
