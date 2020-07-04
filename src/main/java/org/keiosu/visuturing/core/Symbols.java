@@ -9,7 +9,7 @@ public class Symbols {
 
   public static final char RIGHT_ARROW = '\u2192';
   public static final char LEFT_ARROW = '\u2190';
-  public static final char SPACE = '\u2423';
+  public static final char SPACE = '\u2294';
   public static final char LEFT_END_MARKER = '\u22B3';
   public static final char ASSERTION = '\u00a6';
 
