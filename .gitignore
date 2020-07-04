@@ -1,4 +1,4 @@
-.idea/misc.xml
+.idea/**/misc.xml
 
 ########################################################################################################################
 
@@ -32,7 +32,7 @@
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
-.idea/modules.xml
+.idea/**/modules.xml
 .idea/*.iml
 .idea/modules
 *.iml
@@ -87,3 +87,11 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+########################################################################################################################
+
+# Sonarlint plugin
+.idea/**/sonarlint/
+
+# SonarQube Plugin
+.idea/**/sonarIssues.xml
