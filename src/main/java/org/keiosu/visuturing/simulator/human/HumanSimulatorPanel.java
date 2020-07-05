@@ -18,6 +18,7 @@ import java.awt.image.ImageObserver;
 import java.net.URL;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runnable, ImageObserver {
@@ -39,37 +40,34 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
   private boolean textOn;
   private int inputIndex;
   private ReentrantLock simulationLock = new ReentrantLock();
+  private Condition simulationLockHold = simulationLock.newCondition();
 
   public void refresh() {
     // do nothing
   }
 
   public void play() {
-    if (!message.equals("")) {
-      simulationLock.lock();
-      try {
+    simulationLock.lock();
+    try {
+      if (!message.equals("")) {
         reset();
         paused = false;
         runner = new Thread(this);
         runner.start();
-      } finally {
-        simulationLock.unlock();
-      }
-    } else if (runner != null) {
-      simulationLock.lock();
-      try {
+      } else if (runner != null) {
         paused = false;
         stopped = false;
-      } finally {
-        simulationLock.unlock();
+      } else {
+        paused = false;
+        runner = new Thread(this);
+        runner.start();
       }
-    } else {
-      paused = false;
-      runner = new Thread(this);
-      runner.start();
-    }
 
-    message = "";
+      message = "";
+    } finally {
+      simulationLockHold.signal();
+      simulationLock.unlock();
+    }
   }
 
   public void stop() {
@@ -80,6 +78,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
       runner = null;
       reset();
     } finally {
+      simulationLockHold.signal();
       simulationLock.unlock();
     }
   }
@@ -89,6 +88,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
     try {
       paused = true;
     } finally {
+      simulationLockHold.signal();
       simulationLock.unlock();
     }
   }
@@ -150,7 +150,6 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
   public void run() {
     config = new Configuration(currentState, inputWord, 0);
     Symbols.trimToHead(config);
-    Thread currentThread = Thread.currentThread();
     hand.moveTo(
       (int)tape.getPosition().getX() + tape.getCellWidth() + 2,
       (int)tape.getPosition().getY() + 2,
@@ -162,7 +161,8 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
 
     while(true) {
       try {
-        synchronized(currentThread) {
+        simulationLock.lock();
+        try {
           while(true) {
             if (!paused) {
               if (stopped) {
@@ -170,9 +170,10 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
               }
               break;
             }
-
-            currentThread.wait();
+            simulationLockHold.await();
           }
+        } finally {
+          simulationLock.unlock();
         }
 
         if (hand.finishedAnimation()) {

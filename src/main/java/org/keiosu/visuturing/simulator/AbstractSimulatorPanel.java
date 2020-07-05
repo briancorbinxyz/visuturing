@@ -8,7 +8,7 @@ public abstract class AbstractSimulatorPanel extends JPanel {
 
   private static final double MAX_SPEED = 12.0D;
   private static final double MIN_SPEED = 0.1D;
-  public static final double SPEED_DELTA = 0.5D;
+  private static final double SPEED_DELTA = 0.5D;
 
   protected String inputWord;
   protected double speed;
