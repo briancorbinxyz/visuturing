@@ -177,7 +177,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
 
         if (hand.finishedAnimation()) {
           if (charWaiting != Symbols.LEFT_ARROW && charWaiting != Symbols.LEFT_END_MARKER) {
-            tape.write(charWaiting, tape.cellAtPoint(hand.getLocation()));
+            tape.writeSymbol(charWaiting, tape.findCellAtPoint(hand.getLocation()));
             repaint();
             charWaiting = Symbols.LEFT_ARROW;
           }
@@ -199,7 +199,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         if (!textOn) {
           hand.squiggle(8, tape.getCellBounds());
           charWaiting = inputWord.charAt(inputIndex++);
-        } else if (tape.cellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
+        } else if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
           hand.moveTo((int)hand.getLocation().getX() + tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
         } else {
           tape.forward();
@@ -233,13 +233,13 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
 
         if (var2 != null) {
           if (var2.getIndex() < config.getIndex()) {
-            if (tape.cellAtPoint(hand.getLocation()) <= tape.visibleCells() / 2) {
+            if (tape.findCellAtPoint(hand.getLocation()) <= tape.visibleCells() / 2) {
               hand.moveTo((int)hand.getLocation().getX() - tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
             } else {
               tape.reverse();
             }
           } else if (var2.getIndex() > config.getIndex()) {
-            if (tape.cellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
+            if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
               hand.moveTo((int)hand.getLocation().getX() + tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
             } else {
               tape.forward();
