@@ -151,9 +151,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
     config = new Configuration(currentState, inputWord, 0);
     Symbols.trimToHead(config);
     hand.moveTo(
-      (int)tape.getPosition().getX() + tape.getCellWidth() + 2,
-      (int)tape.getPosition().getY() + 2,
-      25
+            25, (double) ((int)tape.getPosition().getX() + tape.getCellWidth() + 2), (double) ((int)tape.getPosition().getY() + 2)
     );
     if (config.getWord().length() > 0) {
       initializingTape = true;
@@ -201,7 +199,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
           hand.squiggle(8, tape.getCellBounds());
           charWaiting = inputWord.charAt(inputIndex++);
         } else if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
-          hand.moveTo((int)hand.getLocation().getX() + tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
+          hand.moveTo(5, (double) ((int)hand.getLocation().getX() + tape.getCellWidth()), (double) (int)hand.getLocation().getY());
         } else {
           tape.forward();
         }
@@ -209,7 +207,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         textOn = !textOn;
       } else {
         tape.reset();
-        hand.moveTo((int)tape.getPosition().getX() + tape.getCellWidth() + 1, (int)tape.getPosition().getY() + 1, 20);
+        hand.moveTo(20, (double) ((int)tape.getPosition().getX() + tape.getCellWidth() + 1), (double) ((int)tape.getPosition().getY() + 1));
         initializingTape = false;
       }
 
@@ -221,7 +219,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
       }
 
       if (!lastPaused) {
-        hand.pause(10);
+        hand.pause();
         lastPaused = true;
       } else {
         lastPaused = false;
@@ -235,13 +233,13 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         if (var2 != null) {
           if (var2.getIndex() < config.getIndex()) {
             if (tape.findCellAtPoint(hand.getLocation()) <= tape.visibleCells() / 2) {
-              hand.moveTo((int)hand.getLocation().getX() - tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
+              hand.moveTo(5, (double) ((int)hand.getLocation().getX() - tape.getCellWidth()), (double) (int)hand.getLocation().getY());
             } else {
               tape.reverse();
             }
           } else if (var2.getIndex() > config.getIndex()) {
             if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
-              hand.moveTo((int)hand.getLocation().getX() + tape.getCellWidth(), (int)hand.getLocation().getY(), 5);
+              hand.moveTo(5, (double) ((int)hand.getLocation().getX() + tape.getCellWidth()), (double) (int)hand.getLocation().getY());
             } else {
               tape.forward();
             }
