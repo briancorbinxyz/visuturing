@@ -5,8 +5,7 @@ import org.keiosu.visuturing.gui.VisuTuring;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,50 +13,39 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 public class StartupWizardPanel extends JPanel {
-  StartupWizardPanel.Rollover ro;
-  VisuTuring mainProgram;
-  ActionListener listener;
+  private VisuTuring app;
+  private ActionListener listener;
 
-  public StartupWizardPanel(ActionListener var1, VisuTuring var2) {
+  StartupWizardPanel(ActionListener actionListener, VisuTuring app) {
     super(new BorderLayout());
-    this.mainProgram = var2;
-    this.listener = var1;
-    JLabel var3 = new JLabel(this.createImageIcon("bitmaps/startup.gif"));
-    JLayeredPane var4 = new JLayeredPane();
-    this.add(var4);
-    var3.setBounds(0, 0, (int)var3.getPreferredSize().getWidth(), (int)var3.getPreferredSize().getHeight());
-    var4.add(var3, JLayeredPane.DEFAULT_LAYER);
-    var4.add(this.invisibleButton("New...", 41, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    var4.add(this.invisibleButton("Open...", 184, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    var4.add(this.invisibleButton("Open Sample...", 330, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    this.setPreferredSize(var3.getPreferredSize());
-    var4.setPreferredSize(var3.getPreferredSize());
-    this.ro = new StartupWizardPanel.Rollover();
+    this.app = app;
+    this.listener = actionListener;
+    JLabel startupLabel = new JLabel(this.createImageIcon("bitmaps/startup.gif"));
+    JLayeredPane pane = new JLayeredPane();
+    this.add(pane);
+    startupLabel.setBounds(0, 0, (int) startupLabel.getPreferredSize().getWidth(), (int) startupLabel.getPreferredSize().getHeight());
+    pane.add(startupLabel, JLayeredPane.DEFAULT_LAYER);
+    pane.add(this.invisibleButton("New...", 41, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    pane.add(this.invisibleButton("Open...", 184, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    pane.add(this.invisibleButton("Open Sample...", 330, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    this.setPreferredSize(startupLabel.getPreferredSize());
+    pane.setPreferredSize(startupLabel.getPreferredSize());
   }
 
-  public JButton invisibleButton(String var1, int var2, int var3, int var4, int var5) {
-    JButton var6 = new JButton();
-    var6.setName(var1);
-    var6.setBorderPainted(false);
-    var6.setContentAreaFilled(false);
-    var6.setBounds(var2, var3, var4, var5);
-    var6.setCursor(Cursor.getPredefinedCursor(12));
-    var6.addMouseMotionListener(this.ro);
-    var6.addActionListener(this.mainProgram);
-    var6.addActionListener(this.listener);
-    return var6;
+  private JButton invisibleButton(String name, int locationX, int locationY, int width, int height) {
+    JButton button;
+    button = new JButton();
+    button.setName(name);
+    button.setBorderPainted(false);
+    button.setContentAreaFilled(false);
+    button.setBounds(locationX, locationY, width, height);
+    button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    button.addActionListener(this.app);
+    button.addActionListener(this.listener);
+    return button;
   }
 
-  protected ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
-  }
-
-  public class Rollover extends MouseMotionAdapter {
-    public Rollover() {
-    }
-
-    public void mouseMoved(MouseEvent var1) {
-      System.out.println("whatappen!");
-    }
+  protected ImageIcon createImageIcon(String resourceLocation) {
+    return new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(resourceLocation)));
   }
 }

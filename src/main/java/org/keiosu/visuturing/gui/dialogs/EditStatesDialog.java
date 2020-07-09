@@ -10,9 +10,9 @@ import java.util.Vector;
 public class EditStatesDialog extends AbstractDialog implements ActionListener {
   private EditStatesPanel stateEditor;
 
-  public EditStatesDialog(Frame var1, TuringMachine var2) {
-    super(var1, "Edit States");
-    this.stateEditor = new EditStatesPanel(var2);
+  public EditStatesDialog(Frame frame, TuringMachine turingMachine) {
+    super(frame, "Edit States");
+    this.stateEditor = new EditStatesPanel(turingMachine);
     this.init(this.stateEditor);
   }
 

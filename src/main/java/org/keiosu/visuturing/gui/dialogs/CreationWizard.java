@@ -110,6 +110,9 @@ public class CreationWizard extends AbstractDialog implements ActionListener {
         break;
       case 3:
         this.tm.setTransitions(this.etp.getTransitions());
+        break;
+      default:
+        throw new RuntimeException("Unknown index");
     }
 
   }
