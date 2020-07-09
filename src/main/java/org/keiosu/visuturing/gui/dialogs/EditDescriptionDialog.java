@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionListener;
 
 public class EditDescriptionDialog extends AbstractDialog implements ActionListener {
+
   private EditDescriptionPanel descriptionEditor;
 
   public EditDescriptionDialog(Frame frame, TuringMachine turingMachine) {

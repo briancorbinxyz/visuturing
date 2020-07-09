@@ -27,7 +27,6 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -286,7 +285,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
             if (var2 != null) {
               EditTransitionsDialog var12 = new EditTransitionsDialog(this, var2);
               var12.setVisible(true);
-              if (!var12.wasCancelled()) {
+              if (var12.didSucceed()) {
                 var2.setTransitions(var12.getTransitions());
               }
             }
@@ -328,7 +327,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                 SampleDialog sampleDialog = new SampleDialog();
                 sampleDialog.setVisible(true);
                 File selectedFile = sampleDialog.getSelectedFile();
-                if (!sampleDialog.wasCancelled() && selectedFile != null) {
+                if (sampleDialog.didSucceed() && selectedFile != null) {
                   this.open(selectedFile);
                 }
               } else if (var4.equals("Open...")) {
@@ -420,7 +419,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
             } else if (var2 != null) {
               EditDescriptionDialog var14 = new EditDescriptionDialog(this, var2);
               var14.setVisible(true);
-              if (!var14.wasCancelled()) {
+              if (var14.didSucceed()) {
                 var2.setDescription(var14.getDescription());
                 var2.setName(var14.getName());
               }
@@ -429,14 +428,14 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
         } else if (var2 != null) {
           EditAlphabetDialog var11 = new EditAlphabetDialog(this, var2);
           var11.setVisible(true);
-          if (!var11.wasCancelled()) {
+          if (var11.didSucceed()) {
             var2.setAlphabet(var11.getAlphabet());
           }
         }
       } else if (var2 != null) {
         EditStatesDialog var5 = new EditStatesDialog(this, var2);
         var5.setVisible(true);
-        if (!var5.wasCancelled()) {
+        if (var5.didSucceed()) {
           var2.setStates(var5.getStates());
         }
       }

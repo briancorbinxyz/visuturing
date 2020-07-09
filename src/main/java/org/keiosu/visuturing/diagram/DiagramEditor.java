@@ -77,7 +77,7 @@ public class DiagramEditor extends JPanel {
   public void print() {
     DiagramPrinter var1 = new DiagramPrinter(this);
     var1.setVisible(true);
-    if (!var1.wasCancelled()) {
+    if (var1.didSucceed()) {
       var1.printIt();
     }
   }

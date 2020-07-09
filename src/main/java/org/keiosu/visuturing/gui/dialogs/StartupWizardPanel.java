@@ -19,16 +19,16 @@ public class StartupWizardPanel extends JPanel {
   StartupWizardPanel(ActionListener actionListener, VisuTuring app) {
     super(new BorderLayout());
     this.app = app;
-    this.listener = actionListener;
-    JLabel startupLabel = new JLabel(this.createImageIcon("bitmaps/startup.gif"));
+    listener = actionListener;
+    JLabel startupLabel = new JLabel(createImageIcon("bitmaps/startup.gif"));
     JLayeredPane pane = new JLayeredPane();
-    this.add(pane);
+    add(pane);
     startupLabel.setBounds(0, 0, (int) startupLabel.getPreferredSize().getWidth(), (int) startupLabel.getPreferredSize().getHeight());
     pane.add(startupLabel, JLayeredPane.DEFAULT_LAYER);
-    pane.add(this.invisibleButton("New...", 41, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    pane.add(this.invisibleButton("Open...", 184, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    pane.add(this.invisibleButton("Open Sample...", 330, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    this.setPreferredSize(startupLabel.getPreferredSize());
+    pane.add(invisibleButton("New...", 41, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    pane.add(invisibleButton("Open...", 184, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    pane.add(invisibleButton("Open Sample...", 330, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    setPreferredSize(startupLabel.getPreferredSize());
     pane.setPreferredSize(startupLabel.getPreferredSize());
   }
 
@@ -40,12 +40,12 @@ public class StartupWizardPanel extends JPanel {
     button.setContentAreaFilled(false);
     button.setBounds(locationX, locationY, width, height);
     button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    button.addActionListener(this.app);
-    button.addActionListener(this.listener);
+    button.addActionListener(app);
+    button.addActionListener(listener);
     return button;
   }
 
   protected ImageIcon createImageIcon(String resourceLocation) {
-    return new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(resourceLocation)));
+    return new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource(resourceLocation)));
   }
 }

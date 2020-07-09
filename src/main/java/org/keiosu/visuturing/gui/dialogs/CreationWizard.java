@@ -56,10 +56,10 @@ public class CreationWizard extends AbstractDialog implements ActionListener {
     this.cardIndex = 0;
   }
 
-  public void actionPerformed(ActionEvent var1) {
+  public void actionPerformed(ActionEvent event) {
     this.updateTuringMachine();
-    if (var1.getSource() instanceof JButton) {
-      JButton var2 = (JButton)var1.getSource();
+    if (event.getSource() instanceof JButton) {
+      JButton var2 = (JButton) event.getSource();
       if (var2.getName().equals("<< Back")) {
         this.cl.previous(this.wizardPanel);
         --this.cardIndex;
@@ -89,7 +89,7 @@ public class CreationWizard extends AbstractDialog implements ActionListener {
       this.etp.refresh();
     }
 
-    super.actionPerformed(var1);
+    super.actionPerformed(event);
   }
 
   public TuringMachine getTuringMachine() {

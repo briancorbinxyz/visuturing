@@ -18,47 +18,41 @@ public class SplashWindow extends JWindow {
   private Runnable waitRunner;
   private final Runnable closerRunner;
 
-  public SplashWindow(ImageIcon var1, final int var2) {
+  public SplashWindow(ImageIcon imageIcon, final long closeDelaySecs) {
     super(new Frame());
-    Container var3 = this.getContentPane();
-    JLabel var4 = new JLabel(var1);
-    Dimension var5 = var4.getPreferredSize();
-    ++var5.height;
-    JLayeredPane var6 = new JLayeredPane();
-    var6.setPreferredSize(var5);
-    var3.add(var6);
-    var4.setVerticalAlignment(0);
-    var4.setHorizontalAlignment(0);
-    var4.setBounds(0, 0, (int)var4.getPreferredSize().getWidth(), (int)var4.getPreferredSize().getHeight());
-    var6.add(var4, JLayeredPane.DEFAULT_LAYER);
+    Container contentPane = this.getContentPane();
+    JLabel label = new JLabel(imageIcon);
+    Dimension size = label.getPreferredSize();
+    ++size.height;
+    JLayeredPane pane = new JLayeredPane();
+    pane.setPreferredSize(size);
+    contentPane.add(pane);
+    label.setVerticalAlignment(0);
+    label.setHorizontalAlignment(0);
+    label.setBounds(0, 0, (int)label.getPreferredSize().getWidth(), (int)label.getPreferredSize().getHeight());
+    pane.add(label, JLayeredPane.DEFAULT_LAYER);
     this.progressText = new JTextArea(" ");
     this.progressText.setForeground(Color.WHITE);
-    this.progressText.setFont(new Font("Helvetica", 0, 11));
+    this.progressText.setFont(new Font("Helvetica", Font.PLAIN, 11));
     this.progressText.setBounds(13, 314, 376, 30);
     this.progressText.setOpaque(false);
-    var6.add(this.progressText, JLayeredPane.POPUP_LAYER);
+    pane.add(this.progressText, JLayeredPane.POPUP_LAYER);
     this.pack();
-    Dimension var7 = Toolkit.getDefaultToolkit().getScreenSize();
-    Dimension var8 = var4.getPreferredSize();
-    this.setLocation(var7.width / 2 - var8.width / 2, var7.height / 2 - var8.height / 2);
-    this.closerRunner = new Runnable() {
-      public void run() {
-        SplashWindow.this.close();
-      }
-    };
-    this.waitRunner = new Runnable() {
-      public void run() {
-        try {
-          if (var2 > 0) {
-            Thread.sleep((long)var2);
-          }
-
-          SwingUtilities.invokeAndWait(SplashWindow.this.closerRunner);
-        } catch (Exception var2x) {
-          var2x.printStackTrace();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension labelSize = label.getPreferredSize();
+    this.setLocation(screenSize.width / 2 - labelSize.width / 2, screenSize.height / 2 - labelSize.height / 2);
+    this.closerRunner = SplashWindow.this::close;
+    this.waitRunner = () -> {
+      try {
+        if (closeDelaySecs > 0) {
+          Thread.sleep(closeDelaySecs);
         }
 
+        SwingUtilities.invokeAndWait(SplashWindow.this.closerRunner);
+      } catch (Exception var2x) {
+        var2x.printStackTrace();
       }
+
     };
     this.setVisible(true);
   }
@@ -68,8 +62,7 @@ public class SplashWindow extends JWindow {
   }
 
   public void complete() {
-    Thread var1 = new Thread(this.waitRunner, "SplashThread");
-    var1.start();
+    new Thread(this.waitRunner, "SplashThread").start();
   }
 
   private void close() {

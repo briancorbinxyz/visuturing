@@ -11,7 +11,7 @@ public class StartupWizard extends AbstractDialog implements ActionListener {
     this.init(new StartupWizardPanel(this, app));
   }
 
-  public void actionPerformed(ActionEvent var1) {
+  public void actionPerformed(ActionEvent event) {
     this.setVisible(false);
   }
 }
