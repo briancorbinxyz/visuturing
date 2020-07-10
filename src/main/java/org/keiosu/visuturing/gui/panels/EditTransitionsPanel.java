@@ -13,7 +13,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -147,7 +147,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
 
     for(int var4 = 0; var4 < var2.size(); ++var4) {
       boolean var5 = false;
-      List var6 = (Vector)var2.get(var4);
+      List var6 = (List)var2.get(var4);
       String var7 = var6.get(0).toString();
       if (var7 == null || var7.equals("")) {
         var5 = true;

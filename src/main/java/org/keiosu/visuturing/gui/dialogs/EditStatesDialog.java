@@ -5,7 +5,6 @@ import org.keiosu.visuturing.gui.panels.EditStatesPanel;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.Vector;
 
 public class EditStatesDialog extends AbstractDialog implements ActionListener {
   private EditStatesPanel stateEditor;

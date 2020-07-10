@@ -25,7 +25,7 @@ public abstract class AbstractDialog extends JDialog implements ActionListener {
 
   public AbstractDialog(Frame owner, String title) {
     super(owner, title, true);
-    buttonPanel = new JPanel(new FlowLayout(4, 5, 5));
+    buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING, 5, 5));
     pack();
   }
 

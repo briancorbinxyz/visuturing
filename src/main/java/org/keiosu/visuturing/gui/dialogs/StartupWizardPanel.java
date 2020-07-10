@@ -25,20 +25,20 @@ public class StartupWizardPanel extends JPanel {
     add(pane);
     startupLabel.setBounds(0, 0, (int) startupLabel.getPreferredSize().getWidth(), (int) startupLabel.getPreferredSize().getHeight());
     pane.add(startupLabel, JLayeredPane.DEFAULT_LAYER);
-    pane.add(invisibleButton("New...", 41, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    pane.add(invisibleButton("Open...", 184, 139, 129, 25), JLayeredPane.POPUP_LAYER);
-    pane.add(invisibleButton("Open Sample...", 330, 139, 129, 25), JLayeredPane.POPUP_LAYER);
+    pane.add(hotspotRowButton("New...", 41), JLayeredPane.POPUP_LAYER);
+    pane.add(hotspotRowButton("Open...", 184), JLayeredPane.POPUP_LAYER);
+    pane.add(hotspotRowButton("Open Sample...", 330), JLayeredPane.POPUP_LAYER);
     setPreferredSize(startupLabel.getPreferredSize());
     pane.setPreferredSize(startupLabel.getPreferredSize());
   }
 
-  private JButton invisibleButton(String name, int locationX, int locationY, int width, int height) {
+  private JButton hotspotRowButton(String name, int locationX) {
     JButton button;
     button = new JButton();
     button.setName(name);
     button.setBorderPainted(false);
     button.setContentAreaFilled(false);
-    button.setBounds(locationX, locationY, width, height);
+    button.setBounds(locationX, 139, 129, 25);
     button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     button.addActionListener(app);
     button.addActionListener(listener);

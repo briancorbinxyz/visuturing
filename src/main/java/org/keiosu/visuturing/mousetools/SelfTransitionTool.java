@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.List;
-import java.util.Vector;
+
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;

@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -25,7 +25,7 @@ import javax.swing.event.ListSelectionListener;
 public class EditStatesPanel extends VTPanel implements ActionListener, ListSelectionListener {
   JTextField stateField;
   JList stateList;
-  List states;
+  List<State> states;
   JButton removeButton;
   JButton removeAllButton;
   TuringMachine machine;
@@ -190,7 +190,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
 
   }
 
-  public List getStates() {
+  public List<State> getStates() {
     return this.states;
   }
 }

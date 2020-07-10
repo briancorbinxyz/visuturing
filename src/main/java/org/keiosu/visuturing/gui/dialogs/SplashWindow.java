@@ -1,11 +1,16 @@
 package org.keiosu.visuturing.gui.dialogs;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -14,6 +19,7 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 public class SplashWindow extends JWindow {
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private JTextArea progressText;
   private Runnable waitRunner;
   private final Runnable closerRunner;
@@ -49,8 +55,10 @@ public class SplashWindow extends JWindow {
         }
 
         SwingUtilities.invokeAndWait(SplashWindow.this.closerRunner);
-      } catch (Exception var2x) {
-        var2x.printStackTrace();
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      } catch (InvocationTargetException e) {
+        LOG.error("Error during close: {}", e.getMessage(), e);
       }
 
     };

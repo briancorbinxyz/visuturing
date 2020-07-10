@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -23,7 +23,7 @@ import javax.swing.event.ListSelectionListener;
 public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSelectionListener {
   JTextField symbolField;
   JList alphabetList;
-  List alphabet;
+  List<String> alphabet;
   JButton removeButton;
   JButton removeAllButton;
   TuringMachine machine;
@@ -178,7 +178,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
 
   }
 
-  public List getAlphabet() {
+  public List<String> getAlphabet() {
     return this.alphabet;
   }
 

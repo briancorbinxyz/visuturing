@@ -8,10 +8,10 @@ public class StartupWizard extends AbstractDialog implements ActionListener {
 
   public StartupWizard(VisuTuring app) {
     super(app, "Welcome!");
-    this.init(new StartupWizardPanel(this, app));
+    init(new StartupWizardPanel(this, app));
   }
 
   public void actionPerformed(ActionEvent event) {
-    this.setVisible(false);
+    setVisible(false);
   }
 }

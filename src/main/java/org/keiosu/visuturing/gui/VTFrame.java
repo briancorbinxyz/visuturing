@@ -10,9 +10,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.JInternalFrame;
-import javax.swing.JTabbedPane;
+import java.util.Objects;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameListener;
@@ -48,7 +47,7 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
     this.humanSimulator = new MainSimulationPanel(actionListener, new HumanSimulatorPanel(turingMachine));
     Container var5 = this.getContentPane();
     var5.setLayout(new BorderLayout());
-    this.tp = new JTabbedPane(1, 1);
+    this.tp = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     this.tp.addTab("Description", this.descPanel);
     this.tp.addTab("Diagram Editor", this.diagramEditor);
     this.tp.addTab("State Simulator", this.simulator);
@@ -59,43 +58,43 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
     this.addInternalFrameListener(frameListener);
   }
 
-  ImageIcon createImageIcon(String var1) {
-    return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
+  ImageIcon createImageIcon(String imageUri) {
+    return new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(imageUri)));
   }
 
-  public void setFileName(String var1) {
-    this.fileName = var1;
+  void setFileName(String filename) {
+    this.fileName = filename;
   }
 
-  public String getFileName() {
+  String getFileName() {
     return this.fileName;
   }
 
-  public TuringMachine getTuringMachine() {
+  TuringMachine getTuringMachine() {
     return this.machine;
   }
 
-  public void displayDiagram() {
-    this.tp.setSelectedIndex(1);
+  void displayDiagram() {
+    this.tp.setSelectedIndex(DIAGRAM_TAB);
   }
 
-  public void displaySimulation() {
-    this.tp.setSelectedIndex(2);
+  void displaySimulation() {
+    this.tp.setSelectedIndex(SIMULATION_TAB);
   }
 
-  public void displayHuman() {
-    this.tp.setSelectedIndex(3);
+  void displayHuman() {
+    this.tp.setSelectedIndex(HUMAN_TAB);
   }
 
-  public void stateChanged(ChangeEvent var1) {
+  public void stateChanged(ChangeEvent event) {
     this.simulator.refresh();
   }
 
-  public void exportToJPEG(File var1) {
-    this.diagramEditor.exportToJPEG(var1);
+  void exportToJPEG(File file) {
+    this.diagramEditor.exportToJPEG(file);
   }
 
-  public void printDiagram() {
+  void printDiagram() {
     this.diagramEditor.printDiagram();
   }
 }

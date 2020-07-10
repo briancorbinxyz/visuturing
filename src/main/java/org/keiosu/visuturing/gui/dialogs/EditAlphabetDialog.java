@@ -10,11 +10,11 @@ public class EditAlphabetDialog extends AbstractDialog {
 
   public EditAlphabetDialog(Frame frame, TuringMachine turingMachine) {
     super(frame, "Edit Alphabet");
-    this.alphabetEditor = new EditAlphabetPanel(turingMachine);
-    this.init(this.alphabetEditor);
+    alphabetEditor = new EditAlphabetPanel(turingMachine);
+    init(alphabetEditor);
   }
 
   public List<String> getAlphabet() {
-    return this.alphabetEditor.getAlphabet();
+    return alphabetEditor.getAlphabet();
   }
 }

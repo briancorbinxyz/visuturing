@@ -30,90 +30,93 @@ public class CreationWizard extends AbstractDialog implements ActionListener {
   private EditAlphabetPanel eap;
   private EditTransitionsPanel etp;
 
-  public CreationWizard(Frame var1) {
-    super(var1, "New Turing Machine Wizard");
-    this.wizardPanel.setLayout(this.cl);
-    this.tm = new TuringMachine();
-    this.edp = new EditDescriptionPanel(this.tm);
-    this.esp = new EditStatesPanel(this.tm);
-    this.eap = new EditAlphabetPanel(this.tm);
-    this.etp = new EditTransitionsPanel(this.tm);
-    this.wizardPanel.add("Edit Description", this.edp);
-    this.wizardPanel.add("Edit States", this.esp);
-    this.wizardPanel.add("Edit Alphabet", this.eap);
-    this.wizardPanel.add("Edit Transitions", this.etp);
-    this.wizardPanel.setPreferredSize(this.edp.getPreferredSize());
-    this.backButton = new JButton("<< Back");
-    this.backButton.setName("<< Back");
-    this.backButton.addActionListener(this);
-    this.addButton(this.backButton);
-    this.backButton.setEnabled(false);
-    this.nextButton = new JButton("Next >>");
-    this.nextButton.setName("Next >>");
-    this.nextButton.addActionListener(this);
-    this.addButton(this.nextButton);
-    this.init(this.wizardPanel);
-    this.cardIndex = 0;
+  public CreationWizard(Frame frame) {
+    super(frame, "New Turing Machine Wizard");
+    wizardPanel.setLayout(cl);
+    tm = new TuringMachine();
+    edp = new EditDescriptionPanel(tm);
+    esp = new EditStatesPanel(tm);
+    eap = new EditAlphabetPanel(tm);
+    etp = new EditTransitionsPanel(tm);
+    wizardPanel.add("Edit Description", edp);
+    wizardPanel.add("Edit States", esp);
+    wizardPanel.add("Edit Alphabet", eap);
+    wizardPanel.add("Edit Transitions", etp);
+    wizardPanel.setPreferredSize(edp.getPreferredSize());
+    backButton = new JButton("<< Back");
+    backButton.setName("<< Back");
+    backButton.addActionListener(this);
+    addButton(backButton);
+    backButton.setEnabled(false);
+    nextButton = new JButton("Next >>");
+    nextButton.setName("Next >>");
+    nextButton.addActionListener(this);
+    addButton(nextButton);
+    init(wizardPanel);
+    cardIndex = 0;
   }
 
   public void actionPerformed(ActionEvent event) {
-    this.updateTuringMachine();
+    updateTuringMachine();
     if (event.getSource() instanceof JButton) {
-      JButton var2 = (JButton) event.getSource();
-      if (var2.getName().equals("<< Back")) {
-        this.cl.previous(this.wizardPanel);
-        --this.cardIndex;
-        if (this.cardIndex == 0) {
-          var2.setEnabled(false);
-        }
+      JButton button = (JButton) event.getSource();
+      switch (button.getName()) {
+        case "<< Back":
+          cl.previous(wizardPanel);
+          --cardIndex;
+          if (cardIndex == 0) {
+            button.setEnabled(false);
+          }
 
-        if (!this.nextButton.isEnabled()) {
-          this.nextButton.setEnabled(true);
-        }
-      } else if (var2.getName().equals("Next >>")) {
-        this.cl.next(this.wizardPanel);
-        ++this.cardIndex;
-        if (this.cardIndex == this.wizardPanel.getComponentCount() - 1) {
-          var2.setEnabled(false);
-        }
+          if (!nextButton.isEnabled()) {
+            nextButton.setEnabled(true);
+          }
+          break;
+        case "Next >>":
+          cl.next(wizardPanel);
+          ++cardIndex;
+          if (cardIndex == wizardPanel.getComponentCount() - 1) {
+            button.setEnabled(false);
+          }
 
-        if (!this.backButton.isEnabled()) {
-          this.backButton.setEnabled(true);
-        }
-      } else if (var2.getName().equals("Cancel")) {
-        this.tm = null;
+          if (!backButton.isEnabled()) {
+            backButton.setEnabled(true);
+          }
+          break;
+        case "Cancel":
+          tm = null;
+          break;
       }
     }
 
-    if (this.cardIndex == 3) {
-      this.etp.refresh();
+    if (cardIndex == 3) {
+      etp.refresh();
     }
 
     super.actionPerformed(event);
   }
 
   public TuringMachine getTuringMachine() {
-    return this.tm;
+    return tm;
   }
 
   private void updateTuringMachine() {
-    switch(this.cardIndex) {
+    switch(cardIndex) {
       case 0:
-        this.tm.setName(this.edp.getName());
-        this.tm.setDescription(this.edp.getDescription());
+        tm.setName(edp.getName());
+        tm.setDescription(edp.getDescription());
         break;
       case 1:
-        this.tm.setStates(this.esp.getStates());
+        tm.setStates(esp.getStates());
         break;
       case 2:
-        this.tm.setAlphabet(this.eap.getAlphabet());
+        tm.setAlphabet(eap.getAlphabet());
         break;
       case 3:
-        this.tm.setTransitions(this.etp.getTransitions());
+        tm.setTransitions(etp.getTransitions());
         break;
       default:
         throw new RuntimeException("Unknown index");
     }
-
   }
 }
