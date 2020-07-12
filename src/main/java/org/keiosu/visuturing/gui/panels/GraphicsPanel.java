@@ -9,33 +9,34 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GraphicsPanel extends DiagramEditor implements MouseListener {
-  private Dimension area = this.getExtents();
 
-  public GraphicsPanel(TuringMachine var1) {
-    super(var1);
-    this.addMouseListener(this);
+  private final Dimension area = getExtents();
+
+  public GraphicsPanel(TuringMachine turingMachine) {
+    super(turingMachine);
+    addMouseListener(this);
   }
 
-  public void mouseReleased(MouseEvent var1) {
-    int var2 = (int)var1.getPoint().getX();
-    int var3 = (int)var1.getPoint().getY();
-    Rectangle var4 = new Rectangle(var1.getPoint(), new Dimension(40, 40));
-    var4 = this.transformation.createTransformedShape(new Rectangle(var4)).getBounds();
-    this.scrollRectToVisible(var4);
-    boolean var5 = false;
-    int var6 = (int)((double)var2 + var4.getWidth());
-    if (var6 > this.area.width) {
-      this.area.width = var6;
-      var5 = true;
+  public void mouseReleased(MouseEvent event) {
+    int x = (int)event.getPoint().getX();
+    int y = (int)event.getPoint().getY();
+    Rectangle hotspot = new Rectangle(event.getPoint(), new Dimension(40, 40));
+    hotspot = this.transformation.createTransformedShape(new Rectangle(hotspot)).getBounds();
+    this.scrollRectToVisible(hotspot);
+    boolean needsRepaint = false;
+    int hotspotMaxX = (int)((double)x + hotspot.getWidth());
+    if (hotspotMaxX > this.area.width) {
+      this.area.width = hotspotMaxX;
+      needsRepaint = true;
     }
 
-    int var7 = (int)((double)var3 + var4.getWidth());
-    if (var7 > this.area.height) {
-      this.area.height = var7;
-      var5 = true;
+    int hotspotMaxY = (int)((double)y + hotspot.getWidth());
+    if (hotspotMaxY > this.area.height) {
+      this.area.height = hotspotMaxY;
+      needsRepaint = true;
     }
 
-    if (var5) {
+    if (needsRepaint) {
       this.setPreferredSize(this.area);
       this.revalidate();
     }
@@ -45,20 +46,19 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
 
   public void zoomIn() {
     super.zoomIn();
-    Dimension var1 = this.getExtents();
-    Rectangle var2 = this.transformation.createTransformedShape(new Rectangle(var1)).getBounds();
-    boolean var3 = false;
-    if (var2.width > this.area.width) {
-      this.area.width = var2.width;
-      var3 = true;
+    Rectangle hotspot = this.transformation.createTransformedShape(new Rectangle(this.getExtents())).getBounds();
+    boolean needsRepaint = false;
+    if (hotspot.width > this.area.width) {
+      this.area.width = hotspot.width;
+      needsRepaint = true;
     }
 
-    if (var2.height > this.area.height) {
-      this.area.height = var2.height;
-      var3 = true;
+    if (hotspot.height > this.area.height) {
+      this.area.height = hotspot.height;
+      needsRepaint = true;
     }
 
-    if (var3) {
+    if (needsRepaint) {
       this.setPreferredSize(this.area);
       this.revalidate();
     }
@@ -68,20 +68,19 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
 
   public void zoomOut() {
     super.zoomOut();
-    Dimension var1 = this.getExtents();
-    Rectangle var2 = this.transformation.createTransformedShape(new Rectangle(var1)).getBounds();
-    boolean var3 = false;
-    if (var2.width < this.area.width) {
-      this.area.width = var2.width;
-      var3 = true;
+    Rectangle hotspot = this.transformation.createTransformedShape(new Rectangle(this.getExtents())).getBounds();
+    boolean needsRepaint = false;
+    if (hotspot.width < this.area.width) {
+      this.area.width = hotspot.width;
+      needsRepaint = true;
     }
 
-    if (var2.height < this.area.height) {
-      this.area.height = var2.height;
-      var3 = true;
+    if (hotspot.height < this.area.height) {
+      this.area.height = hotspot.height;
+      needsRepaint = true;
     }
 
-    if (var3) {
+    if (needsRepaint) {
       this.setPreferredSize(this.area);
       this.revalidate();
     }
@@ -89,15 +88,23 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
     this.repaint();
   }
 
-  public void mouseClicked(MouseEvent var1) {
+  @Override
+  public void mouseClicked(MouseEvent ignore) {
+      // do nothing
   }
 
-  public void mouseEntered(MouseEvent var1) {
+  @Override
+  public void mouseEntered(MouseEvent ignore) {
+    // do nothing
   }
 
-  public void mouseExited(MouseEvent var1) {
+  @Override
+  public void mouseExited(MouseEvent ignore) {
+    // do nothing
   }
 
-  public void mousePressed(MouseEvent var1) {
+  @Override
+  public void mousePressed(MouseEvent ignore) {
+    // do nothing
   }
 }

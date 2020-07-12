@@ -13,20 +13,20 @@ public class VTPanel extends JPanel {
 
   public VTPanel(String imageName) {
     setLayout(new BorderLayout(0, 0));
-    JLayeredPane var2 = new JLayeredPane();
-    add(var2);
+    JLayeredPane pane = new JLayeredPane();
+    add(pane);
     setOpaque(false);
-    var2.setOpaque(false);
-    JLabel var3 = new JLabel(createImageIcon("bitmaps/" + imageName));
-    var3.setBounds(0, 0, (int)var3.getPreferredSize().getWidth(), (int)var3.getPreferredSize().getHeight());
-    setPreferredSize(var3.getPreferredSize());
-    var2.setPreferredSize(var3.getPreferredSize());
-    var2.add(var3, JLayeredPane.DEFAULT_LAYER);
+    pane.setOpaque(false);
+    JLabel imageLabel = new JLabel(createImageIcon("bitmaps/" + imageName));
+    imageLabel.setBounds(0, 0, (int) imageLabel.getPreferredSize().getWidth(), (int) imageLabel.getPreferredSize().getHeight());
+    setPreferredSize(imageLabel.getPreferredSize());
+    pane.setPreferredSize(imageLabel.getPreferredSize());
+    pane.add(imageLabel, JLayeredPane.DEFAULT_LAYER);
     panel = new JPanel();
     panel.setOpaque(false);
     panel.setBounds(179, 40, 302, 298);
     panel.setLayout(new BorderLayout());
-    var2.add(panel, JLayeredPane.POPUP_LAYER);
+    pane.add(panel, JLayeredPane.POPUP_LAYER);
   }
 
   public ImageIcon createImageIcon(String imageUri) {

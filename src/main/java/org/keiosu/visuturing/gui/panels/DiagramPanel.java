@@ -40,9 +40,9 @@ public class DiagramPanel extends JPanel implements ActionListener {
   private TuringMachine machine;
   private GraphicsPanel diagram;
 
-  public DiagramPanel(ActionListener var1, TuringMachine var2) {
-    machine = var2;
-    externalListener = var1;
+  public DiagramPanel(ActionListener actionListener, TuringMachine machine) {
+    this.machine = machine;
+    externalListener = actionListener;
     setLayout(new BorderLayout(0, 0));
     setBackground(Color.WHITE);
     JPanel var3 = new JPanel(new BorderLayout(0, 0));
@@ -91,7 +91,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
     var13.add(new DiagramPanel.ZoomModifier());
     var11.add(var12, "West");
     var11.add(var13, "East");
-    diagram = new GraphicsPanel(var2);
+    diagram = new GraphicsPanel(machine);
     JScrollPane var14 = new JScrollPane(this.diagram);
     var14.setWheelScrollingEnabled(true);
     var14.setBorder(BorderFactory.createEmptyBorder());
@@ -99,20 +99,20 @@ public class DiagramPanel extends JPanel implements ActionListener {
     add(var10, "Center");
   }
 
-  JButton createMediaButton(String var1, String var2) {
-    JButton var3 = new JButton();
-    var3.setCursor(new Cursor(12));
-    var3.setToolTipText(var1);
-    var3.setName(var1);
-    var3.setOpaque(false);
-    var3.setFocusPainted(false);
-    var3.setBorderPainted(false);
-    var3.setContentAreaFilled(false);
-    var3.setIcon(this.createImageIcon("buttons/diagram/" + var2 + ".gif"));
-    var3.setPreferredSize(new Dimension(52, 52));
-    var3.addActionListener(this);
-    var3.addActionListener(this.externalListener);
-    return var3;
+  JButton createMediaButton(String name, String diagramIconName) {
+    JButton button = new JButton();
+    button.setCursor(new Cursor(12));
+    button.setToolTipText(name);
+    button.setName(name);
+    button.setOpaque(false);
+    button.setFocusPainted(false);
+    button.setBorderPainted(false);
+    button.setContentAreaFilled(false);
+    button.setIcon(this.createImageIcon("buttons/diagram/" + diagramIconName + ".gif"));
+    button.setPreferredSize(new Dimension(52, 52));
+    button.addActionListener(this);
+    button.addActionListener(this.externalListener);
+    return button;
   }
 
   public ImageIcon createImageIcon(String var1) {

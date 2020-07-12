@@ -8,35 +8,31 @@ import java.awt.Rectangle;
 import javax.swing.JPanel;
 
 class OrientationGraphic extends JPanel {
-  private boolean isPortrait;
+  private boolean portraitOrientation;
 
   public OrientationGraphic(boolean portraitOrientation) {
-    this.isPortrait = portraitOrientation;
+    this.portraitOrientation = portraitOrientation;
     this.setPreferredSize(new Dimension(35, 45));
     this.setOpaque(true);
   }
 
-  public void paintComponent(Graphics canvas) {
-    super.paintComponent(canvas);
-    Graphics2D c = (Graphics2D) canvas;
+  @Override
+  public void paintComponent(Graphics graphics) {
+    super.paintComponent(graphics);
+    Graphics2D g = (Graphics2D) graphics;
     Rectangle rect;
-    if (isPortrait) {
+    if (portraitOrientation) {
       rect = new Rectangle(5, 10, 25, 32);
-      c.setColor(Color.WHITE);
-      c.fill(rect);
-      c.setColor(Color.BLACK);
-      c.draw(rect);
     } else {
       rect = new Rectangle(2, 15, 32, 25);
-      c.setColor(Color.WHITE);
-      c.fill(rect);
-      c.setColor(Color.BLACK);
-      c.draw(rect);
     }
-
+    g.setColor(Color.WHITE);
+    g.fill(rect);
+    g.setColor(Color.BLACK);
+    g.draw(rect);
   }
 
-  void setPortrait(boolean portrait) {
-    this.isPortrait = portrait;
+  void setPortraitOrientation(boolean portraitOrientation) {
+    this.portraitOrientation = portraitOrientation;
   }
 }

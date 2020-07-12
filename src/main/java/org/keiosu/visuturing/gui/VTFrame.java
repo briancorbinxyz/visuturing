@@ -32,7 +32,7 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
   JTabbedPane tp;
   DescriptionPanel descPanel;
 
-  public VTFrame(InternalFrameListener frameListener, ActionListener actionListener, TuringMachine turingMachine, int var4) {
+  public VTFrame(InternalFrameListener frameListener, ActionListener actionListener, TuringMachine turingMachine, int initialTabIndex) {
     super(turingMachine.getName(), true, true, true, true);
     this.listener = actionListener;
     this.machine = turingMachine;
@@ -45,16 +45,16 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
     this.diagramEditor = new DiagramPanel(actionListener, turingMachine);
     this.simulator = new MainSimulationPanel(actionListener, new DiagramSimulatorPanel(turingMachine));
     this.humanSimulator = new MainSimulationPanel(actionListener, new HumanSimulatorPanel(turingMachine));
-    Container var5 = this.getContentPane();
-    var5.setLayout(new BorderLayout());
+    Container contentPane = this.getContentPane();
+    contentPane.setLayout(new BorderLayout());
     this.tp = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     this.tp.addTab("Description", this.descPanel);
     this.tp.addTab("Diagram Editor", this.diagramEditor);
     this.tp.addTab("State Simulator", this.simulator);
     this.tp.addTab("Human Simulator", this.humanSimulator);
-    this.tp.setSelectedIndex(var4);
+    this.tp.setSelectedIndex(initialTabIndex);
     this.tp.addChangeListener(this);
-    var5.add(this.tp, "Center");
+    contentPane.add(this.tp, "Center");
     this.addInternalFrameListener(frameListener);
   }
 

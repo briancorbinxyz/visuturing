@@ -6,7 +6,6 @@ import org.keiosu.visuturing.gui.dialogs.AbstractDialog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.print.Book;
@@ -107,9 +106,9 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
   }
 
   void updateGraphics() {
-    og.setPortrait(this.portraitRB.isSelected());
+    og.setPortraitOrientation(this.portraitRB.isSelected());
     og.repaint();
-    pg.setPortrait(this.portraitRB.isSelected());
+    pg.setPortraitOrientation(this.portraitRB.isSelected());
     pg.repaint();
     if (this.fitRB.isSelected()) {
       widthTF.setEnabled(false);
