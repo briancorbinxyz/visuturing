@@ -41,13 +41,13 @@ public class DiagramPanel extends JPanel implements ActionListener {
   private GraphicsPanel diagram;
 
   public DiagramPanel(ActionListener var1, TuringMachine var2) {
-    this.machine = var2;
-    this.externalListener = var1;
-    this.setLayout(new BorderLayout(0, 0));
-    this.setBackground(Color.WHITE);
+    machine = var2;
+    externalListener = var1;
+    setLayout(new BorderLayout(0, 0));
+    setBackground(Color.WHITE);
     JPanel var3 = new JPanel(new BorderLayout(0, 0));
     var3.setOpaque(false);
-    this.add(var3, "North");
+    add(var3, "North");
     var3.add(new JLabel(this.createImageIcon("bitmaps/diagram/title.gif")), "West");
     JPanel var4 = new JPanel(new BorderLayout(0, 0));
     var3.add(var4, "Center");
@@ -62,15 +62,15 @@ public class DiagramPanel extends JPanel implements ActionListener {
     JPanel var7 = new JPanel(new BorderLayout(0, 0));
     var7.setBackground(Color.BLACK);
     var7.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
-    this.add(var7, "East");
+    add(var7, "East");
     JPanel var8 = new JPanel(new BorderLayout(0, 0));
     var8.setBackground(Color.BLACK);
     var8.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
-    this.add(var8, "West");
+    add(var8, "West");
     JPanel var9 = new JPanel(new BorderLayout(0, 0));
     var9.setBackground(Color.BLACK);
     var9.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
-    this.add(var9, "South");
+    add(var9, "South");
     JPanel var10 = new JPanel(new BorderLayout(0, 0));
     JPanel var11 = new JPanel(new BorderLayout(0, 0));
     var11.setBackground(Color.WHITE);
@@ -91,12 +91,12 @@ public class DiagramPanel extends JPanel implements ActionListener {
     var13.add(new DiagramPanel.ZoomModifier());
     var11.add(var12, "West");
     var11.add(var13, "East");
-    this.diagram = new GraphicsPanel(var2);
+    diagram = new GraphicsPanel(var2);
     JScrollPane var14 = new JScrollPane(this.diagram);
     var14.setWheelScrollingEnabled(true);
     var14.setBorder(BorderFactory.createEmptyBorder());
     var10.add(var14, "Center");
-    this.add(var10, "Center");
+    add(var10, "Center");
   }
 
   JButton createMediaButton(String var1, String var2) {
@@ -125,19 +125,19 @@ public class DiagramPanel extends JPanel implements ActionListener {
       String var3 = var2.getName();
       if (!var3.equals("Edit states") && !var3.equals("Edit the alphabet")) {
         if (var3.equals("Select tool")) {
-          this.diagram.setTool(new SelectTool(this.diagram));
+          diagram.setTool(new SelectTool(this.diagram));
         } else if (var3.equals("Check to see if this Turing Machine is deterministic")) {
           JOptionPane.showMessageDialog(this, "This Turing Machine is " + (this.machine.isDeterministic() ? "deterministic." : "non-deterministic."), "Non-Determinism", 1);
         } else if (var3.equals("Add state changing transition")) {
-          this.diagram.setTool(new TransitionTool(this.diagram));
+          diagram.setTool(new TransitionTool(this.diagram));
         } else if (var3.equals("Add transition")) {
-          this.diagram.setTool(new SelfTransitionTool(this.diagram));
+          diagram.setTool(new SelfTransitionTool(this.diagram));
         } else if (var3.equals("Remove a transition")) {
-          this.diagram.setTool(new DeleteTool(this.diagram));
+          diagram.setTool(new DeleteTool(this.diagram));
         } else if (var3.equals("Zoom in")) {
-          this.diagram.zoomIn();
+          diagram.zoomIn();
         } else if (var3.equals("Zoom out")) {
-          this.diagram.zoomOut();
+          diagram.zoomOut();
         }
       }
     }
@@ -145,11 +145,11 @@ public class DiagramPanel extends JPanel implements ActionListener {
   }
 
   public void exportToJPEG(File var1) {
-    this.diagram.exportToJPEG(var1);
+    diagram.exportToJPEG(var1);
   }
 
   public void printDiagram() {
-    this.diagram.print();
+    diagram.print();
   }
 
   public class ZoomModifier extends JPanel {
@@ -163,11 +163,11 @@ public class DiagramPanel extends JPanel implements ActionListener {
       var4.setBounds(56, 18, 22, 22);
       JLayeredPane var5 = new JLayeredPane();
       var5.setPreferredSize(var2.getPreferredSize());
-      this.add(var5);
+      add(var5);
       var5.add(var2, JLayeredPane.DEFAULT_LAYER);
       var5.add(var3, JLayeredPane.POPUP_LAYER);
       var5.add(var4, JLayeredPane.POPUP_LAYER);
-      this.setPreferredSize(var5.getPreferredSize());
+      setPreferredSize(var5.getPreferredSize());
     }
   }
 
@@ -180,10 +180,10 @@ public class DiagramPanel extends JPanel implements ActionListener {
       var3.setBounds(7, 19, 78, 18);
       JLayeredPane var4 = new JLayeredPane();
       var4.setPreferredSize(var2.getPreferredSize());
-      this.add(var4);
+      add(var4);
       var4.add(var2, JLayeredPane.DEFAULT_LAYER);
       var4.add(var3, JLayeredPane.POPUP_LAYER);
-      this.setPreferredSize(var4.getPreferredSize());
+      setPreferredSize(var4.getPreferredSize());
     }
   }
 
@@ -196,10 +196,10 @@ public class DiagramPanel extends JPanel implements ActionListener {
       var3.setBounds(7, 19, 78, 18);
       JLayeredPane var4 = new JLayeredPane();
       var4.setPreferredSize(var2.getPreferredSize());
-      this.add(var4);
+      add(var4);
       var4.add(var2, JLayeredPane.DEFAULT_LAYER);
       var4.add(var3, JLayeredPane.POPUP_LAYER);
-      this.setPreferredSize(var4.getPreferredSize());
+      setPreferredSize(var4.getPreferredSize());
     }
   }
 }

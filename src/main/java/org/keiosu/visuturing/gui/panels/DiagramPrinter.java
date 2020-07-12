@@ -34,10 +34,10 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
   private JTextField widthTF;
   private JTextField heightTF;
 
-  public DiagramPrinter(DiagramEditor var1) {
-    super((Frame)null, "Print Options");
-    this.diagram = new PrintableDiagram(var1);
-    this.size = var1.getExtents();
+  public DiagramPrinter(DiagramEditor editor) {
+    super(null, "Print Options");
+    diagram = new PrintableDiagram(editor);
+    size = editor.getExtents();
     JPanel var2 = new JPanel(new BorderLayout());
     JLayeredPane var3 = new JLayeredPane();
     JPanel var4 = new JPanel(new BorderLayout());
@@ -48,41 +48,41 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
     var5.setBorder(BorderFactory.createTitledBorder("Orientation"));
     var5.setBounds(10, 120, 170, 80);
     ButtonGroup var6 = new ButtonGroup();
-    this.portraitRB = new JRadioButton("Portrait", true);
-    this.landscapeRB = new JRadioButton("Landscape", false);
+    portraitRB = new JRadioButton("Portrait", true);
+    landscapeRB = new JRadioButton("Landscape", false);
     var6.add(this.portraitRB);
     var6.add(this.landscapeRB);
-    this.portraitRB.addChangeListener(this);
-    this.landscapeRB.addChangeListener(this);
-    this.portraitRB.setBounds(70, 140, 94, 16);
-    this.landscapeRB.setBounds(70, 165, 94, 16);
+    portraitRB.addChangeListener(this);
+    landscapeRB.addChangeListener(this);
+    portraitRB.setBounds(70, 140, 94, 16);
+    landscapeRB.setBounds(70, 165, 94, 16);
     var3.add(this.portraitRB);
     var3.add(this.landscapeRB);
     JPanel var7 = new JPanel(new FlowLayout(0));
     var7.setBorder(BorderFactory.createTitledBorder("Size"));
     ButtonGroup var8 = new ButtonGroup();
-    this.fitRB = new JRadioButton("Fit to Page", false);
-    this.customRB = new JRadioButton("Custom:", true);
-    this.fitRB.setBounds(10, 10, 160, 16);
-    this.customRB.setBounds(10, 35, 160, 16);
+    fitRB = new JRadioButton("Fit to Page", false);
+    customRB = new JRadioButton("Custom:", true);
+    fitRB.setBounds(10, 10, 160, 16);
+    customRB.setBounds(10, 35, 160, 16);
     var8.add(this.fitRB);
     var8.add(this.customRB);
     var3.add(this.fitRB);
     var3.add(this.customRB);
-    this.fitRB.addChangeListener(this);
-    this.customRB.addChangeListener(this);
+    fitRB.addChangeListener(this);
+    customRB.addChangeListener(this);
     JLabel var9 = new JLabel("Width:");
     JLabel var10 = new JLabel("Height:");
     var9.setBounds(10, 60, 80, 16);
     var10.setBounds(10, 85, 80, 16);
     var3.add(var9);
     var3.add(var10);
-    this.widthTF = new JTextField("" + this.size.getWidth());
-    this.heightTF = new JTextField("" + this.size.getHeight());
-    this.widthTF.setBounds(90, 60, 60, 16);
-    this.heightTF.setBounds(90, 85, 60, 16);
-    this.widthTF.addKeyListener(this);
-    this.heightTF.addKeyListener(this);
+    widthTF = new JTextField("" + size.getWidth());
+    heightTF = new JTextField("" + size.getHeight());
+    widthTF.setBounds(90, 60, 60, 16);
+    heightTF.setBounds(90, 85, 60, 16);
+    widthTF.addKeyListener(this);
+    heightTF.addKeyListener(this);
     var3.add(this.widthTF);
     var3.add(this.heightTF);
     JLabel var11 = new JLabel("px");
@@ -91,10 +91,10 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
     var12.setBounds(155, 85, 20, 16);
     var3.add(var11);
     var3.add(var12);
-    this.pg = new PreviewGraphic(this.isPortrait(), this);
-    this.pg.setBounds(240, 30, 180, 150);
-    this.og = new OrientationGraphic(this.portraitRB.isSelected());
-    this.og.setBounds(22, 135, 35, 45);
+    pg = new PreviewGraphic(this.isPortrait(), this);
+    pg.setBounds(240, 30, 180, 150);
+    og = new OrientationGraphic(this.portraitRB.isSelected());
+    og.setBounds(22, 135, 35, 45);
     var3.add(this.pg);
     var3.add(this.og);
     var3.add(var5, JLayeredPane.DEFAULT_LAYER);
@@ -103,34 +103,34 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
     var3.setPreferredSize(new Dimension(440, 210));
     var2.setPreferredSize(var3.getPreferredSize());
     var2.add(var3);
-    this.init(var2);
+    init(var2);
   }
 
   void updateGraphics() {
-    this.og.setPortrait(this.portraitRB.isSelected());
-    this.og.repaint();
-    this.pg.setPortrait(this.portraitRB.isSelected());
-    this.pg.repaint();
+    og.setPortrait(this.portraitRB.isSelected());
+    og.repaint();
+    pg.setPortrait(this.portraitRB.isSelected());
+    pg.repaint();
     if (this.fitRB.isSelected()) {
-      this.widthTF.setEnabled(false);
-      this.heightTF.setEnabled(false);
+      widthTF.setEnabled(false);
+      heightTF.setEnabled(false);
     } else {
-      this.widthTF.setEnabled(true);
-      this.heightTF.setEnabled(true);
+      widthTF.setEnabled(true);
+      heightTF.setEnabled(true);
     }
 
   }
 
   public void stateChanged(ChangeEvent var1) {
-    this.updateGraphics();
+    updateGraphics();
   }
 
   public void printIt() {
     PrinterJob var1 = PrinterJob.getPrinterJob();
     Book var2 = new Book();
     PageFormat var3 = var1.defaultPage();
-    this.diagram.setPrintSize(this.size);
-    this.diagram.setFitToPage(this.isFitToPage());
+    diagram.setPrintSize(this.size);
+    diagram.setFitToPage(this.isFitToPage());
     if (this.portraitRB.isSelected()) {
       var3.setOrientation(1);
     } else {
@@ -150,19 +150,19 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
   }
 
   public void setPrintSize(Dimension var1) {
-    this.size = var1;
+    size = var1;
   }
 
   public boolean isFitToPage() {
-    return this.fitRB.isSelected();
+    return fitRB.isSelected();
   }
 
   public boolean isPortrait() {
-    return this.portraitRB.isSelected();
+    return portraitRB.isSelected();
   }
 
   public Dimension getPrintSize() {
-    return this.size;
+    return size;
   }
 
   public void keyTyped(KeyEvent var1) {
@@ -186,7 +186,7 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
       var4 = 1.0D;
     }
 
-    this.size.setSize(var2, var4);
-    this.updateGraphics();
+    size.setSize(var2, var4);
+    updateGraphics();
   }
 }

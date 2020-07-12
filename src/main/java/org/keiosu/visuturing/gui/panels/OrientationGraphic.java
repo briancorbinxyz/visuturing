@@ -10,33 +10,33 @@ import javax.swing.JPanel;
 class OrientationGraphic extends JPanel {
   private boolean isPortrait;
 
-  public OrientationGraphic(boolean var1) {
-    this.isPortrait = var1;
+  public OrientationGraphic(boolean portraitOrientation) {
+    this.isPortrait = portraitOrientation;
     this.setPreferredSize(new Dimension(35, 45));
     this.setOpaque(true);
   }
 
-  public void paintComponent(Graphics var1) {
-    super.paintComponent(var1);
-    Graphics2D var2 = (Graphics2D)var1;
-    Rectangle var3;
-    if (this.isPortrait) {
-      var3 = new Rectangle(5, 10, 25, 32);
-      var2.setColor(Color.WHITE);
-      var2.fill(var3);
-      var2.setColor(Color.BLACK);
-      var2.draw(var3);
+  public void paintComponent(Graphics canvas) {
+    super.paintComponent(canvas);
+    Graphics2D c = (Graphics2D) canvas;
+    Rectangle rect;
+    if (isPortrait) {
+      rect = new Rectangle(5, 10, 25, 32);
+      c.setColor(Color.WHITE);
+      c.fill(rect);
+      c.setColor(Color.BLACK);
+      c.draw(rect);
     } else {
-      var3 = new Rectangle(2, 15, 32, 25);
-      var2.setColor(Color.WHITE);
-      var2.fill(var3);
-      var2.setColor(Color.BLACK);
-      var2.draw(var3);
+      rect = new Rectangle(2, 15, 32, 25);
+      c.setColor(Color.WHITE);
+      c.fill(rect);
+      c.setColor(Color.BLACK);
+      c.draw(rect);
     }
 
   }
 
-  public void setPortrait(boolean var1) {
-    this.isPortrait = var1;
+  void setPortrait(boolean portrait) {
+    this.isPortrait = portrait;
   }
 }

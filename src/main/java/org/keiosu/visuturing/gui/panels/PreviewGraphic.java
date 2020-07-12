@@ -15,13 +15,13 @@ class PreviewGraphic extends JPanel {
   private PageFormat pf;
   private DiagramPrinter dp;
 
-  public PreviewGraphic(boolean var1, DiagramPrinter var2) {
-    this.isPortrait = var1;
-    this.setPreferredSize(new Dimension(160, 160));
-    this.setOpaque(true);
-    PrinterJob var3 = PrinterJob.getPrinterJob();
-    this.dp = var2;
-    this.pf = var3.defaultPage();
+  public PreviewGraphic(boolean portraitOrientation, DiagramPrinter printer) {
+    isPortrait = portraitOrientation;
+    setPreferredSize(new Dimension(160, 160));
+    setOpaque(true);
+    PrinterJob job = PrinterJob.getPrinterJob();
+    dp = printer;
+    pf = job.defaultPage();
   }
 
   public void paintComponent(Graphics var1) {
@@ -34,33 +34,11 @@ class PreviewGraphic extends JPanel {
     Rectangle var9;
     if (this.isPortrait) {
       var9 = new Rectangle(50, 15, 90, 130);
-      var2.setColor(Color.DARK_GRAY);
-      var2.fill(var9);
-      var9.translate(-5, -5);
-      var2.setColor(Color.WHITE);
-      var2.fill(var9);
-      var2.setColor(Color.BLACK);
-      var2.draw(var9);
-      this.pf.setOrientation(1);
-      var8 = new Rectangle((int)(this.pf.getImageableX() * var3), (int)(this.pf.getImageableY() * var5), (int)(this.pf.getImageableWidth() * var3), (int)(this.pf.getImageableHeight() * var5));
-      var8.translate(45, 10);
-      var2.setColor(new Color(240, 240, 240));
-      var2.draw(var8);
+      var8 = getRectangle(var2, var3, var5, var9, 1, 45, 10);
       var7.translate(45, 10);
     } else {
       var9 = new Rectangle(30, 35, 130, 90);
-      var2.setColor(Color.DARK_GRAY);
-      var2.fill(var9);
-      var9.translate(-5, -5);
-      var2.setColor(Color.WHITE);
-      var2.fill(var9);
-      var2.setColor(Color.BLACK);
-      var2.draw(var9);
-      this.pf.setOrientation(2);
-      var8 = new Rectangle((int)(this.pf.getImageableX() * var3), (int)(this.pf.getImageableY() * var5), (int)(this.pf.getImageableWidth() * var3), (int)(this.pf.getImageableHeight() * var5));
-      var8.translate(25, 30);
-      var2.setColor(new Color(240, 240, 240));
-      var2.draw(var8);
+      var8 = getRectangle(var2, var3, var5, var9, 2, 25, 30);
       var7.translate(25, 30);
     }
 
@@ -79,7 +57,24 @@ class PreviewGraphic extends JPanel {
     var2.draw(new Double(var7.getWidth() + var7.getX(), var7.getY(), var7.getX(), var7.getHeight() + var7.getY()));
   }
 
-  public void setPortrait(boolean var1) {
-    this.isPortrait = var1;
+  private Rectangle getRectangle(Graphics2D g, double var3, double var5, Rectangle var9, int i, int i2, int i3) {
+    Rectangle var8;
+    g.setColor(Color.DARK_GRAY);
+    g.fill(var9);
+    var9.translate(-5, -5);
+    g.setColor(Color.WHITE);
+    g.fill(var9);
+    g.setColor(Color.BLACK);
+    g.draw(var9);
+    pf.setOrientation(i);
+    var8 = new Rectangle((int)(this.pf.getImageableX() * var3), (int)(this.pf.getImageableY() * var5), (int)(this.pf.getImageableWidth() * var3), (int)(this.pf.getImageableHeight() * var5));
+    var8.translate(i2, i3);
+    g.setColor(new Color(240, 240, 240));
+    g.draw(var8);
+    return var8;
+  }
+
+  void setPortrait(boolean portrait) {
+    isPortrait = portrait;
   }
 }
