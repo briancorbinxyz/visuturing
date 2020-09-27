@@ -55,8 +55,8 @@ public class DiagramEditor extends JPanel {
   private int zoomIndex;
   private boolean showDescription;
 
-  public DiagramEditor(TuringMachine var1) {
-    this.currentMachine = var1;
+  public DiagramEditor(TuringMachine machine) {
+    this.currentMachine = machine;
     this.gridOn = true;
     this.selectedState = null;
     this.tool = new SelectTool(this);
@@ -75,112 +75,112 @@ public class DiagramEditor extends JPanel {
   }
 
   public void print() {
-    DiagramPrinter var1 = new DiagramPrinter(this);
-    var1.setVisible(true);
-    if (var1.didSucceed()) {
-      var1.printIt();
+    DiagramPrinter diagramPrinter = new DiagramPrinter(this);
+    diagramPrinter.setVisible(true);
+    if (diagramPrinter.didSucceed()) {
+      diagramPrinter.printIt();
     }
   }
 
-  public void drawState(State var1, Graphics2D var2) {
-    double var3 = var1.getLocation().getX();
-    double var5 = var1.getLocation().getY();
-    Double var7 = new Double(var3 - STATE_RADIUS, var5 - STATE_RADIUS, 40.0D, 40.0D);
-    if (var1.getName().equals(Symbols.STATE_HALTING_STATE)) {
-      var2.setColor(HALTING_STATE_COLOUR);
-    } else if (this.selectedState == var1) {
-      var2.setColor(SELECTED_STATE_COLOUR);
+  public void drawState(State state, Graphics2D graphics2D) {
+    double x = state.getLocation().getX();
+    double y = state.getLocation().getY();
+    Double stateShape = new Double(x - STATE_RADIUS, y - STATE_RADIUS, 40.0D, 40.0D);
+    if (state.getName().equals(Symbols.STATE_HALTING_STATE)) {
+      graphics2D.setColor(HALTING_STATE_COLOUR);
+    } else if (this.selectedState == state) {
+      graphics2D.setColor(SELECTED_STATE_COLOUR);
     } else {
-      var2.setColor(STATE_COLOUR);
+      graphics2D.setColor(STATE_COLOUR);
     }
 
-    var2.fill(var7);
-    var2.setColor(Color.BLACK);
-    var2.draw(var7);
-    if (var1.getName().equals(Symbols.STATE_HALTING_STATE)) {
-      var2.draw(new Double(var3 - STATE_RADIUS + 5.0D, var5 - STATE_RADIUS + 5.0D, 30.0D, 30.0D));
+    graphics2D.fill(stateShape);
+    graphics2D.setColor(Color.BLACK);
+    graphics2D.draw(stateShape);
+    if (state.getName().equals(Symbols.STATE_HALTING_STATE)) {
+      graphics2D.draw(new Double(x - STATE_RADIUS + 5.0D, y - STATE_RADIUS + 5.0D, 30.0D, 30.0D));
     }
 
-    var2.setColor(Color.BLACK);
-    int var8 = var2.getFontMetrics().getAscent();
-    double var9 = var2.getFontMetrics().getStringBounds(var1.getName(), var2).getWidth();
-    if (var9 < 30.0D) {
-      var2.drawString(var1.getName(), (float)(var3 - var9 / 2.0D), (float)(var5 + (double)(var8 / 2)));
+    graphics2D.setColor(Color.BLACK);
+    int ascent = graphics2D.getFontMetrics().getAscent();
+    double width = graphics2D.getFontMetrics().getStringBounds(state.getName(), graphics2D).getWidth();
+    if (width < 30.0D) {
+      graphics2D.drawString(state.getName(), (float)(x - width / 2.0D), (float)(y + (double)(ascent / 2)));
     } else {
-      var2.drawString(var1.getName(), (float)(var3 - var9 / 2.0D), (float)(var5 + 40.0D));
+      graphics2D.drawString(state.getName(), (float)(x - width / 2.0D), (float)(y + 40.0D));
     }
 
-    if (var1.getName().equals(Symbols.STATE_BEGINNING_STATE)) {
-      var2.draw(new java.awt.geom.Line2D.Double(var3 - STATE_RADIUS - 12.0D, var5 - 12.0D, var3 - STATE_RADIUS, var5));
-      var2.draw(new java.awt.geom.Line2D.Double(var3 - STATE_RADIUS - 12.0D, var5 + 12.0D, var3 - STATE_RADIUS, var5));
+    if (state.getName().equals(Symbols.STATE_BEGINNING_STATE)) {
+      graphics2D.draw(new java.awt.geom.Line2D.Double(x - STATE_RADIUS - 12.0D, y - 12.0D, x - STATE_RADIUS, y));
+      graphics2D.draw(new java.awt.geom.Line2D.Double(x - STATE_RADIUS - 12.0D, y + 12.0D, x - STATE_RADIUS, y));
     }
 
   }
 
-  public void drawTransition(Transition var1, Graphics2D var2) {
-    Point2D var3 = var1.getP1();
-    Point2D var4 = var1.getP2();
-    Point2D var5 = var1.getControlPoint();
-    if (var1 == this.selectedTransition) {
-      var2.setColor(SELECTED_TRANSITION_COLOUR);
-      var2.setStroke(new BasicStroke(2.0F));
+  public void drawTransition(Transition transition, Graphics2D graphics2D) {
+    Point2D p1 = transition.getP1();
+    Point2D p2 = transition.getP2();
+    Point2D controlPoint = transition.getControlPoint();
+    if (transition == this.selectedTransition) {
+      graphics2D.setColor(SELECTED_TRANSITION_COLOUR);
+      graphics2D.setStroke(new BasicStroke(2.0F));
     } else {
-      var2.setColor(Color.BLACK);
-      var2.setStroke(new BasicStroke(1.0F));
+      graphics2D.setColor(Color.BLACK);
+      graphics2D.setStroke(new BasicStroke(1.0F));
     }
 
-    Point2D var6;
-    Point2D var7;
+    Point2D cp;
+    Point2D p2;
     String var9;
     Point var12;
     int var13;
     int var14;
-    if (!var1.getCurrentState().equals(var1.getNextState())) {
-      QuadCurve2D var8 = (QuadCurve2D)this.getGraphicEdge(var1);
-      var2.draw(var8);
-      var6 = var8.getCtrlPt();
-      var7 = var8.getP2();
-      var9 = var1.getCurrentSymbol() + " / " + var1.getTask();
+    if (!transition.getCurrentState().equals(transition.getNextState())) {
+      QuadCurve2D var8 = (QuadCurve2D)this.getGraphicEdge(transition);
+      graphics2D.draw(var8);
+      cp = var8.getCtrlPt();
+      p2 = var8.getP2();
+      var9 = transition.getCurrentSymbol() + " / " + transition.getTask();
       java.awt.geom.QuadCurve2D.Double var10 = new java.awt.geom.QuadCurve2D.Double();
       java.awt.geom.QuadCurve2D.Double var11 = new java.awt.geom.QuadCurve2D.Double();
       var8.subdivide(var10, var11);
       var12 = new Point((int)var10.getP2().getX(), (int)var10.getP2().getY());
-      var13 = (int)var2.getFontMetrics().getStringBounds(var9, var2).getWidth();
+      var13 = (int)graphics2D.getFontMetrics().getStringBounds(var9, graphics2D).getWidth();
       var14 = 10;
       if (var10.getY1() < var10.getY2()) {
-        var14 = -(var14 + var2.getFontMetrics().getAscent());
+        var14 = -(var14 + graphics2D.getFontMetrics().getAscent());
       }
 
-      var2.drawString(var9, (int)(var12.getX() - (double)(var13 / 2)), (int)var12.getY() - var14);
+      graphics2D.drawString(var9, (int)(var12.getX() - (double)(var13 / 2)), (int)var12.getY() - var14);
     } else {
-      CubicCurve2D var15 = (CubicCurve2D)this.getGraphicEdge(var1);
-      var2.draw(var15);
-      var6 = var15.getCtrlP2();
-      var7 = var15.getP2();
-      var9 = var1.getCurrentSymbol() + " / " + var1.getTask();
+      CubicCurve2D var15 = (CubicCurve2D)this.getGraphicEdge(transition);
+      graphics2D.draw(var15);
+      cp = var15.getCtrlP2();
+      p2 = var15.getP2();
+      var9 = transition.getCurrentSymbol() + " / " + transition.getTask();
       java.awt.geom.CubicCurve2D.Double var17 = new java.awt.geom.CubicCurve2D.Double();
       java.awt.geom.CubicCurve2D.Double var19 = new java.awt.geom.CubicCurve2D.Double();
       var15.subdivide(var17, var19);
       var12 = new Point((int)var17.getP2().getX(), (int)var17.getP2().getY());
-      var13 = (int)var2.getFontMetrics().getStringBounds(var9, var2).getWidth();
+      var13 = (int)graphics2D.getFontMetrics().getStringBounds(var9, graphics2D).getWidth();
       var14 = 10;
       if (var17.getY1() < var17.getY2()) {
-        var14 = -(var14 + var2.getFontMetrics().getAscent());
+        var14 = -(var14 + graphics2D.getFontMetrics().getAscent());
       }
 
-      var2.drawString(var9, (int)(var12.getX() - (double)(var13 / 2)), (int)var12.getY() - var14);
+      graphics2D.drawString(var9, (int)(var12.getX() - (double)(var13 / 2)), (int)var12.getY() - var14);
     }
 
-    double var16 = var6.getX() - var7.getX();
-    double var18 = var6.getY() - var7.getY();
+    double var16 = cp.getX() - p2.getX();
+    double var18 = cp.getY() - p2.getY();
     double var20 = Math.sqrt(var16 * var16 + var18 * var18);
     var16 = var16 / var20 * ARROW_LENGTH;
     var18 = var18 / var20 * ARROW_LENGTH;
     java.awt.geom.Line2D.Double var21 = new java.awt.geom.Line2D.Double();
-    var21.setLine(var7.getX(), var7.getY(), var7.getX() - (-var16 - var18), var7.getY() - (-var18 + var16));
-    var2.draw(var21);
-    var21.setLine(var7.getX(), var7.getY(), var7.getX() - (-var16 + var18), var7.getY() - (-var18 - var16));
-    var2.draw(var21);
+    var21.setLine(p2.getX(), p2.getY(), p2.getX() - (-var16 - var18), p2.getY() - (-var18 + var16));
+    graphics2D.draw(var21);
+    var21.setLine(p2.getX(), p2.getY(), p2.getX() - (-var16 + var18), p2.getY() - (-var18 - var16));
+    graphics2D.draw(var21);
   }
 
   public void setGrid(boolean var1) {

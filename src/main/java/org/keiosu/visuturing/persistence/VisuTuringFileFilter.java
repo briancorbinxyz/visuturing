@@ -2,12 +2,12 @@ package org.keiosu.visuturing.persistence;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.filechooser.FileFilter;
 
 public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
-  private List<String> validExtensions = new ArrayList<>();
+  private List<String> validExtensions = new LinkedList<>();
   private String description = "VisuTuring Files";
 
   public VisuTuringFileFilter() {
@@ -18,14 +18,14 @@ public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
     this.validExtensions.add(extension.toLowerCase());
   }
 
-  public boolean accept(File var1) {
-    if (var1.isDirectory()) {
+  public boolean accept(File f) {
+    if (f.isDirectory()) {
       return true;
     } else {
-      String var2 = var1.getName().toLowerCase();
+      String filename = f.getName().toLowerCase();
 
-      for(int var3 = this.validExtensions.size() - 1; var3 >= 0; --var3) {
-        if (var2.endsWith(this.validExtensions.get(var3))) {
+      for(int idx = this.validExtensions.size() - 1; idx >= 0; --idx) {
+        if (filename.endsWith(this.validExtensions.get(idx))) {
           return true;
         }
       }
@@ -38,13 +38,13 @@ public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
     return this.description;
   }
 
-  public void setDescription(String var1) {
-    this.description = var1;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public boolean accept(File var1, String var2) {
-    for(int var3 = this.validExtensions.size() - 1; var3 >= 0; --var3) {
-      if (var2.endsWith(this.validExtensions.get(var3))) {
+  public boolean accept(File dir, String name) {
+    for(int i = validExtensions.size() - 1; i >= 0; --i) {
+      if (name.endsWith(validExtensions.get(i))) {
         return true;
       }
     }

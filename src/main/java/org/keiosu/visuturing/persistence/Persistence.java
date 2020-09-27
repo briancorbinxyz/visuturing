@@ -42,9 +42,9 @@ public class Persistence {
     // do nothing
   }
 
-  public static String trimExtension(String var0) {
-    int var1 = var0.indexOf(".");
-    return var1 < 0 ? var0 : var0.substring(0, var1);
+  private static String trimExtension(String filename) {
+    int indexOfExtension = filename.indexOf(".");
+    return indexOfExtension < 0 ? filename : filename.substring(0, indexOfExtension);
   }
 
   public static void exportToHTML(XmlElement var0, String var1) throws IOException, TransformerException, TransformerConfigurationException {

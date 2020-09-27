@@ -25,8 +25,8 @@ public class Hand {
     this.animation = null;
   }
 
-  private void moveTo(Point2D var1) {
-    this.location.setLocation(var1.getX() - this.hotSpot.getX(), var1.getY() - this.hotSpot.getY());
+  private void moveTo(Point2D location) {
+    this.location.setLocation(location.getX() - this.hotSpot.getX(), location.getY() - this.hotSpot.getY());
   }
 
   public Point2D getLocation() {
@@ -56,9 +56,9 @@ public class Hand {
     this.animation = new KeyframeAnimation(path, frames);
   }
 
-  public void draw(Graphics2D var1) {
+  public void draw(Graphics2D graphics2D) {
     this.update();
-    var1.drawImage(this.image, (int)this.location.getX(), (int)this.location.getY(), this.observer);
+    graphics2D.drawImage(this.image, (int)this.location.getX(), (int)this.location.getY(), this.observer);
   }
 
   private void update() {

@@ -225,16 +225,16 @@ public class TuringMachine implements XmlElement {
     return this.states;
   }
 
-  public void addTransition(Transition var1) {
-    if (var1 != null && this.getEqualTransition(var1) == null) {
+  public void addTransition(Transition transition) {
+    if (transition != null && this.getEqualTransition(transition) == null) {
       this.changed = true;
-      this.transitions.add(var1);
+      this.transitions.add(transition);
     }
   }
 
-  public void removeTransition(Transition var1) {
+  public void removeTransition(Transition transition) {
     this.changed = true;
-    this.transitions.remove(var1);
+    this.transitions.remove(transition);
   }
 
   public State stateFor(String stateAsString) {

@@ -110,22 +110,22 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
     return new ImageIcon(requireNonNull(getClass().getClassLoader().getResource(imageUri)));
   }
 
-  public void mousePressed(MouseEvent var1) {
+  public void mousePressed(MouseEvent event) {
   }
 
-  public void mouseReleased(MouseEvent var1) {
+  public void mouseReleased(MouseEvent event) {
   }
 
-  public void mouseEntered(MouseEvent var1) {
+  public void mouseEntered(MouseEvent event) {
   }
 
-  public void mouseExited(MouseEvent var1) {
+  public void mouseExited(MouseEvent event) {
   }
 
   class SampleListCellRenderer extends JLabel implements ListCellRenderer<String> {
     ImageIcon icon = SampleDialog.this.createImageIcon("bitmaps/vt.gif");
 
-    public Component getListCellRendererComponent(JList list, String text, int var3, boolean selected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, String text, int index, boolean selected, boolean cellHasFocus) {
       setText(text);
       setIcon(icon);
       setHorizontalAlignment(0);

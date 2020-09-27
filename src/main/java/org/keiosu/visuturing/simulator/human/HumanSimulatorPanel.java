@@ -115,10 +115,10 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
     super(turingMachine);
     setBackground(Color.WHITE);
     reset();
-    Toolkit var2 = Toolkit.getDefaultToolkit();
-    stateImage = var2.getImage(pathToURL("bitmaps/simulator/human/state.gif"));
-    instrImage = var2.getImage(pathToURL("bitmaps/simulator/human/instr.gif"));
-    titleImage = var2.getImage(pathToURL("bitmaps/simulator/human/title.gif"));
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    stateImage = toolkit.getImage(pathToURL("bitmaps/simulator/human/state.gif"));
+    instrImage = toolkit.getImage(pathToURL("bitmaps/simulator/human/instr.gif"));
+    titleImage = toolkit.getImage(pathToURL("bitmaps/simulator/human/title.gif"));
     hand = new Hand(pathToURL("bitmaps/simulator/hand.gif"), new Double(0.0D, 16.0D), new Double(450.0D, 400.0D), this);
     runner = null;
   }
@@ -223,34 +223,33 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         lastPaused = true;
       } else {
         lastPaused = false;
-        List var1 = machine.getNextConfig(config);
-        Configuration var2 = null;
-        if (var1.size() > 0) {
-          Random var3 = new Random();
-          var2 = (Configuration)var1.get(var3.nextInt(var1.size()));
+        List<Configuration> configurations = machine.getNextConfig(config);
+        Configuration configuration = null;
+        if (configurations.size() > 0) {
+          configuration = configurations.get(new Random().nextInt(configurations.size()));
         }
 
-        if (var2 != null) {
-          if (var2.getIndex() < config.getIndex()) {
+        if (configuration != null) {
+          if (configuration.getIndex() < config.getIndex()) {
             if (tape.findCellAtPoint(hand.getLocation()) <= tape.visibleCells() / 2) {
               hand.moveTo(5, (double) ((int)hand.getLocation().getX() - tape.getCellWidth()), (double) (int)hand.getLocation().getY());
             } else {
               tape.reverse();
             }
-          } else if (var2.getIndex() > config.getIndex()) {
+          } else if (configuration.getIndex() > config.getIndex()) {
             if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
               hand.moveTo(5, (double) ((int)hand.getLocation().getX() + tape.getCellWidth()), (double) (int)hand.getLocation().getY());
             } else {
               tape.forward();
             }
           } else {
-            charWaiting = var2.getWord().charAt(var2.getIndex());
+            charWaiting = configuration.getWord().charAt(configuration.getIndex());
             if (charWaiting != Symbols.LEFT_END_MARKER) {
               hand.squiggle(10, tape.getCellBounds());
             }
           }
 
-          config = var2;
+          config = configuration;
         } else {
           message = "[stuck]";
           pause();

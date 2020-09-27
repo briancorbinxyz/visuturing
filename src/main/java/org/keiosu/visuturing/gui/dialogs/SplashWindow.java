@@ -65,8 +65,8 @@ public class SplashWindow extends JWindow {
     this.setVisible(true);
   }
 
-  public void setProgressText(String var1) {
-    this.progressText.setText(var1);
+  public void setProgressText(String msg) {
+    this.progressText.setText(msg);
   }
 
   public void complete() {

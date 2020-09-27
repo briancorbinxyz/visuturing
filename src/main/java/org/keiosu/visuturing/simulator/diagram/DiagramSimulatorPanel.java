@@ -186,7 +186,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
         }
 
         Thread.sleep((long)(1000.0D / this.speed));
-        this.simTool.setConfig((Configuration)null);
+        this.simTool.setConfig(null);
         List var2 = this.machine.getNextConfig(this.config);
         int var3 = -1;
         this.prevConfig = this.config;
