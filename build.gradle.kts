@@ -39,6 +39,6 @@ application {
 // Use `gradlew build` to view issues, `gradlew spotlessApply` to apply changes
 spotless {
     java {
-        googleJavaFormat()
+        googleJavaFormat().aosp()
     }
 }

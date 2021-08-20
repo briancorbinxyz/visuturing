@@ -7,19 +7,19 @@ import org.keiosu.visuturing.gui.panels.EditDescriptionPanel;
 
 public class EditDescriptionDialog extends AbstractDialog implements ActionListener {
 
-  private EditDescriptionPanel descriptionEditor;
+    private EditDescriptionPanel descriptionEditor;
 
-  public EditDescriptionDialog(Frame frame, TuringMachine turingMachine) {
-    super(frame, "Edit Description");
-    this.descriptionEditor = new EditDescriptionPanel(turingMachine);
-    this.init(this.descriptionEditor);
-  }
+    public EditDescriptionDialog(Frame frame, TuringMachine turingMachine) {
+        super(frame, "Edit Description");
+        this.descriptionEditor = new EditDescriptionPanel(turingMachine);
+        this.init(this.descriptionEditor);
+    }
 
-  public String getDescription() {
-    return this.descriptionEditor.getDescription();
-  }
+    public String getDescription() {
+        return this.descriptionEditor.getDescription();
+    }
 
-  public String getName() {
-    return this.descriptionEditor.getName();
-  }
+    public String getName() {
+        return this.descriptionEditor.getName();
+    }
 }

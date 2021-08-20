@@ -6,12 +6,12 @@ import org.keiosu.visuturing.gui.VisuTuring;
 
 public class StartupWizard extends AbstractDialog implements ActionListener {
 
-  public StartupWizard(VisuTuring app) {
-    super(app, "Welcome!");
-    init(new StartupWizardPanel(this, app));
-  }
+    public StartupWizard(VisuTuring app) {
+        super(app, "Welcome!");
+        init(new StartupWizardPanel(this, app));
+    }
 
-  public void actionPerformed(ActionEvent event) {
-    setVisible(false);
-  }
+    public void actionPerformed(ActionEvent event) {
+        setVisible(false);
+    }
 }
