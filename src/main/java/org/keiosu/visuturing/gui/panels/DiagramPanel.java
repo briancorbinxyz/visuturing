@@ -1,27 +1,17 @@
 package org.keiosu.visuturing.gui.panels;
 
 import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.common.CommonGraphics;
 import org.keiosu.visuturing.mousetools.DeleteTool;
 import org.keiosu.visuturing.mousetools.SelectTool;
 import org.keiosu.visuturing.mousetools.SelfTransitionTool;
 import org.keiosu.visuturing.mousetools.TransitionTool;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 public class DiagramPanel extends JPanel implements ActionListener {
   public static final Dimension DIAGRAM_SIZE = new Dimension(5000, 5000);
@@ -100,14 +90,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
   }
 
   JButton createMediaButton(String name, String diagramIconName) {
-    JButton button = new JButton();
-    button.setCursor(new Cursor(12));
-    button.setToolTipText(name);
-    button.setName(name);
-    button.setOpaque(false);
-    button.setFocusPainted(false);
-    button.setBorderPainted(false);
-    button.setContentAreaFilled(false);
+    JButton button = CommonGraphics.newButtonWithHand(name);
     button.setIcon(this.createImageIcon("buttons/diagram/" + diagramIconName + ".gif"));
     button.setPreferredSize(new Dimension(52, 52));
     button.addActionListener(this);

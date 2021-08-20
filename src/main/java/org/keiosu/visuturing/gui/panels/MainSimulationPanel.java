@@ -1,32 +1,16 @@
 package org.keiosu.visuturing.gui.panels;
 
 import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.gui.common.CommonGraphics;
 import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 public class MainSimulationPanel extends JPanel implements ActionListener, KeyListener {
   public static final Dimension DIAGRAM_SIZE = new Dimension(5000, 5000);
@@ -100,19 +84,12 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
   }
 
   JButton createMediaButton(String var1, String var2) {
-    JButton var3 = new JButton();
-    var3.setCursor(new Cursor(12));
-    var3.setToolTipText(var1);
-    var3.setName(var1);
-    var3.setOpaque(false);
-    var3.setFocusPainted(false);
-    var3.setBorderPainted(false);
-    var3.setContentAreaFilled(false);
-    var3.setIcon(this.createImageIcon("buttons/simulator/" + var2 + ".gif"));
-    var3.setPreferredSize(new Dimension(52, 52));
-    var3.addActionListener(this);
-    var3.addActionListener(this.externalListener);
-    return var3;
+    JButton button = CommonGraphics.newButtonWithHand(var1);
+    button.setIcon(this.createImageIcon("buttons/simulator/" + var2 + ".gif"));
+    button.setPreferredSize(new Dimension(52, 52));
+    button.addActionListener(this);
+    button.addActionListener(this.externalListener);
+    return button;
   }
 
   public ImageIcon createImageIcon(String var1) {
