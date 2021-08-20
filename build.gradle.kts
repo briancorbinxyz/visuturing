@@ -2,6 +2,7 @@ plugins {
     java
     idea
     application
+    id("com.diffplug.spotless") version "5.14.3"
 }
 
 java {
@@ -31,4 +32,13 @@ tasks.wrapper {
 // Update here and run `gradlew run` to run the application
 application {
     mainClass.set("org.keiosu.visuturing.gui.VisuTuring")
+}
+
+// https://plugins.gradle.org/plugin/com.diffplug.spotless
+// https://github.com/diffplug/spotless/tree/main/plugin-gradle
+// Use `gradlew build` to view issues, `gradlew spotlessApply` to apply changes
+spotless {
+    java {
+        googleJavaFormat()
+    }
 }
