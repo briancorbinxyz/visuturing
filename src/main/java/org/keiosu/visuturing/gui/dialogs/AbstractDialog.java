@@ -2,10 +2,18 @@ package org.keiosu.visuturing.gui.dialogs;
 
 import static java.util.Objects.requireNonNull;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 public abstract class AbstractDialog extends JDialog implements ActionListener {
     private static final int BUTTON_PANEL_HEIGHT = 35;

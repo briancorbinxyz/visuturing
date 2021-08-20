@@ -1,7 +1,7 @@
 package org.keiosu.visuturing.gui.common;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Cursor;
+import javax.swing.JButton;
 
 public class CommonGraphics {
     public static JButton newButtonWithHand(String name) {

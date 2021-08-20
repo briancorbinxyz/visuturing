@@ -3,7 +3,11 @@ package org.keiosu.visuturing.core;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.keiosu.visuturing.xml.XmlElement;
 
 /** The star of the show! */

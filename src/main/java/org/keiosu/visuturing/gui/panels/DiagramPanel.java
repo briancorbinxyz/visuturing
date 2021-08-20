@@ -1,10 +1,20 @@
 package org.keiosu.visuturing.gui.panels;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.common.CommonGraphics;
 import org.keiosu.visuturing.mousetools.DeleteTool;
