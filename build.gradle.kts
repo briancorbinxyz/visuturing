@@ -1,6 +1,7 @@
 plugins {
     java
     idea
+    application
 }
 
 java {
@@ -24,4 +25,10 @@ dependencies {
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
     gradleVersion = "7.2"
+}
+
+// https://docs.gradle.org/current/userguide/application_plugin.html
+// Update here and run `gradlew run` to run the application
+application {
+    mainClass.set("org.keiosu.visuturing.gui.VisuTuring")
 }
