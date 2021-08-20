@@ -10,7 +10,7 @@ java {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -19,7 +19,9 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.0-alpha1")
 }
 
+// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.wrapper.Wrapper.html
+// Update here and run `gradlew wrapper` to update the distribution
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
-
+    gradleVersion = "7.2"
 }
