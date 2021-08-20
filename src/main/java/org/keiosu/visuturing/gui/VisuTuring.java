@@ -2,54 +2,20 @@ package org.keiosu.visuturing.gui;
 
 import org.keiosu.visuturing.BrowserControl;
 import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.dialogs.CreationWizard;
-import org.keiosu.visuturing.gui.dialogs.EditAlphabetDialog;
-import org.keiosu.visuturing.gui.dialogs.EditDescriptionDialog;
-import org.keiosu.visuturing.gui.dialogs.EditStatesDialog;
-import org.keiosu.visuturing.gui.dialogs.EditTransitionsDialog;
-import org.keiosu.visuturing.gui.dialogs.SampleDialog;
-import org.keiosu.visuturing.gui.dialogs.SplashWindow;
-import org.keiosu.visuturing.gui.dialogs.StartupWizard;
+import org.keiosu.visuturing.gui.dialogs.*;
 import org.keiosu.visuturing.persistence.Persistence;
 import org.keiosu.visuturing.persistence.VisuTuringFileFilter;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import org.xml.sax.SAXException;
+
+import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-
-import org.xml.sax.SAXException;
 
 public class VisuTuring extends JFrame implements ActionListener, MouseMotionListener {
   SplashWindow splash;
@@ -84,10 +50,9 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
   public static final String HELP_VISIT_BRIAN = "Brian Corbin on the web..";
   public static final String TITLE = "VisuTuring";
   public static final String VISUTURING_DESCRIPTION = "This is VisuTuring - The Turing Machine AbstractSimulatorPanel created by Brian Corbin\nas part of a Final Year Project";
-  public static final int NO_ACCELERATOR = 0;
 
   public VisuTuring() {
-    super("VisuTuring");
+    super(TITLE);
     this.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent var1) {
         boolean var2 = true;
@@ -138,14 +103,14 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
     var3.add(var8);
     JMenu var9 = new JMenu("Look & Feel");
     var7.add(var9);
-    JMenuItem var10 = new JMenuItem("1 System Look and Feel");
-    var10.setName("1 System Look and Feel");
+    JMenuItem var10 = new JMenuItem(CONFIGURE_LNF_SYSTEM);
+    var10.setName(CONFIGURE_LNF_SYSTEM);
     var10.setToolTipText("Change the GUI to match the local system");
     var10.addActionListener(this);
     var10.setAccelerator(KeyStroke.getKeyStroke(49, 2));
     var10.setMnemonic('1');
-    JMenuItem var11 = new JMenuItem("2 Java Look and Feel");
-    var11.setName("2 Java Look and Feel");
+    JMenuItem var11 = new JMenuItem(CONFIGURE_LNF_JAVA);
+    var11.setName(CONFIGURE_LNF_JAVA);
     var11.setToolTipText("Change the GUI to the Java Look");
     var11.addActionListener(this);
     var11.setAccelerator(KeyStroke.getKeyStroke(50, 2));
@@ -155,40 +120,40 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
     JToolBar var12 = new JToolBar("Standard", 0);
     var2.add(var12, "North");
     var12.setRollover(true);
-    this.addAction("New", "New...", "Starts the Turing Machine creation wizard", var12, var4, 'N', 78, false);
+    this.addAction("New", FILE_NEW, "Starts the Turing Machine creation wizard", var12, var4, 'N', 78, false);
     var12.addSeparator();
-    this.addAction("Open", "Open...", "Open an existing Turing Machine", var12, var4, 'O', 79, false);
+    this.addAction("Open", FILE_OPEN, "Open an existing Turing Machine", var12, var4, 'O', 79, false);
     var4.addSeparator();
-    this.addAction((String)null, "Open Sample...", "Open an example Turing machine", var12, var4, 'O', 0, false);
+    this.addAction((String)null, FILE_VIEW_SAMPLE, "Open an example Turing machine", var12, var4, 'O', 0, false);
     var4.addSeparator();
-    this.addAction("Save", "Save", "Save the current machine", var12, var4, 'S', 83, true);
-    this.addAction("SaveAs", "Save As...", "Save the current machine", var12, var4, 'A', 0, true);
-    this.addAction("SaveAll", "Save All", "Save all open machines", var12, var4, 'l', 0, true);
+    this.addAction(FILE_SAVE, FILE_SAVE, "Save the current machine", var12, var4, 'S', 83, true);
+    this.addAction("SaveAs", FILE_SAVE_AS, "Save the current machine", var12, var4, 'A', 0, true);
+    this.addAction("SaveAll", FILE_SAVE_ALL, "Save all open machines", var12, var4, 'l', 0, true);
     var4.addSeparator();
     var12.addSeparator();
-    this.addAction("Export", "Export Diagram...", "Export the diagram", var12, var4, 'E', 0, true);
-    this.addAction("WebComponent", "Export to HTML File...", "Export Turing Machine in HTML format", var12, var4, 'H', 0, true);
+    this.addAction("Export", FILE_EXPORT_JPEG, "Export the diagram", var12, var4, 'E', 0, true);
+    this.addAction("WebComponent", FILE_EXPORT_HTML, "Export Turing Machine in HTML format", var12, var4, 'H', 0, true);
     var12.addSeparator();
     var4.addSeparator();
-    this.addAction("Print", "Print Diagram...", "Print diagram", var12, var4, 'H', 0, true);
+    this.addAction("Print", FILE_PRINT, "Print diagram", var12, var4, 'H', 0, true);
     var12.addSeparator();
-    this.addAction("EditDescription", "Description...", "Edit the description for this Turing Machine", var12, var5, 'd', 0, true);
-    this.addAction("EditStates", "States...", "Edit the states this machine", var12, var5, 's', 0, true);
-    this.addAction("EditAlphabet", "Alphabet...", "Edit the alphabet for this machine", var12, var5, 'a', 0, true);
-    this.addAction("EditTransitions", "Table...", "Edit the transition table for this machine", var12, var5, 'T', 84, true);
+    this.addAction("EditDescription", EDIT_DESCRIPTION, "Edit the description for this Turing Machine", var12, var5, 'd', 0, true);
+    this.addAction("EditStates", EDIT_STATES, "Edit the states this machine", var12, var5, 's', 0, true);
+    this.addAction("EditAlphabet", EDIT_ALPHABET, "Edit the alphabet for this machine", var12, var5, 'a', 0, true);
+    this.addAction("EditTransitions", EDIT_TABLE, "Edit the transition table for this machine", var12, var5, 'T', 84, true);
     var5.addSeparator();
-    this.addAction((String)null, "Transition Diagram", "Edit the transition diagram for this machine", var12, var5, 'd', 68, true);
+    this.addAction((String)null, EDIT_DIAGRAM, "Edit the transition diagram for this machine", var12, var5, 'd', 68, true);
     var12.addSeparator();
-    this.addAction((String)null, "Human Computer...", "Simulate using the human computer", var12, var6, 'H', 72, true);
-    this.addAction("Play", "Transition Diagram...", "Simulate using VisuTuring® Transition Machine", var12, var6, 'T', 0, true);
+    this.addAction((String)null, SIMULATE_HUMAN_COMPUTER, "Simulate using the human computer", var12, var6, 'H', 72, true);
+    this.addAction("Play", SIMULATE_TRANSITION, "Simulate using VisuTuring® Transition Machine", var12, var6, 'T', 0, true);
     var12.addSeparator();
-    this.addAction("Help", "User Guide...", "View the User Guide", var12, var8, 'U', 0, false);
-    this.addAction("BrianCorbinTheAuthor", "Brian Corbin on the web..", "Find out more about the author", (JToolBar)null, var8, 'F', 0, false);
+    this.addAction("Help", HELP_USER_GUIDE, "View the User Guide", var12, var8, 'U', 0, false);
+    this.addAction("BrianCorbinTheAuthor", HELP_VISIT_BRIAN, "Find out more about the author", (JToolBar)null, var8, 'F', 0, false);
     var8.addSeparator();
-    this.addAction("About", "About VisuTuring...", "About VisuTuring", (JToolBar)null, var8, 'A', 0, false);
+    this.addAction("About", HELP_ABOUT, "About VisuTuring", (JToolBar)null, var8, 'A', 0, false);
     var4.addSeparator();
-    this.exitMI = new JMenuItem("Exit", 120);
-    this.exitMI.setName("Exit");
+    this.exitMI = new JMenuItem(FILE_EXIT, 120);
+    this.exitMI.setName(FILE_EXIT);
     this.exitMI.setAccelerator(KeyStroke.getKeyStroke(88, 2));
     this.exitMI.addActionListener(this);
     var4.add(this.exitMI);
@@ -277,11 +242,11 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
 
       JComponent var3 = (JComponent)var1.getSource();
       String var4 = var3.getName();
-      if (var4.equals("Exit")) {
+      if (var4.equals(FILE_EXIT)) {
         this.close();
-      } else if (!var4.equals("States...") && !var4.equals("Edit states")) {
-        if (!var4.equals("Alphabet...") && !var4.equals("Edit the alphabet")) {
-          if (var4.equals("Table...")) {
+      } else if (!var4.equals(EDIT_STATES) && !var4.equals("Edit states")) {
+        if (!var4.equals(EDIT_ALPHABET) && !var4.equals("Edit the alphabet")) {
+          if (var4.equals(EDIT_TABLE)) {
             if (var2 != null) {
               EditTransitionsDialog var12 = new EditTransitionsDialog(this, var2);
               var12.setVisible(true);
@@ -291,10 +256,10 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
             }
           } else {
             int var13;
-            if (var4.equals("Transition Diagram")) {
+            if (var4.equals(EDIT_DIAGRAM)) {
               if (var2 != null) {
                 if (!var2.hasDiagram()) {
-                  var13 = JOptionPane.showConfirmDialog(this, "This Turing Machine has no diagram.\n\nYou must first generate a diagram based on the current\nTuring Machine transition table to be able to edit it to ensure consistency.\nWould you like VisuTuring to do this for you now?", "VisuTuring", 1, 3);
+                  var13 = JOptionPane.showConfirmDialog(this, "This Turing Machine has no diagram.\n\nYou must first generate a diagram based on the current\nTuring Machine transition table to be able to edit it to ensure consistency.\nWould you like VisuTuring to do this for you now?", TITLE, 1, 3);
                   if (var13 != 0) {
                     return;
                   }
@@ -306,44 +271,44 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                   this.currentWindow.displayDiagram();
                 }
               }
-            } else if (var4.equals("Transition Diagram...")) {
+            } else if (var4.equals(SIMULATE_TRANSITION)) {
               if (var2 != null) {
                 this.currentWindow.displaySimulation();
               }
-            } else if (var4.equals("Human Computer...")) {
+            } else if (var4.equals(SIMULATE_HUMAN_COMPUTER)) {
               if (var2 != null) {
                 this.currentWindow.displayHuman();
               }
-            } else if (!var4.equals("Description...") && !var4.equals("Edit the description of this Turing Machine")) {
-              if (var4.equals("New...")) {
+            } else if (!var4.equals(EDIT_DESCRIPTION) && !var4.equals("Edit the description of this Turing Machine")) {
+              if (var4.equals(FILE_NEW)) {
                 this.createNewMachine();
-              } else if (var4.equals("Save")) {
+              } else if (var4.equals(FILE_SAVE)) {
                 this.saveCurrent();
-              } else if (var4.equals("Save As...")) {
+              } else if (var4.equals(FILE_SAVE_AS)) {
                 this.saveAs();
-              } else if (var4.equals("Save All")) {
+              } else if (var4.equals(FILE_SAVE_ALL)) {
                 this.saveAll();
-              } else if (var4.equals("Open Sample...")) {
+              } else if (var4.equals(FILE_VIEW_SAMPLE)) {
                 SampleDialog sampleDialog = new SampleDialog();
                 sampleDialog.setVisible(true);
                 File selectedFile = sampleDialog.getSelectedFile();
                 if (sampleDialog.didSucceed() && selectedFile != null) {
                   this.open(selectedFile);
                 }
-              } else if (var4.equals("Open...")) {
+              } else if (var4.equals(FILE_OPEN)) {
                 this.chooser.setCurrentDirectory(new File("My Turing Machines"));
                 var13 = this.chooser.showOpenDialog(this);
                 if (var13 == 0 && !this.isOpen(this.chooser.getSelectedFile().toString())) {
                   this.open(this.chooser.getSelectedFile());
                   this.setStatus("opened.");
                 }
-              } else if (var4.equals("Print Diagram...")) {
+              } else if (var4.equals(FILE_PRINT)) {
                 this.currentWindow.printDiagram();
               } else {
                 int var7;
                 JFileChooser var15;
                 VisuTuringFileFilter var17;
-                if (var4.equals("Export Diagram...")) {
+                if (var4.equals(FILE_EXPORT_JPEG)) {
                   var17 = new VisuTuringFileFilter();
                   var17.addExtension("jpeg");
                   var17.addExtension("jpg");
@@ -357,7 +322,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                     this.setStatus("exported successfully.");
                     JOptionPane.showMessageDialog(this, "Exported Successfully");
                   }
-                } else if (var4.equals("Export to HTML File...")) {
+                } else if (var4.equals(FILE_EXPORT_HTML)) {
                   try {
                     var17 = new VisuTuringFileFilter();
                     var17.addExtension("html");
@@ -379,7 +344,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                   }
                 } else if (var4.equals("Generate a new diagram based on transition table")) {
                   if (var2.hasDiagram()) {
-                    var13 = JOptionPane.showConfirmDialog(this, "Are you sure you wish to regenerate the Turing Machine diagram?", "VisuTuring", 1, 3);
+                    var13 = JOptionPane.showConfirmDialog(this, "Are you sure you wish to regenerate the Turing Machine diagram?", TITLE, 1, 3);
                     if (var13 != 0) {
                       return;
                     }
@@ -388,31 +353,31 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
                   var2.generateDiagram();
                   var2.setHasDiagram(true);
                   this.currentWindow.repaint();
-                } else if (var4.equals("1 System Look and Feel")) {
+                } else if (var4.equals(CONFIGURE_LNF_SYSTEM)) {
                   try {
                     this.setStatus("Setting Local System Look & Feel...");
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     SwingUtilities.updateComponentTreeUI(this);
                     this.setStatus("Look & Feel Set.");
                   } catch (Exception var9) {
-                    JOptionPane.showMessageDialog(this, "Oops! There was an error setting look and feel", "VisuTuring", 0, (Icon)null);
+                    JOptionPane.showMessageDialog(this, "Oops! There was an error setting look and feel", TITLE, 0, (Icon)null);
                   }
-                } else if (var4.equals("2 Java Look and Feel")) {
+                } else if (var4.equals(CONFIGURE_LNF_JAVA)) {
                   try {
                     this.setStatus("Setting Java Look & Feel...");
                     UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                     SwingUtilities.updateComponentTreeUI(this);
                     this.setStatus("Look & Feel Set.");
                   } catch (Exception var8) {
-                    JOptionPane.showMessageDialog(this, "Oops! There was an error setting look and feel", "VisuTuring", 0, (Icon)null);
+                    JOptionPane.showMessageDialog(this, "Oops! There was an error setting look and feel", TITLE, 0, (Icon)null);
                   }
-                } else if (var4.equals("About VisuTuring...")) {
+                } else if (var4.equals(HELP_ABOUT)) {
                   this.splash = new SplashWindow(this.createImageIcon("bitmaps/splash.png"), 7000);
                   this.splash.complete();
-                  this.splash.setProgressText("This is VisuTuring - The Turing Machine AbstractSimulatorPanel created by Brian Corbin\nas part of a Final Year Project");
-                } else if (var4.equals("Brian Corbin on the web..")) {
+                  this.splash.setProgressText(VISUTURING_DESCRIPTION);
+                } else if (var4.equals(HELP_VISIT_BRIAN)) {
                   this.visitBrian();
-                } else if (var4.equals("User Guide...")) {
+                } else if (var4.equals(HELP_USER_GUIDE)) {
                   new JHelpFrame();
                 }
               }
@@ -459,9 +424,9 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
       var2.setTitle(var1.getName());
       this.setStatus("opened.");
     } catch (SAXException var3) {
-      JOptionPane.showMessageDialog(this, "Error! Invalid VisuTuring File!", "VisuTuring", 0, (Icon)null);
+      JOptionPane.showMessageDialog(this, "Error! Invalid VisuTuring File!", TITLE, 0, (Icon)null);
     } catch (Exception var4) {
-      JOptionPane.showMessageDialog(this, "There was an error loading the file.", "VisuTuring", 0, (Icon)null);
+      JOptionPane.showMessageDialog(this, "There was an error loading the file.", TITLE, 0, (Icon)null);
     }
 
   }
@@ -530,7 +495,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
           var4.getTuringMachine().setChanged(false);
           this.setStatus("saved.");
         } catch (Exception var7) {
-          JOptionPane.showMessageDialog(this, "There was an error saving the file.", "VisuTuring", 0, (Icon)null);
+          JOptionPane.showMessageDialog(this, "There was an error saving the file.", TITLE, 0, (Icon)null);
         }
       } else {
         int var5 = this.chooser.showSaveDialog(this);
@@ -541,7 +506,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
             var4.getTuringMachine().setChanged(false);
             this.setStatus("saved.");
           } catch (Exception var8) {
-            JOptionPane.showMessageDialog(this, "There was an error saving the file.", "VisuTuring", 0, (Icon)null);
+            JOptionPane.showMessageDialog(this, "There was an error saving the file.", TITLE, 0, (Icon)null);
           }
         }
       }
@@ -559,7 +524,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
         this.currentWindow.getTuringMachine().setChanged(false);
         this.setStatus("saved.");
       } catch (Exception var3) {
-        JOptionPane.showMessageDialog(this, "There was an error saving the file.", "VisuTuring", 0, (Icon)null);
+        JOptionPane.showMessageDialog(this, "There was an error saving the file.", TITLE, 0, (Icon)null);
       }
     }
 
@@ -572,7 +537,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
         this.currentWindow.getTuringMachine().setChanged(false);
         this.setStatus("saved.");
       } catch (Exception var4) {
-        JOptionPane.showMessageDialog(this, "There was an error saving the file.", "VisuTuring", 0, (Icon)null);
+        JOptionPane.showMessageDialog(this, "There was an error saving the file.", TITLE, 0, (Icon)null);
       }
     } else {
       this.chooser.setCurrentDirectory(new File("My Turing Machines"));
@@ -584,7 +549,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
           this.currentWindow.getTuringMachine().setChanged(false);
           this.setStatus("saved.");
         } catch (Exception var3) {
-          JOptionPane.showMessageDialog(this, "There was an error saving the file.", "VisuTuring", 0, (Icon)null);
+          JOptionPane.showMessageDialog(this, "There was an error saving the file.", TITLE, 0, (Icon)null);
         }
       }
     }
@@ -621,7 +586,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
     public void internalFrameClosing(InternalFrameEvent var1) {
       VTFrame var2 = (VTFrame)var1.getSource();
       if (var2.getTuringMachine().isChanged()) {
-        int var3 = JOptionPane.showConfirmDialog((Component)null, "Save changes to " + var2.getFileName() + " before closing?", "VisuTuring", 1, 3);
+        int var3 = JOptionPane.showConfirmDialog((Component)null, "Save changes to " + var2.getFileName() + " before closing?", TITLE, 1, 3);
         if (var3 == 0) {
           VisuTuring.this.saveCurrent();
           var2.setVisible(false);
