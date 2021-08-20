@@ -9,30 +9,16 @@ import org.keiosu.visuturing.mousetools.AbstractMouseTool;
 import org.keiosu.visuturing.mousetools.SelectTool;
 import org.keiosu.visuturing.persistence.Persistence;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
-import java.awt.geom.QuadCurve2D;
+import java.awt.geom.*;
 import java.awt.geom.Ellipse2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
-import javax.swing.JPanel;
 
 public class DiagramEditor extends JPanel {
   public static double BORDER = 20.0D;
@@ -130,7 +116,6 @@ public class DiagramEditor extends JPanel {
     }
 
     Point2D cp;
-    Point2D p2;
     String var9;
     Point var12;
     int var13;
