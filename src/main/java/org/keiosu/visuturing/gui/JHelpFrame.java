@@ -1,28 +1,31 @@
 package org.keiosu.visuturing.gui;
 
-import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.help.HelpSet;
 import javax.help.JHelp;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import java.lang.invoke.MethodHandles;
 
 public class JHelpFrame extends JFrame {
+
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
   public JHelpFrame() {
     super("VisuTuring User Guide");
-    JHelp var1 = null;
-
     try {
-      ClassLoader var2 = this.getClass().getClassLoader();
-      URL var3 = HelpSet.findHelpSet(var2, "help/VTHelpSet.hs");
-      var1 = new JHelp(new HelpSet(var2, var3));
-      var1.setCurrentID("VisuTuring.Introduction");
+      ClassLoader classLoader = this.getClass().getClassLoader();
+      JHelp help = new JHelp(new HelpSet(classLoader, HelpSet.findHelpSet(classLoader, "help/VTHelpSet.hs")));
+      help.setCurrentID("VisuTuring.Introduction");
       this.setSize(800, 600);
-      this.getContentPane().add(var1);
-      this.setDefaultCloseOperation(2);
+      this.getContentPane().add(help);
+      this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
       this.setVisible(true);
-    } catch (Exception var4) {
-      System.out.println("Error loading help.");
-      var4.printStackTrace();
+    } catch (Exception e) {
+      LOG.atError().setCause(e).log("Error loading help.");
     }
-
   }
+
 }
