@@ -1,15 +1,12 @@
 package org.keiosu.visuturing.core;
 
-import org.keiosu.visuturing.xml.XmlElement;
-
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.util.*;
+import org.keiosu.visuturing.xml.XmlElement;
 
-/**
- * The star of the show!
- */
+/** The star of the show! */
 public class TuringMachine implements XmlElement {
 
   private static final String DEFAULT_MACHINE_NAME = "-untitled-";
@@ -23,7 +20,12 @@ public class TuringMachine implements XmlElement {
   private boolean hasDiagram;
   private transient volatile boolean changed; // NOSONAR
 
-  public TuringMachine(String name, String description, List<Transition> transitions, List<String> alphabet, List<State> states) {
+  public TuringMachine(
+      String name,
+      String description,
+      List<Transition> transitions,
+      List<String> alphabet,
+      List<State> states) {
     this.name = name;
     this.description = description;
     this.transitions = transitions;
@@ -38,10 +40,7 @@ public class TuringMachine implements XmlElement {
     this.states = new ArrayList<>();
     this.states.add(new State(Symbols.STATE_BEGINNING_STATE));
     this.states.add(new State(Symbols.STATE_HALTING_STATE));
-    this.alphabet = List.of(
-        String.valueOf(Symbols.LEFT_END_MARKER),
-        String.valueOf(Symbols.SPACE)
-    );
+    this.alphabet = List.of(String.valueOf(Symbols.LEFT_END_MARKER), String.valueOf(Symbols.SPACE));
   }
 
   public boolean isDeterministic() {
@@ -100,8 +99,8 @@ public class TuringMachine implements XmlElement {
       return this.transitions;
     } else {
       for (Transition transition : this.transitions) {
-        if (transition.getCurrentState().equals(configuration.getState()) &&
-            transition.getCurrentSymbol() == currentSymbolFor(configuration)) {
+        if (transition.getCurrentState().equals(configuration.getState())
+            && transition.getCurrentSymbol() == currentSymbolFor(configuration)) {
           possibleTransitions.add(transition);
         }
       }
@@ -118,8 +117,10 @@ public class TuringMachine implements XmlElement {
     List<Configuration> possibleConfigurations = new ArrayList<>();
     char nextSymbol = currentSymbolFor(configuration);
     for (Transition transition : transitions) {
-      if (transition.getCurrentState().equals(configuration.getState()) && transition.getCurrentSymbol() == nextSymbol) {
-        Configuration nextConfiguration = computeNextConfigurationFrom(configuration, nextSymbol, transition);
+      if (transition.getCurrentState().equals(configuration.getState())
+          && transition.getCurrentSymbol() == nextSymbol) {
+        Configuration nextConfiguration =
+            computeNextConfigurationFrom(configuration, nextSymbol, transition);
 
         if (nextConfiguration.getIndex() > nextConfiguration.getWord().length() - 1) {
           nextConfiguration.setWord(nextConfiguration.getWord() + Symbols.SPACE);
@@ -139,7 +140,8 @@ public class TuringMachine implements XmlElement {
     return possibleConfigurations;
   }
 
-  private Configuration computeNextConfigurationFrom(Configuration configuration, char nextSymbol, Transition transition) {
+  private Configuration computeNextConfigurationFrom(
+      Configuration configuration, char nextSymbol, Transition transition) {
     Configuration nextConfiguration = new Configuration(configuration);
     nextConfiguration.setState(transition.getNextState());
     String word;
@@ -147,7 +149,9 @@ public class TuringMachine implements XmlElement {
       if (transition.getTask() == Symbols.LEFT_ARROW) {
         nextConfiguration.setIndex(nextConfiguration.getIndex() - 1);
       } else {
-        word = nextConfiguration.getWord().substring(0, nextConfiguration.getIndex()) + transition.getTask();
+        word =
+            nextConfiguration.getWord().substring(0, nextConfiguration.getIndex())
+                + transition.getTask();
         if (nextConfiguration.getIndex() < nextConfiguration.getWord().length() - 1) {
           word = word + nextConfiguration.getWord().substring(nextConfiguration.getIndex() + 1);
         }
@@ -277,7 +281,7 @@ public class TuringMachine implements XmlElement {
     int maxHeight = 50 * noStates;
     Map<Double, Double> spacingMap = new HashMap<>();
 
-    for(int i = 0; i < noStates; ++i) {
+    for (int i = 0; i < noStates; ++i) {
       this.states.get(i).setLocation(new Point(50 + i * 5 * 40, maxHeight));
     }
 
@@ -295,7 +299,10 @@ public class TuringMachine implements XmlElement {
       Point2D locationToState = this.stateFor(transition.getNextState()).getLocation();
       Point2D curveCenterPoint;
       if (!transition.getCurrentState().equals(transition.getNextState())) {
-        curveCenterPoint = new Point((int) (xFromState + (xToState - xFromState) / 2.0D), (int) ((double) maxHeight + (xToState - xFromState) / curveRatio / 2.0D));
+        curveCenterPoint =
+            new Point(
+                (int) (xFromState + (xToState - xFromState) / 2.0D),
+                (int) ((double) maxHeight + (xToState - xFromState) / curveRatio / 2.0D));
       } else if (curveRatio % 2.0D == 0.0D) {
         curveCenterPoint = new Point2D.Double(xFromState, (double) maxHeight - curveRatio * 60.0D);
       } else {

@@ -1,17 +1,9 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 import static java.util.Objects.requireNonNull;
 
@@ -33,17 +25,34 @@ public abstract class AbstractDialog extends JDialog implements ActionListener {
     Container contentPane = getContentPane();
     JLayeredPane pane = new JLayeredPane();
     contentPane.add(pane);
-    pane.setPreferredSize(new Dimension((int)panel.getPreferredSize().getWidth(), (int)panel.getPreferredSize().getHeight() + MARGIN + BUTTON_PANEL_HEIGHT));
-    panel.setBounds(0, 0, (int)panel.getPreferredSize().getWidth(), (int)panel.getPreferredSize().getHeight());
+    pane.setPreferredSize(
+        new Dimension(
+            (int) panel.getPreferredSize().getWidth(),
+            (int) panel.getPreferredSize().getHeight() + MARGIN + BUTTON_PANEL_HEIGHT));
+    panel.setBounds(
+        0,
+        0,
+        (int) panel.getPreferredSize().getWidth(),
+        (int) panel.getPreferredSize().getHeight());
     pane.add(panel, JLayeredPane.DEFAULT_LAYER);
-    buttonPanel.setBounds(0, (int)panel.getPreferredSize().getHeight() + MARGIN, (int)panel.getPreferredSize().getWidth(), BUTTON_PANEL_HEIGHT);
+    buttonPanel.setBounds(
+        0,
+        (int) panel.getPreferredSize().getHeight() + MARGIN,
+        (int) panel.getPreferredSize().getWidth(),
+        BUTTON_PANEL_HEIGHT);
     buttonPanel.add(newButton(OKAY_BUTTON));
     buttonPanel.add(newButton(CANCEL_BUTTON));
     buttonPanel.setOpaque(false);
     pane.add(buttonPanel, JLayeredPane.DEFAULT_LAYER);
     pack();
     setResizable(false);
-    setLocation((int)((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - getSize().getWidth()) / 2.0D), (int)((Toolkit.getDefaultToolkit().getScreenSize().getHeight() - getSize().getHeight()) / 2.0D));
+    setLocation(
+        (int)
+            ((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - getSize().getWidth())
+                / 2.0D),
+        (int)
+            ((Toolkit.getDefaultToolkit().getScreenSize().getHeight() - getSize().getHeight())
+                / 2.0D));
   }
 
   private JButton newButton(String name) {
@@ -75,5 +84,4 @@ public abstract class AbstractDialog extends JDialog implements ActionListener {
   void addButton(JButton button) {
     buttonPanel.add(button);
   }
-
 }

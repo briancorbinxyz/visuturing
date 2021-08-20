@@ -30,10 +30,11 @@ class PreviewGraphic extends JPanel {
     Graphics2D g = (Graphics2D) graphics;
     double xScale = 0.15119047610696146D;
     double yScale = 0.15441451547051574D;
-    Rectangle printRect = new Rectangle(
+    Rectangle printRect =
+        new Rectangle(
             new Dimension(
-              (int)(this.diagramPrinter.getPrintSize().getWidth() * xScale),
-              (int)(this.diagramPrinter.getPrintSize().getHeight() * yScale)));
+                (int) (this.diagramPrinter.getPrintSize().getWidth() * xScale),
+                (int) (this.diagramPrinter.getPrintSize().getHeight() * yScale)));
     Rectangle var8;
     Rectangle var9;
     if (this.portraitOrientation) {
@@ -49,19 +50,40 @@ class PreviewGraphic extends JPanel {
     if (this.diagramPrinter.isFitToPage()) {
       double var13 = var8.getWidth() / printRect.getWidth();
       double var11 = var8.getHeight() / printRect.getHeight();
-      printRect.setSize((int)(printRect.getWidth() * (var13 < var11 ? var13 : var11)), (int)(printRect.getHeight() * (var13 < var11 ? var13 : var11)));
+      printRect.setSize(
+          (int) (printRect.getWidth() * (var13 < var11 ? var13 : var11)),
+          (int) (printRect.getHeight() * (var13 < var11 ? var13 : var11)));
     }
 
-    printRect.translate((int)(this.pageFormat.getImageableX() * xScale), (int)(this.pageFormat.getImageableY() * yScale));
-    var8.setSize((int)var8.getWidth() + 1, (int)var8.getHeight() + 1);
+    printRect.translate(
+        (int) (this.pageFormat.getImageableX() * xScale),
+        (int) (this.pageFormat.getImageableY() * yScale));
+    var8.setSize((int) var8.getWidth() + 1, (int) var8.getHeight() + 1);
     g.setClip(var8);
     g.setColor(Color.red);
     g.draw(printRect);
-    g.draw(new Double(printRect.getX(), printRect.getY(), printRect.getWidth() + printRect.getX(), printRect.getHeight() + printRect.getY()));
-    g.draw(new Double(printRect.getWidth() + printRect.getX(), printRect.getY(), printRect.getX(), printRect.getHeight() + printRect.getY()));
+    g.draw(
+        new Double(
+            printRect.getX(),
+            printRect.getY(),
+            printRect.getWidth() + printRect.getX(),
+            printRect.getHeight() + printRect.getY()));
+    g.draw(
+        new Double(
+            printRect.getWidth() + printRect.getX(),
+            printRect.getY(),
+            printRect.getX(),
+            printRect.getHeight() + printRect.getY()));
   }
 
-  private Rectangle getRectangle(Graphics2D g, double xScale, double yScale, Rectangle previewRect, int orientation, int locationX, int locationY) {
+  private Rectangle getRectangle(
+      Graphics2D g,
+      double xScale,
+      double yScale,
+      Rectangle previewRect,
+      int orientation,
+      int locationX,
+      int locationY) {
     Rectangle diagramPreview;
     g.setColor(Color.DARK_GRAY);
     g.fill(previewRect);
@@ -71,11 +93,12 @@ class PreviewGraphic extends JPanel {
     g.setColor(Color.BLACK);
     g.draw(previewRect);
     pageFormat.setOrientation(orientation);
-    diagramPreview = new Rectangle(
-            (int)(this.pageFormat.getImageableX() * xScale),
-            (int)(this.pageFormat.getImageableY() * yScale),
-            (int)(this.pageFormat.getImageableWidth() * xScale),
-            (int)(this.pageFormat.getImageableHeight() * yScale));
+    diagramPreview =
+        new Rectangle(
+            (int) (this.pageFormat.getImageableX() * xScale),
+            (int) (this.pageFormat.getImageableY() * yScale),
+            (int) (this.pageFormat.getImageableWidth() * xScale),
+            (int) (this.pageFormat.getImageableHeight() * yScale));
     diagramPreview.translate(locationX, locationY);
     g.setColor(new Color(240, 240, 240));
     g.draw(diagramPreview);

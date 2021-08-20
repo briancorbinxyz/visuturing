@@ -1,8 +1,7 @@
 package org.keiosu.visuturing.simulator;
 
-import org.keiosu.visuturing.core.TuringMachine;
-
 import javax.swing.JPanel;
+import org.keiosu.visuturing.core.TuringMachine;
 
 public abstract class AbstractSimulatorPanel extends JPanel {
 

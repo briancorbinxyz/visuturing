@@ -1,10 +1,9 @@
 package org.keiosu.visuturing;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BrowserControl {
 
@@ -14,7 +13,8 @@ public class BrowserControl {
 
   private static final String WIN_ID = "Windows";
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   public static void displayURL(String url) {
     try {
@@ -24,10 +24,11 @@ public class BrowserControl {
         openUrlFirefox(url);
       }
     } catch (IOException e) {
-      LOGGER.atError()
-              .addArgument(e.getMessage())
-              .addArgument(e)
-              .log("Could not invoke browser, error={}");
+      LOGGER
+          .atError()
+          .addArgument(e.getMessage())
+          .addArgument(e)
+          .log("Could not invoke browser, error={}");
     }
   }
 
@@ -37,10 +38,11 @@ public class BrowserControl {
     try {
       cmdProcess.waitFor();
     } catch (InterruptedException e) {
-      LOGGER.atError()
-              .addArgument(e.getMessage())
-              .addArgument(e)
-              .log("Could not invoke browser, error={}");
+      LOGGER
+          .atError()
+          .addArgument(e.getMessage())
+          .addArgument(e)
+          .log("Could not invoke browser, error={}");
       Thread.currentThread().interrupt();
     }
   }

@@ -1,13 +1,12 @@
 package org.keiosu.visuturing.gui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.lang.invoke.MethodHandles;
 import javax.help.HelpSet;
 import javax.help.JHelp;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import java.lang.invoke.MethodHandles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JHelpFrame extends JFrame {
 
@@ -17,7 +16,9 @@ public class JHelpFrame extends JFrame {
     super("VisuTuring User Guide");
     try {
       ClassLoader classLoader = this.getClass().getClassLoader();
-      JHelp help = new JHelp(new HelpSet(classLoader, HelpSet.findHelpSet(classLoader, "help/VTHelpSet.hs")));
+      JHelp help =
+          new JHelp(
+              new HelpSet(classLoader, HelpSet.findHelpSet(classLoader, "help/VTHelpSet.hs")));
       help.setCurrentID("VisuTuring.Introduction");
       this.setSize(800, 600);
       this.getContentPane().add(help);
@@ -27,5 +28,4 @@ public class JHelpFrame extends JFrame {
       LOG.atError().setCause(e).log("Error loading help.");
     }
   }
-
 }

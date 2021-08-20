@@ -1,7 +1,5 @@
 package org.keiosu.visuturing.simulator.human;
 
-import org.keiosu.visuturing.core.Symbols;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -13,6 +11,7 @@ import java.awt.geom.Point2D.Double;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import org.keiosu.visuturing.core.Symbols;
 
 public class Tape {
   private static final Color TAPE_COLOUR = new Color(255, 255, 204);
@@ -57,28 +56,57 @@ public class Tape {
   }
 
   private double drawVisibleTapeSpacesAndOffset(Graphics2D canvas, double offsetX, double offsetY) {
-    for(int i = 1; i < 6; ++i) {
-      canvas.setColor(new Color(TAPE_COLOUR.getRed(), TAPE_COLOUR.getGreen(), TAPE_COLOUR.getBlue(), 255 / i));
-      canvas.fill(new Rectangle((int) offsetX, (int)(offsetY - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
+    for (int i = 1; i < 6; ++i) {
+      canvas.setColor(
+          new Color(TAPE_COLOUR.getRed(), TAPE_COLOUR.getGreen(), TAPE_COLOUR.getBlue(), 255 / i));
+      canvas.fill(
+          new Rectangle(
+              (int) offsetX,
+              (int) (offsetY - this.cell.getBounds().getHeight()),
+              (int) this.cell.getBounds().getWidth(),
+              (int) this.cell.getBounds().getHeight()));
       canvas.setColor(new Color(255 / (6 - i), 255 / (6 - i), 255 / (6 - i)));
-      canvas.draw(new Rectangle((int) offsetX, (int)(offsetY - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
-      canvas.drawString(String.valueOf(Symbols.SPACE), (float) (offsetX + (this.getCellWidth() - canvas.getFontMetrics().charWidth(Symbols.SPACE)) / 2.0D), (float) (offsetY - (this.cell.getHeight() - (double) canvas.getFontMetrics().getAscent()) / 2.0D));
+      canvas.draw(
+          new Rectangle(
+              (int) offsetX,
+              (int) (offsetY - this.cell.getBounds().getHeight()),
+              (int) this.cell.getBounds().getWidth(),
+              (int) this.cell.getBounds().getHeight()));
+      canvas.drawString(
+          String.valueOf(Symbols.SPACE),
+          (float)
+              (offsetX
+                  + (this.getCellWidth() - canvas.getFontMetrics().charWidth(Symbols.SPACE))
+                      / 2.0D),
+          (float)
+              (offsetY
+                  - (this.cell.getHeight() - (double) canvas.getFontMetrics().getAscent()) / 2.0D));
       offsetX += this.cell.getBounds().getWidth();
     }
     return offsetX;
   }
 
-  private double drawVisibleTapeCellsAndOffset(Graphics2D canvas, double locationX, double locationY) {
-    for(int currentCell = this.firstVisibleCell; currentCell < this.firstVisibleCell + this.visibleCells; ++currentCell) {
+  private double drawVisibleTapeCellsAndOffset(
+      Graphics2D canvas, double locationX, double locationY) {
+    for (int currentCell = this.firstVisibleCell;
+        currentCell < this.firstVisibleCell + this.visibleCells;
+        ++currentCell) {
       canvas.setColor(TAPE_COLOUR);
       drawTapeCell(canvas, (int) locationX, locationY);
       String symbol = this.tapeContents.get(currentCell);
-      double symbolX = locationX + (this.getCellWidth() - canvas.getFontMetrics().charWidth(Symbols.SPACE)) / 2.0D;
-      double symbolY = locationY - (this.cell.getHeight() - (double) canvas.getFontMetrics().getAscent()) / 2.0D;
+      double symbolX =
+          locationX
+              + (this.getCellWidth() - canvas.getFontMetrics().charWidth(Symbols.SPACE)) / 2.0D;
+      double symbolY =
+          locationY - (this.cell.getHeight() - (double) canvas.getFontMetrics().getAscent()) / 2.0D;
       if (currentCell == -1) {
-        canvas.drawString(String.valueOf(Symbols.LEFT_END_MARKER), (float) symbolX, (float) symbolY);
+        canvas.drawString(
+            String.valueOf(Symbols.LEFT_END_MARKER), (float) symbolX, (float) symbolY);
       } else {
-        canvas.drawString(Objects.requireNonNullElseGet(symbol, () -> String.valueOf(Symbols.SPACE)), (float) symbolX, (float) symbolY);
+        canvas.drawString(
+            Objects.requireNonNullElseGet(symbol, () -> String.valueOf(Symbols.SPACE)),
+            (float) symbolX,
+            (float) symbolY);
       }
       locationX += this.cell.getBounds().getWidth();
     }
@@ -86,17 +114,37 @@ public class Tape {
   }
 
   private void drawTapeCell(Graphics2D canvas, int locationX, double locationY) {
-    canvas.fill(new Rectangle(locationX, (int)(locationY - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
+    canvas.fill(
+        new Rectangle(
+            locationX,
+            (int) (locationY - this.cell.getBounds().getHeight()),
+            (int) this.cell.getBounds().getWidth(),
+            (int) this.cell.getBounds().getHeight()));
     canvas.setColor(Color.BLACK);
-    canvas.draw(new Rectangle(locationX, (int)(locationY - this.cell.getBounds().getHeight()), (int)this.cell.getBounds().getWidth(), (int)this.cell.getBounds().getHeight()));
+    canvas.draw(
+        new Rectangle(
+            locationX,
+            (int) (locationY - this.cell.getBounds().getHeight()),
+            (int) this.cell.getBounds().getWidth(),
+            (int) this.cell.getBounds().getHeight()));
   }
 
   private void drawInfinite(double originX, double originY, Graphics2D canvas) {
     int height = this.getHeight();
     int width = this.getCellWidth();
-    var leftLine = new java.awt.geom.Line2D.Double(originX - (width / 2.0d), originY + (height / 2.0d), originX + (width / 2.0d), originY - (double)height - (height / 2.0d));
+    var leftLine =
+        new java.awt.geom.Line2D.Double(
+            originX - (width / 2.0d),
+            originY + (height / 2.0d),
+            originX + (width / 2.0d),
+            originY - (double) height - (height / 2.0d));
     originX += this.cell.getBounds().getWidth();
-    var rightLine = new java.awt.geom.Line2D.Double(originX - (width / 2.0d), originY + (height / 2.0d), originX + (width / 2.0d), originY - (double)height - (height / 2.0d));
+    var rightLine =
+        new java.awt.geom.Line2D.Double(
+            originX - (width / 2.0d),
+            originY + (height / 2.0d),
+            originX + (width / 2.0d),
+            originY - (double) height - (height / 2.0d));
     Polygon gap = new Polygon();
     gap.addPoint((int) leftLine.getX1(), (int) leftLine.getY1());
     gap.addPoint((int) leftLine.getX2(), (int) leftLine.getY2());
@@ -119,15 +167,16 @@ public class Tape {
   }
 
   int findCellAtPoint(Point2D point) {
-    return (int)((point.getX() - this.location.getX()) / this.cell.getBounds().getWidth()) + this.firstVisibleCell;
+    return (int) ((point.getX() - this.location.getX()) / this.cell.getBounds().getWidth())
+        + this.firstVisibleCell;
   }
 
   int getCellWidth() {
-    return (int)this.cell.getBounds().getWidth();
+    return (int) this.cell.getBounds().getWidth();
   }
 
   public int getHeight() {
-    return (int)this.cell.getBounds().getHeight();
+    return (int) this.cell.getBounds().getHeight();
   }
 
   Rectangle getCellBounds() {
@@ -155,5 +204,4 @@ public class Tape {
   void reset() {
     this.firstVisibleCell = -1;
   }
-
 }

@@ -15,21 +15,15 @@ public class WindowHandler {
     Dimension var1 = this.desktop.getSize();
   }
 
-  public void tileWindowsHorizontally() {
-  }
+  public void tileWindowsHorizontally() {}
 
-  public void tileWindowsVertically() {
-  }
+  public void tileWindowsVertically() {}
 
-  public void closeSelectedWindow() {
-  }
+  public void closeSelectedWindow() {}
 
-  public void closeAllWindows() {
-  }
+  public void closeAllWindows() {}
 
-  public void gotoNextWindow() {
-  }
+  public void gotoNextWindow() {}
 
-  public void gotoPreviousWindow() {
-  }
+  public void gotoPreviousWindow() {}
 }

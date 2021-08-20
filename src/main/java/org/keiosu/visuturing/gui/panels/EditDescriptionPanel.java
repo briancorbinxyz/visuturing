@@ -1,7 +1,5 @@
 package org.keiosu.visuturing.gui.panels;
 
-import org.keiosu.visuturing.core.TuringMachine;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +9,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import org.keiosu.visuturing.core.TuringMachine;
 
 public class EditDescriptionPanel extends VTPanel implements ActionListener {
   JTextArea description;
@@ -64,13 +63,12 @@ public class EditDescriptionPanel extends VTPanel implements ActionListener {
 
   public void actionPerformed(ActionEvent var1) {
     if (var1.getSource() instanceof JButton) {
-      JButton var2 = (JButton)var1.getSource();
+      JButton var2 = (JButton) var1.getSource();
       if (var2.getName().equals("Insert ⊔ Symbol")) {
         this.description.insert("⊔", this.description.getCaretPosition());
       } else if (var2.getName().equals("Insert ⊳ Symbol")) {
         this.description.insert("⊳", this.description.getCaretPosition());
       }
     }
-
   }
 }

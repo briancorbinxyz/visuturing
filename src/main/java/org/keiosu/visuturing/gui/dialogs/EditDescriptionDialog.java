@@ -1,9 +1,9 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.panels.EditDescriptionPanel;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.panels.EditDescriptionPanel;
 
 public class EditDescriptionDialog extends AbstractDialog implements ActionListener {
 

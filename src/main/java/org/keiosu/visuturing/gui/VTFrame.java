@@ -1,10 +1,5 @@
 package org.keiosu.visuturing.gui;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.panels.DiagramPanel;
-import org.keiosu.visuturing.gui.panels.MainSimulationPanel;
-import org.keiosu.visuturing.simulator.diagram.DiagramSimulatorPanel;
-import org.keiosu.visuturing.simulator.human.HumanSimulatorPanel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -15,6 +10,11 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameListener;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.panels.DiagramPanel;
+import org.keiosu.visuturing.gui.panels.MainSimulationPanel;
+import org.keiosu.visuturing.simulator.diagram.DiagramSimulatorPanel;
+import org.keiosu.visuturing.simulator.human.HumanSimulatorPanel;
 
 public class VTFrame extends JInternalFrame implements ChangeListener {
   public static final String UNSAVED_FILENAME = "-untitled-";
@@ -32,7 +32,11 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
   JTabbedPane tp;
   DescriptionPanel descPanel;
 
-  public VTFrame(InternalFrameListener frameListener, ActionListener actionListener, TuringMachine turingMachine, int initialTabIndex) {
+  public VTFrame(
+      InternalFrameListener frameListener,
+      ActionListener actionListener,
+      TuringMachine turingMachine,
+      int initialTabIndex) {
     super(turingMachine.getName(), true, true, true, true);
     this.listener = actionListener;
     this.machine = turingMachine;
@@ -43,8 +47,10 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
     this.setFrameIcon(this.createImageIcon("bitmaps/vticons.jpg"));
     this.descPanel = new DescriptionPanel(turingMachine);
     this.diagramEditor = new DiagramPanel(actionListener, turingMachine);
-    this.simulator = new MainSimulationPanel(actionListener, new DiagramSimulatorPanel(turingMachine));
-    this.humanSimulator = new MainSimulationPanel(actionListener, new HumanSimulatorPanel(turingMachine));
+    this.simulator =
+        new MainSimulationPanel(actionListener, new DiagramSimulatorPanel(turingMachine));
+    this.humanSimulator =
+        new MainSimulationPanel(actionListener, new HumanSimulatorPanel(turingMachine));
     Container contentPane = this.getContentPane();
     contentPane.setLayout(new BorderLayout());
     this.tp = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -59,7 +65,8 @@ public class VTFrame extends JInternalFrame implements ChangeListener {
   }
 
   ImageIcon createImageIcon(String imageUri) {
-    return new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(imageUri)));
+    return new ImageIcon(
+        Objects.requireNonNull(this.getClass().getClassLoader().getResource(imageUri)));
   }
 
   void setFileName(String filename) {

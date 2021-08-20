@@ -1,12 +1,11 @@
 package org.keiosu.visuturing.gui.panels;
 
-import org.keiosu.visuturing.diagram.DiagramEditor;
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import org.keiosu.visuturing.diagram.DiagramEditor;
 
 class PrintableDiagram implements Printable {
   private final DiagramEditor diagram;
@@ -20,7 +19,7 @@ class PrintableDiagram implements Printable {
   }
 
   public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) {
-    Graphics2D g = (Graphics2D)graphics;
+    Graphics2D g = (Graphics2D) graphics;
     g.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
     if (fitToPage) {
       printToFitPage(pageFormat, g);
@@ -34,8 +33,9 @@ class PrintableDiagram implements Printable {
   }
 
   private void printDefault(Graphics2D g) {
-    g.scale(printSize.getWidth() / diagram.getExtents().getWidth(),
-            printSize.getHeight() / diagram.getExtents().getHeight());
+    g.scale(
+        printSize.getWidth() / diagram.getExtents().getWidth(),
+        printSize.getHeight() / diagram.getExtents().getHeight());
   }
 
   private void printToFitPage(PageFormat pageFormat, Graphics2D g) {

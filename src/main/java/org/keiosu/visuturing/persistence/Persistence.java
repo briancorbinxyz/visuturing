@@ -1,13 +1,5 @@
 package org.keiosu.visuturing.persistence;
 
-import org.keiosu.visuturing.core.State;
-import org.keiosu.visuturing.core.Symbols;
-import org.keiosu.visuturing.core.Transition;
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.xml.XmlTransformer;
-import org.keiosu.visuturing.xml.XmlElement;
-
-import javax.imageio.ImageIO;
 import java.awt.Point;
 import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
@@ -15,18 +7,21 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-
 import java.io.IOException;
-
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-
+import org.keiosu.visuturing.core.State;
+import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.core.Transition;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.xml.XmlElement;
+import org.keiosu.visuturing.xml.XmlTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -37,7 +32,9 @@ import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 public class Persistence {
-  private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
   private Persistence() {
     // do nothing
   }
@@ -47,7 +44,8 @@ public class Persistence {
     return indexOfExtension < 0 ? filename : filename.substring(0, indexOfExtension);
   }
 
-  public static void exportToHTML(XmlElement var0, String var1) throws IOException, TransformerException, TransformerConfigurationException {
+  public static void exportToHTML(XmlElement var0, String var1)
+      throws IOException, TransformerException, TransformerConfigurationException {
     XmlTransformer var2 = new XmlTransformer("web/tm.xsl");
     String var3 = new String(var1);
     if (!var3.endsWith("html") && !var3.endsWith("htm")) {
@@ -71,7 +69,8 @@ public class Persistence {
   public static void save(XmlElement var0, File var1) throws IOException {
     String var2 = trimExtension(var1.toString());
     BufferedWriter var3 = new BufferedWriter(new FileWriter(var2.concat(".vt")));
-    String var4 = "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
+    String var4 =
+        "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
     var3.write(var4 + var0.toXml());
     var3.close();
   }
@@ -93,11 +92,11 @@ public class Persistence {
     List var6 = new ArrayList();
     NodeList var7 = var0.getChildNodes();
 
-    for(int var8 = 0; var8 < var7.getLength(); ++var8) {
+    for (int var8 = 0; var8 < var7.getLength(); ++var8) {
       Node var9 = var7.item(var8);
       if (var9 instanceof Element) {
-        Element var10 = (Element)var9;
-        Text var11 = (Text)var10.getFirstChild();
+        Element var10 = (Element) var9;
+        Text var11 = (Text) var10.getFirstChild();
         if (var10.getTagName().equals("name")) {
           var1 = var11.getData();
         } else if (var10.getTagName().equals("description")) {
@@ -123,21 +122,21 @@ public class Persistence {
     List var1 = new ArrayList();
     NodeList var2 = var0.getChildNodes();
 
-    for(int var3 = 0; var3 < var2.getLength(); ++var3) {
+    for (int var3 = 0; var3 < var2.getLength(); ++var3) {
       Node var4 = var2.item(var3);
       if (var4 instanceof Element) {
         String var5 = "";
-        double var6 = (double)((var3 + 1) * 50);
+        double var6 = (double) ((var3 + 1) * 50);
         double var8 = 50.0D;
-        Element var10 = (Element)var4;
+        Element var10 = (Element) var4;
         if (var10.getTagName().equals("state")) {
           NodeList var11 = var10.getChildNodes();
 
-          for(int var12 = 0; var12 < var11.getLength(); ++var12) {
+          for (int var12 = 0; var12 < var11.getLength(); ++var12) {
             Node var13 = var11.item(var12);
             if (var13 instanceof Element) {
-              Element var14 = (Element)var13;
-              Text var15 = (Text)var14.getFirstChild();
+              Element var14 = (Element) var13;
+              Text var15 = (Text) var14.getFirstChild();
               if (var14.getTagName().equals("name")) {
                 var5 = var15.getData();
               } else if (var14.getTagName().equals("location")) {
@@ -147,7 +146,7 @@ public class Persistence {
             }
           }
 
-          var1.add(new State(var5, new Point((int)var6, (int)var8)));
+          var1.add(new State(var5, new Point((int) var6, (int) var8)));
         }
       }
     }
@@ -159,11 +158,11 @@ public class Persistence {
     List var1 = new ArrayList();
     NodeList var2 = var0.getChildNodes();
 
-    for(int var3 = 0; var3 < var2.getLength(); ++var3) {
+    for (int var3 = 0; var3 < var2.getLength(); ++var3) {
       Node var4 = var2.item(var3);
       if (var4 instanceof Element) {
-        Element var5 = (Element)var4;
-        Text var6 = (Text)var5.getFirstChild();
+        Element var5 = (Element) var4;
+        Text var6 = (Text) var5.getFirstChild();
         if (var5.getTagName().equals("symbol")) {
           var1.add("" + Symbols.unicodeToChar(var6.getData()));
         }
@@ -177,7 +176,7 @@ public class Persistence {
     List var1 = new ArrayList();
     NodeList var2 = var0.getChildNodes();
 
-    for(int var3 = 0; var3 < var2.getLength(); ++var3) {
+    for (int var3 = 0; var3 < var2.getLength(); ++var3) {
       String var4 = "";
       String var5 = "";
       char var6 = ' ';
@@ -185,15 +184,15 @@ public class Persistence {
       Object var8 = new java.awt.geom.QuadCurve2D.Double();
       Node var9 = var2.item(var3);
       if (var9 instanceof Element) {
-        Element var10 = (Element)var9;
+        Element var10 = (Element) var9;
         if (var10.getTagName().equals("transition")) {
           NodeList var11 = var10.getChildNodes();
 
-          for(int var12 = 0; var12 < var11.getLength(); ++var12) {
+          for (int var12 = 0; var12 < var11.getLength(); ++var12) {
             Node var13 = var11.item(var12);
             if (var13 instanceof Element) {
-              Element var14 = (Element)var13;
-              Text var15 = (Text)var14.getFirstChild();
+              Element var14 = (Element) var13;
+              Text var15 = (Text) var14.getFirstChild();
               if (var14.getTagName().equals("current-state")) {
                 var4 = var15.getData();
               } else {
@@ -214,7 +213,7 @@ public class Persistence {
           }
 
           Transition var17 = new Transition(var4, var6, var5, var7);
-          var17.setEdge((QuadCurve2D)var8);
+          var17.setEdge((QuadCurve2D) var8);
           var1.add(var17);
         }
       }
@@ -229,26 +228,37 @@ public class Persistence {
     java.awt.geom.Point2D.Double var3 = new java.awt.geom.Point2D.Double();
     NodeList var4 = var0.getChildNodes();
 
-    for(int var5 = 0; var5 < var4.getLength(); ++var5) {
+    for (int var5 = 0; var5 < var4.getLength(); ++var5) {
       Node var6 = var4.item(var5);
       if (var6 instanceof Element) {
-        Element var7 = (Element)var6;
-        Text var8 = (Text)var7.getFirstChild();
+        Element var7 = (Element) var6;
+        Text var8 = (Text) var7.getFirstChild();
         if (var7.getTagName().equals("p1")) {
-          var1 = new java.awt.geom.Point2D.Double(Double.parseDouble(var7.getAttribute("x")), Double.parseDouble(var7.getAttribute("y")));
+          var1 =
+              new java.awt.geom.Point2D.Double(
+                  Double.parseDouble(var7.getAttribute("x")),
+                  Double.parseDouble(var7.getAttribute("y")));
         } else if (var7.getTagName().equals("p2")) {
-          var2 = new java.awt.geom.Point2D.Double(Double.parseDouble(var7.getAttribute("x")), Double.parseDouble(var7.getAttribute("y")));
+          var2 =
+              new java.awt.geom.Point2D.Double(
+                  Double.parseDouble(var7.getAttribute("x")),
+                  Double.parseDouble(var7.getAttribute("y")));
         } else if (var7.getTagName().equals("p3")) {
-          var3 = new java.awt.geom.Point2D.Double(Double.parseDouble(var7.getAttribute("x")), Double.parseDouble(var7.getAttribute("y")));
+          var3 =
+              new java.awt.geom.Point2D.Double(
+                  Double.parseDouble(var7.getAttribute("x")),
+                  Double.parseDouble(var7.getAttribute("y")));
         }
       }
     }
 
-    return new java.awt.geom.QuadCurve2D.Double(var1.getX(), var1.getY(), var3.getX(), var3.getY(), var2.getX(), var2.getY());
+    return new java.awt.geom.QuadCurve2D.Double(
+        var1.getX(), var1.getY(), var3.getX(), var3.getY(), var2.getX(), var2.getY());
   }
 
   public static void saveJPEG(BufferedImage image, String filename) {
-    try (FileOutputStream imageFile = new FileOutputStream(filename.endsWith(".jpg") ? filename : filename + ".jpg")) {
+    try (FileOutputStream imageFile =
+        new FileOutputStream(filename.endsWith(".jpg") ? filename : filename + ".jpg")) {
       ImageIO.write(image, "jpeg", imageFile);
     } catch (IOException e) {
       LOGGER.atError().addArgument(e).log("Failed to save image.");

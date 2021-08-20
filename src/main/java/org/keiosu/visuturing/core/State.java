@@ -1,10 +1,9 @@
 package org.keiosu.visuturing.core;
 
-import org.keiosu.visuturing.xml.XmlElement;
-
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.awt.geom.Ellipse2D.Double;
+import java.awt.geom.Point2D;
+import org.keiosu.visuturing.xml.XmlElement;
 
 public class State implements XmlElement {
   private String name;
@@ -52,9 +51,18 @@ public class State implements XmlElement {
   }
 
   public String toXml() {
-    return "<state>\n" +
-      "<name>" + name + "</name>\n" +
-      "<location " + "x='" + location.getX() + "' " + "y='" + location.getY() + "' " + "/>\n" +
-      "</state>\n";
+    return "<state>\n"
+        + "<name>"
+        + name
+        + "</name>\n"
+        + "<location "
+        + "x='"
+        + location.getX()
+        + "' "
+        + "y='"
+        + location.getY()
+        + "' "
+        + "/>\n"
+        + "</state>\n";
   }
 }

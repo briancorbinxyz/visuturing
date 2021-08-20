@@ -25,9 +25,15 @@ public class Configuration {
 
   private String asTapeRepresentation() {
     if (index < word.length()) {
-      return Symbols.LEFT_END_MARKER + word.substring(0, index + 1) + Symbols.CURRENT_CHARACTER_UNDERLINER + word.substring(index + 1);
+      return Symbols.LEFT_END_MARKER
+          + word.substring(0, index + 1)
+          + Symbols.CURRENT_CHARACTER_UNDERLINER
+          + word.substring(index + 1);
     } else {
-      return Symbols.LEFT_END_MARKER + word.substring(0, index) + Symbols.SPACE + Symbols.CURRENT_CHARACTER_UNDERLINER;
+      return Symbols.LEFT_END_MARKER
+          + word.substring(0, index)
+          + Symbols.SPACE
+          + Symbols.CURRENT_CHARACTER_UNDERLINER;
     }
   }
 
@@ -55,4 +61,3 @@ public class Configuration {
     return this.index;
   }
 }
-

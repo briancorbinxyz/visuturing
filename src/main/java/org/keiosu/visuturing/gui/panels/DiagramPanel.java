@@ -1,17 +1,16 @@
 package org.keiosu.visuturing.gui.panels;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.*;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.common.CommonGraphics;
 import org.keiosu.visuturing.mousetools.DeleteTool;
 import org.keiosu.visuturing.mousetools.SelectTool;
 import org.keiosu.visuturing.mousetools.SelfTransitionTool;
 import org.keiosu.visuturing.mousetools.TransitionTool;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
 public class DiagramPanel extends JPanel implements ActionListener {
   public static final Dimension DIAGRAM_SIZE = new Dimension(5000, 5000);
@@ -22,7 +21,8 @@ public class DiagramPanel extends JPanel implements ActionListener {
   public static final String EDIT_STATES = "Edit states";
   public static final String EDIT_ALPHABET = "Edit the alphabet";
   public static final String GENERATE = "Generate a new diagram based on transition table";
-  public static final String CHECK_NON_DETERMINISM = "Check to see if this Turing Machine is deterministic";
+  public static final String CHECK_NON_DETERMINISM =
+      "Check to see if this Turing Machine is deterministic";
   public static final String SELECT = "Select tool";
   public static final String ZOOM_IN = "Zoom in";
   public static final String ZOOM_OUT = "Zoom out";
@@ -104,13 +104,18 @@ public class DiagramPanel extends JPanel implements ActionListener {
 
   public void actionPerformed(ActionEvent var1) {
     if (var1.getSource() instanceof JButton) {
-      JButton var2 = (JButton)var1.getSource();
+      JButton var2 = (JButton) var1.getSource();
       String var3 = var2.getName();
       if (!var3.equals("Edit states") && !var3.equals("Edit the alphabet")) {
         if (var3.equals("Select tool")) {
           diagram.setTool(new SelectTool(this.diagram));
         } else if (var3.equals("Check to see if this Turing Machine is deterministic")) {
-          JOptionPane.showMessageDialog(this, "This Turing Machine is " + (this.machine.isDeterministic() ? "deterministic." : "non-deterministic."), "Non-Determinism", 1);
+          JOptionPane.showMessageDialog(
+              this,
+              "This Turing Machine is "
+                  + (this.machine.isDeterministic() ? "deterministic." : "non-deterministic."),
+              "Non-Determinism",
+              1);
         } else if (var3.equals("Add state changing transition")) {
           diagram.setTool(new TransitionTool(this.diagram));
         } else if (var3.equals("Add transition")) {
@@ -124,7 +129,6 @@ public class DiagramPanel extends JPanel implements ActionListener {
         }
       }
     }
-
   }
 
   public void exportToJPEG(File var1) {
@@ -139,7 +143,11 @@ public class DiagramPanel extends JPanel implements ActionListener {
     public ZoomModifier() {
       super(new BorderLayout(0, 0));
       JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/zoom.gif"));
-      var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
+      var2.setBounds(
+          0,
+          0,
+          (int) var2.getPreferredSize().getWidth(),
+          (int) var2.getPreferredSize().getHeight());
       JButton var3 = DiagramPanel.this.createMediaButton("Zoom in", "increase");
       var3.setBounds(14, 18, 22, 22);
       JButton var4 = DiagramPanel.this.createMediaButton("Zoom out", "decrease");
@@ -158,8 +166,14 @@ public class DiagramPanel extends JPanel implements ActionListener {
     public NonDeterminismButton() {
       super(new BorderLayout(0, 0));
       JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/nd.gif"));
-      var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
-      JButton var3 = DiagramPanel.this.createMediaButton("Check to see if this Turing Machine is deterministic", "check");
+      var2.setBounds(
+          0,
+          0,
+          (int) var2.getPreferredSize().getWidth(),
+          (int) var2.getPreferredSize().getHeight());
+      JButton var3 =
+          DiagramPanel.this.createMediaButton(
+              "Check to see if this Turing Machine is deterministic", "check");
       var3.setBounds(7, 19, 78, 18);
       JLayeredPane var4 = new JLayeredPane();
       var4.setPreferredSize(var2.getPreferredSize());
@@ -174,8 +188,14 @@ public class DiagramPanel extends JPanel implements ActionListener {
     public GenerateButton() {
       super(new BorderLayout(0, 0));
       JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("buttons/diagram/diagram.gif"));
-      var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
-      JButton var3 = DiagramPanel.this.createMediaButton("Generate a new diagram based on transition table", "generate");
+      var2.setBounds(
+          0,
+          0,
+          (int) var2.getPreferredSize().getWidth(),
+          (int) var2.getPreferredSize().getHeight());
+      JButton var3 =
+          DiagramPanel.this.createMediaButton(
+              "Generate a new diagram based on transition table", "generate");
       var3.setBounds(7, 19, 78, 18);
       JLayeredPane var4 = new JLayeredPane();
       var4.setPreferredSize(var2.getPreferredSize());

@@ -24,7 +24,7 @@ public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
     } else {
       String filename = f.getName().toLowerCase();
 
-      for(int idx = this.validExtensions.size() - 1; idx >= 0; --idx) {
+      for (int idx = this.validExtensions.size() - 1; idx >= 0; --idx) {
         if (filename.endsWith(this.validExtensions.get(idx))) {
           return true;
         }
@@ -43,7 +43,7 @@ public class VisuTuringFileFilter extends FileFilter implements FilenameFilter {
   }
 
   public boolean accept(File dir, String name) {
-    for(int i = validExtensions.size() - 1; i >= 0; --i) {
+    for (int i = validExtensions.size() - 1; i >= 0; --i) {
       if (name.endsWith(validExtensions.get(i))) {
         return true;
       }

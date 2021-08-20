@@ -1,18 +1,18 @@
 package org.keiosu.visuturing.mousetools;
 
-import org.keiosu.visuturing.core.Configuration;
-import org.keiosu.visuturing.core.State;
-import org.keiosu.visuturing.core.Transition;
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.diagram.DiagramEditor;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Ellipse2D.Double;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
-import java.awt.geom.Ellipse2D.Double;
+import org.keiosu.visuturing.core.Configuration;
+import org.keiosu.visuturing.core.State;
+import org.keiosu.visuturing.core.Transition;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.diagram.DiagramEditor;
 
 public class SimulatingTool extends AbstractMouseTool {
   private TuringMachine machine;
@@ -32,23 +32,36 @@ public class SimulatingTool extends AbstractMouseTool {
     if (this.currentTransition != null) {
       var1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       var1.setColor(Color.RED);
-      double var6 = (double)this.frame / 10.0D;
+      double var6 = (double) this.frame / 10.0D;
       double var2;
       double var4;
       if (this.currentTransition.getCurrentState().equals(this.currentTransition.getNextState())) {
-        CubicCurve2D var8 = (CubicCurve2D)this.diagram.getGraphicEdge(this.currentTransition);
-        var2 = (1.0D - var6) * (1.0D - var6) * (1.0D - var6) * var8.getX1() + 3.0D * (1.0D - var6) * (1.0D - var6) * var6 * var8.getCtrlX1() + 3.0D * (1.0D - var6) * var6 * var6 * var8.getCtrlX2() + var6 * var6 * var6 * var8.getX2();
-        var4 = (1.0D - var6) * (1.0D - var6) * (1.0D - var6) * var8.getY1() + 3.0D * (1.0D - var6) * (1.0D - var6) * var6 * var8.getCtrlY1() + 3.0D * (1.0D - var6) * var6 * var6 * var8.getCtrlY2() + var6 * var6 * var6 * var8.getY2();
+        CubicCurve2D var8 = (CubicCurve2D) this.diagram.getGraphicEdge(this.currentTransition);
+        var2 =
+            (1.0D - var6) * (1.0D - var6) * (1.0D - var6) * var8.getX1()
+                + 3.0D * (1.0D - var6) * (1.0D - var6) * var6 * var8.getCtrlX1()
+                + 3.0D * (1.0D - var6) * var6 * var6 * var8.getCtrlX2()
+                + var6 * var6 * var6 * var8.getX2();
+        var4 =
+            (1.0D - var6) * (1.0D - var6) * (1.0D - var6) * var8.getY1()
+                + 3.0D * (1.0D - var6) * (1.0D - var6) * var6 * var8.getCtrlY1()
+                + 3.0D * (1.0D - var6) * var6 * var6 * var8.getCtrlY2()
+                + var6 * var6 * var6 * var8.getY2();
       } else {
-        QuadCurve2D var9 = (QuadCurve2D)this.diagram.getGraphicEdge(this.currentTransition);
-        var2 = (1.0D - var6) * (1.0D - var6) * var9.getX1() + 2.0D * (1.0D - var6) * var6 * var9.getCtrlX() + var6 * var6 * var9.getX2();
-        var4 = (1.0D - var6) * (1.0D - var6) * var9.getY1() + 2.0D * (1.0D - var6) * var6 * var9.getCtrlY() + var6 * var6 * var9.getY2();
+        QuadCurve2D var9 = (QuadCurve2D) this.diagram.getGraphicEdge(this.currentTransition);
+        var2 =
+            (1.0D - var6) * (1.0D - var6) * var9.getX1()
+                + 2.0D * (1.0D - var6) * var6 * var9.getCtrlX()
+                + var6 * var6 * var9.getX2();
+        var4 =
+            (1.0D - var6) * (1.0D - var6) * var9.getY1()
+                + 2.0D * (1.0D - var6) * var6 * var9.getCtrlY()
+                + var6 * var6 * var9.getY2();
       }
 
       Double var10 = new Double(var2 - 5.0D, var4 - 5.0D, 10.0D, 10.0D);
       var1.fill(var10);
     }
-
   }
 
   public void increaseFrame() {
@@ -71,7 +84,6 @@ public class SimulatingTool extends AbstractMouseTool {
       var3 = new Double(var2.getX() - 30.0D, var2.getY() - 30.0D, 60.0D, 60.0D);
       var1.draw(var3);
     }
-
   }
 
   public void setConfig(Configuration var1) {
@@ -81,7 +93,6 @@ public class SimulatingTool extends AbstractMouseTool {
     } else {
       this.currentState = null;
     }
-
   }
 
   public void setTransition(Transition var1) {

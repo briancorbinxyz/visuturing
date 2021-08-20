@@ -47,8 +47,8 @@ public class Symbols {
       int index = word.length() - 1;
       char charAtIndex = word.charAt(index);
 
-      while(charAtIndex == SPACE && index > minIndex) {
-        trimmedWord  = trimmedWord.substring(0, index--);
+      while (charAtIndex == SPACE && index > minIndex) {
+        trimmedWord = trimmedWord.substring(0, index--);
         if (index > -1) {
           charAtIndex = trimmedWord.charAt(index);
         } else {
@@ -59,4 +59,3 @@ public class Symbols {
     return trimmedWord;
   }
 }
-

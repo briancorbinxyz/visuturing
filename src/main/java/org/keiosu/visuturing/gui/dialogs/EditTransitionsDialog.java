@@ -1,9 +1,9 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 import java.awt.Frame;
 import java.util.List;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 
 public class EditTransitionsDialog extends AbstractDialog {
   private EditTransitionsPanel transitionEditor;

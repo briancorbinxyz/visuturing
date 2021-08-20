@@ -1,12 +1,11 @@
 package org.keiosu.visuturing.gui.panels;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.diagram.DiagramEditor;
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.diagram.DiagramEditor;
 
 public class GraphicsPanel extends DiagramEditor implements MouseListener {
 
@@ -18,19 +17,19 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
   }
 
   public void mouseReleased(MouseEvent event) {
-    int x = (int)event.getPoint().getX();
-    int y = (int)event.getPoint().getY();
+    int x = (int) event.getPoint().getX();
+    int y = (int) event.getPoint().getY();
     Rectangle hotspot = new Rectangle(event.getPoint(), new Dimension(40, 40));
     hotspot = this.transformation.createTransformedShape(new Rectangle(hotspot)).getBounds();
     this.scrollRectToVisible(hotspot);
     boolean needsRepaint = false;
-    int hotspotMaxX = (int)((double)x + hotspot.getWidth());
+    int hotspotMaxX = (int) ((double) x + hotspot.getWidth());
     if (hotspotMaxX > this.area.width) {
       this.area.width = hotspotMaxX;
       needsRepaint = true;
     }
 
-    int hotspotMaxY = (int)((double)y + hotspot.getWidth());
+    int hotspotMaxY = (int) ((double) y + hotspot.getWidth());
     if (hotspotMaxY > this.area.height) {
       this.area.height = hotspotMaxY;
       needsRepaint = true;
@@ -46,7 +45,8 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
 
   public void zoomIn() {
     super.zoomIn();
-    Rectangle hotspot = this.transformation.createTransformedShape(new Rectangle(this.getExtents())).getBounds();
+    Rectangle hotspot =
+        this.transformation.createTransformedShape(new Rectangle(this.getExtents())).getBounds();
     boolean needsRepaint = false;
     if (hotspot.width > this.area.width) {
       this.area.width = hotspot.width;
@@ -68,7 +68,8 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
 
   public void zoomOut() {
     super.zoomOut();
-    Rectangle hotspot = this.transformation.createTransformedShape(new Rectangle(this.getExtents())).getBounds();
+    Rectangle hotspot =
+        this.transformation.createTransformedShape(new Rectangle(this.getExtents())).getBounds();
     boolean needsRepaint = false;
     if (hotspot.width < this.area.width) {
       this.area.width = hotspot.width;
@@ -90,7 +91,7 @@ public class GraphicsPanel extends DiagramEditor implements MouseListener {
 
   @Override
   public void mouseClicked(MouseEvent ignore) {
-      // do nothing
+    // do nothing
   }
 
   @Override

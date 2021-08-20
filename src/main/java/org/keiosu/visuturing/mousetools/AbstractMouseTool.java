@@ -1,7 +1,5 @@
 package org.keiosu.visuturing.mousetools;
 
-import org.keiosu.visuturing.core.Transition;
-import org.keiosu.visuturing.diagram.DiagramEditor;
 import java.awt.BasicStroke;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -9,6 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import javax.swing.ImageIcon;
 import javax.swing.event.MouseInputAdapter;
+import org.keiosu.visuturing.core.Transition;
+import org.keiosu.visuturing.diagram.DiagramEditor;
 
 public abstract class AbstractMouseTool extends MouseInputAdapter implements MouseListener {
   protected DiagramEditor diagram;

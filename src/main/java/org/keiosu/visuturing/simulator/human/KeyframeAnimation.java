@@ -27,8 +27,10 @@ class KeyframeAnimation {
       double yPrev = this.keyframePos[this.currentIndex - 1].getY();
       double xCurr = this.keyframePos[this.currentIndex].getX();
       double yCurr = this.keyframePos[this.currentIndex].getY();
-      int newX = (int)(xPrev + (xCurr - xPrev) / (double)this.totalFrames * (double)this.currentFrame);
-      int newY = (int)(yPrev + (yCurr - yPrev) / (double)this.totalFrames * (double)this.currentFrame);
+      int newX =
+          (int) (xPrev + (xCurr - xPrev) / (double) this.totalFrames * (double) this.currentFrame);
+      int newY =
+          (int) (yPrev + (yCurr - yPrev) / (double) this.totalFrames * (double) this.currentFrame);
       if (this.currentFrame >= this.totalFrames) {
         ++this.currentIndex;
         this.currentFrame = 0;
@@ -36,11 +38,12 @@ class KeyframeAnimation {
           this.finished = true;
           this.totalFrames = 0;
         } else {
-          this.totalFrames = this.keyframes[this.currentIndex] - this.keyframes[this.currentIndex - 1];
+          this.totalFrames =
+              this.keyframes[this.currentIndex] - this.keyframes[this.currentIndex - 1];
         }
       }
 
-      return new Double((double)newX, (double)newY);
+      return new Double((double) newX, (double) newY);
     } else {
       return this.keyframePos[this.keyframes.length - 1];
     }

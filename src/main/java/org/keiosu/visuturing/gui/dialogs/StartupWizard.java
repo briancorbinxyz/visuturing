@@ -1,8 +1,8 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.gui.VisuTuring;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.keiosu.visuturing.gui.VisuTuring;
 
 public class StartupWizard extends AbstractDialog implements ActionListener {
 

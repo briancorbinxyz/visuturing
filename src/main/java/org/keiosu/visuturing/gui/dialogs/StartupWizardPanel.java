@@ -1,7 +1,5 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.gui.VisuTuring;
-
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
@@ -11,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import org.keiosu.visuturing.gui.VisuTuring;
 
 public class StartupWizardPanel extends JPanel {
   private VisuTuring app;
@@ -23,7 +22,11 @@ public class StartupWizardPanel extends JPanel {
     JLabel startupLabel = new JLabel(createImageIcon("bitmaps/startup.gif"));
     JLayeredPane pane = new JLayeredPane();
     add(pane);
-    startupLabel.setBounds(0, 0, (int) startupLabel.getPreferredSize().getWidth(), (int) startupLabel.getPreferredSize().getHeight());
+    startupLabel.setBounds(
+        0,
+        0,
+        (int) startupLabel.getPreferredSize().getWidth(),
+        (int) startupLabel.getPreferredSize().getHeight());
     pane.add(startupLabel, JLayeredPane.DEFAULT_LAYER);
     pane.add(hotspotRowButton("New...", 41), JLayeredPane.POPUP_LAYER);
     pane.add(hotspotRowButton("Open...", 184), JLayeredPane.POPUP_LAYER);
@@ -46,6 +49,7 @@ public class StartupWizardPanel extends JPanel {
   }
 
   protected ImageIcon createImageIcon(String resourceLocation) {
-    return new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource(resourceLocation)));
+    return new ImageIcon(
+        Objects.requireNonNull(getClass().getClassLoader().getResource(resourceLocation)));
   }
 }

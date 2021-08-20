@@ -1,16 +1,7 @@
 package org.keiosu.visuturing.gui;
 
-import org.keiosu.visuturing.core.Symbols;
-import org.keiosu.visuturing.core.Transition;
-import org.keiosu.visuturing.core.TuringMachine;
+import static org.keiosu.visuturing.gui.common.CommonGraphics.newButtonWithHand;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -21,8 +12,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static org.keiosu.visuturing.gui.common.CommonGraphics.newButtonWithHand;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.core.Transition;
+import org.keiosu.visuturing.core.TuringMachine;
 
 public class TransitionFrame extends JDialog implements ActionListener {
 
@@ -38,7 +37,7 @@ public class TransitionFrame extends JDialog implements ActionListener {
     setResizable(false);
     setUndecorated(true);
     List<String> alphabet = new ArrayList<>(machine.getAlphabet());
-    transitionSymbol = new JList<>(alphabet.toArray(new String[]{}));
+    transitionSymbol = new JList<>(alphabet.toArray(new String[] {}));
     transitionSymbol.setFont(TRANSITION_FONT);
     task = new JList<>(actionableAlphabet(alphabet));
     task.setFont(TRANSITION_FONT);
@@ -52,7 +51,10 @@ public class TransitionFrame extends JDialog implements ActionListener {
     pane.add(newSymbolPane(transition.getCurrentSymbol()), JLayeredPane.POPUP_LAYER);
     pane.add(newScrollPane(task, 192), JLayeredPane.POPUP_LAYER);
     task.setSelectedValue("" + transition.getTask(), true);
-    pane.setPreferredSize(new Dimension((int) newTransitionImageLabel().getPreferredSize().getWidth(), (int) newTransitionImageLabel().getPreferredSize().getHeight()));
+    pane.setPreferredSize(
+        new Dimension(
+            (int) newTransitionImageLabel().getPreferredSize().getWidth(),
+            (int) newTransitionImageLabel().getPreferredSize().getHeight()));
     pack();
   }
 
@@ -75,7 +77,10 @@ public class TransitionFrame extends JDialog implements ActionListener {
       transition.setTask(Symbols.SPACE);
     }
 
-    return transition.getCurrentSymbol() == Symbols.LEFT_END_MARKER && transition.getTask() != Symbols.RIGHT_ARROW ? null : transition;
+    return transition.getCurrentSymbol() == Symbols.LEFT_END_MARKER
+            && transition.getTask() != Symbols.RIGHT_ARROW
+        ? null
+        : transition;
   }
 
   public void actionPerformed(ActionEvent var1) {
@@ -87,7 +92,7 @@ public class TransitionFrame extends JDialog implements ActionListener {
     alphabet.remove(String.valueOf(Symbols.LEFT_END_MARKER));
     alphabet.add(String.valueOf(Symbols.LEFT_ARROW));
     alphabet.add(String.valueOf(Symbols.RIGHT_ARROW));
-    return alphabet.toArray(new String[]{});
+    return alphabet.toArray(new String[] {});
   }
 
   private JScrollPane newSymbolPane(char currentSymbol) {
@@ -115,7 +120,11 @@ public class TransitionFrame extends JDialog implements ActionListener {
 
   private JLabel newTransitionImageLabel() {
     JLabel imageLabel = new JLabel(createImageIcon("bitmaps/transition-frame.gif"));
-    imageLabel.setBounds(0, 0, (int)imageLabel.getPreferredSize().getWidth(), (int)imageLabel.getPreferredSize().getHeight());
+    imageLabel.setBounds(
+        0,
+        0,
+        (int) imageLabel.getPreferredSize().getWidth(),
+        (int) imageLabel.getPreferredSize().getHeight());
     return imageLabel;
   }
 

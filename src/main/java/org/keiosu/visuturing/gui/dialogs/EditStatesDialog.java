@@ -1,10 +1,10 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.panels.EditStatesPanel;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.util.List;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.panels.EditStatesPanel;
 
 public class EditStatesDialog extends AbstractDialog implements ActionListener {
   private EditStatesPanel stateEditor;

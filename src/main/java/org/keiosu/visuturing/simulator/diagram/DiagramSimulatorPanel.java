@@ -1,13 +1,5 @@
 package org.keiosu.visuturing.simulator.diagram;
 
-import org.keiosu.visuturing.core.Configuration;
-import org.keiosu.visuturing.core.Symbols;
-import org.keiosu.visuturing.core.Transition;
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.diagram.DiagramEditor;
-import org.keiosu.visuturing.mousetools.SimulatingTool;
-import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -26,8 +18,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -40,8 +32,16 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
+import org.keiosu.visuturing.core.Configuration;
+import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.core.Transition;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.diagram.DiagramEditor;
+import org.keiosu.visuturing.mousetools.SimulatingTool;
+import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
 
-public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Runnable, ComponentListener, FocusListener {
+public class DiagramSimulatorPanel extends AbstractSimulatorPanel
+    implements Runnable, ComponentListener, FocusListener {
   private JRadioButton nonDeterminismChooseFirstButton;
   private JRadioButton nonDeterminismChooseLastButton;
   private JRadioButton nonDeterminismRandomButtom;
@@ -108,7 +108,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     List<String> headers = new ArrayList<String>(2);
     headers.add("Input");
     headers.add("Output");
-    resultsTableModel = new DefaultTableModel(new Object[][]{}, headers.toArray());
+    resultsTableModel = new DefaultTableModel(new Object[][] {}, headers.toArray());
     this.resultsTable = new JTable(resultsTableModel);
     this.resultsTable.setFont(new Font("Helvetica", 0, 14));
     JScrollPane var13 = new JScrollPane(this.resultsTable);
@@ -117,18 +117,22 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     this.computationText.setFont(new Font("Helvetica", 0, 14));
     this.computationText.setBackground(Color.white);
     this.computationScroller = new JScrollPane(this.computationText, 20, 32);
-    this.computationScroller.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Computation"));
+    this.computationScroller.setBorder(
+        BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Computation"));
     rightPane.add(this.computationScroller, "South");
     this.sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
     this.add(this.sp);
     double var9 = Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.75D;
     double var11 = this.diagram.getPreferredSize().getWidth();
-    this.sp.setDividerLocation((int)(var11 < var9 ? var11 : var9));
+    this.sp.setDividerLocation((int) (var11 < var9 ? var11 : var9));
     this.diagram.setDescriptionShown(true);
   }
 
   private void addComputation(Configuration var1) {
-    this.computationText.setText(this.computationText.getText().equals(" ") ? var1.toString() : this.computationText.getText() + " " + Symbols.ASSERTION + " " + var1.toString());
+    this.computationText.setText(
+        this.computationText.getText().equals(" ")
+            ? var1.toString()
+            : this.computationText.getText() + " " + Symbols.ASSERTION + " " + var1.toString());
     this.computationText.setCaretPosition(this.computationText.getText().length());
     ++this.noConfigs;
   }
@@ -136,10 +140,10 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
   public void setVisible(boolean var1) {
     super.setVisible(var1);
     if (var1) {
-      int var2 = (int)((this.sp.getBounds().getWidth() - (double)this.sp.getDividerSize()) / 2.0D);
+      int var2 =
+          (int) ((this.sp.getBounds().getWidth() - (double) this.sp.getDividerSize()) / 2.0D);
       this.sp.setDividerLocation(var2);
     }
-
   }
 
   public void play() {
@@ -159,21 +163,20 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
       this.runner = new Thread(this);
       this.runner.start();
     } else {
-      synchronized(this.runner) {
+      synchronized (this.runner) {
         this.paused = false;
         this.runner.notify();
       }
     }
-
   }
 
   public void run() {
     Thread var1 = Thread.currentThread();
 
-    while(true) {
+    while (true) {
       try {
-        synchronized(var1) {
-          while(true) {
+        synchronized (var1) {
+          while (true) {
             if (!this.paused) {
               if (this.stopped) {
                 return;
@@ -185,14 +188,14 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
           }
         }
 
-        Thread.sleep((long)(1000.0D / this.speed));
+        Thread.sleep((long) (1000.0D / this.speed));
         this.simTool.setConfig(null);
         List var2 = this.machine.getNextConfig(this.config);
         int var3 = -1;
         this.prevConfig = this.config;
         List var8;
         if (var2.size() == 1) {
-          this.config = (Configuration)var2.get(0);
+          this.config = (Configuration) var2.get(0);
           if (this.config != null) {
             this.addComputation(this.config);
           }
@@ -200,25 +203,26 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
           var3 = 0;
         } else if (var2.size() > 1) {
           if (this.nonDeterminismChooseFirstButton.isSelected()) {
-            this.config = (Configuration)var2.get(0);
+            this.config = (Configuration) var2.get(0);
             var3 = 0;
           } else if (this.nonDeterminismChooseLastButton.isSelected()) {
             var3 = var2.size() - 1;
-            this.config = (Configuration)var2.get(var3);
+            this.config = (Configuration) var2.get(var3);
           } else if (this.nonDeterminismRandomButtom.isSelected()) {
             Random var4 = new Random();
             var3 = var4.nextInt(var2.size());
-            this.config = (Configuration)var2.get(var3);
+            this.config = (Configuration) var2.get(var3);
           } else {
             var8 = this.machine.nextTransitionsFor(this.config);
-            DiagramSimulatorPanel.ChoiceDialog var5 = new DiagramSimulatorPanel.ChoiceDialog(new Frame(), "Choose a transition", var8);
+            DiagramSimulatorPanel.ChoiceDialog var5 =
+                new DiagramSimulatorPanel.ChoiceDialog(new Frame(), "Choose a transition", var8);
             var5.setVisible(true);
             if (var5.wasStopped()) {
               this.stop();
               return;
             }
 
-            this.config = (Configuration)var2.get(var5.getChoice());
+            this.config = (Configuration) var2.get(var5.getChoice());
             var3 = var5.getChoice();
           }
 
@@ -233,13 +237,13 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
 
         if (var2.size() != 0 && var3 > -1) {
           var8 = this.machine.nextTransitionsFor(this.prevConfig);
-          this.currentTransition = (Transition)var8.get(var3);
+          this.currentTransition = (Transition) var8.get(var3);
         }
 
         this.simTool.setTransition(this.currentTransition);
 
-        for(int var9 = 0; (double)var9 < 10.0D; ++var9) {
-          Thread.sleep((long)(100.0D / this.speed));
+        for (int var9 = 0; (double) var9 < 10.0D; ++var9) {
+          Thread.sleep((long) (100.0D / this.speed));
           this.simTool.increaseFrame();
           this.diagram.repaint();
         }
@@ -261,7 +265,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
   }
 
   public void stop() {
-    synchronized(this.runner) {
+    synchronized (this.runner) {
       this.stopped = true;
     }
 
@@ -271,7 +275,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
   }
 
   public void pause() {
-    synchronized(this.runner) {
+    synchronized (this.runner) {
       this.paused = true;
     }
   }
@@ -280,7 +284,8 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     var resultTableRow = new ArrayList<String>(2);
     resultTableRow.add(startWord);
     if (configuration.getState().equals(Symbols.STATE_HALTING_STATE)) {
-      computationText.setText(computationText.getText() + " [halts on input] " + noConfigs + " steps");
+      computationText.setText(
+          computationText.getText() + " [halts on input] " + noConfigs + " steps");
       computationText.setCaretPosition(computationText.getText().length());
       resultTableRow.add(Symbols.trim(configuration.getWord()));
     } else {
@@ -291,8 +296,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     resultsTableModel.addRow(resultTableRow.toArray());
   }
 
-  public void componentChanged(ComponentEvent var1) {
-  }
+  public void componentChanged(ComponentEvent var1) {}
 
   public void componentResized(ComponentEvent var1) {
     this.zoomDiagram();
@@ -306,8 +310,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     this.zoomDiagram();
   }
 
-  public void componentHidden(ComponentEvent var1) {
-  }
+  public void componentHidden(ComponentEvent var1) {}
 
   public void zoomDiagram() {
     Dimension var7 = this.diagram.getExtents();
@@ -325,14 +328,12 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     this.diagram.setZoom(var1);
   }
 
-  public void focusGained(FocusEvent var1) {
-  }
+  public void focusGained(FocusEvent var1) {}
 
   public void focusLost(FocusEvent var1) {
     if (!this.stopped) {
       this.pause();
     }
-
   }
 
   public void refresh() {
@@ -361,8 +362,8 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
       var6.setBorder(BorderFactory.createTitledBorder("Possible Transitions"));
       ButtonGroup var7 = new ButtonGroup();
 
-      for(int var8 = 0; var8 < var4.size(); ++var8) {
-        Transition var9 = (Transition)var4.get(var8);
+      for (int var8 = 0; var8 < var4.size(); ++var8) {
+        Transition var9 = (Transition) var4.get(var8);
         JRadioButton var10 = new JRadioButton(var9.toString());
         var10.setName(String.valueOf(var8));
         var10.addItemListener(this);
@@ -385,7 +386,14 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
       var13.add(var12);
       var5.add(var13, "East");
       this.pack();
-      this.setLocation((int)((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - this.getSize().getWidth()) / 2.0D), (int)((Toolkit.getDefaultToolkit().getScreenSize().getHeight() - this.getSize().getHeight()) / 2.0D));
+      this.setLocation(
+          (int)
+              ((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - this.getSize().getWidth())
+                  / 2.0D),
+          (int)
+              ((Toolkit.getDefaultToolkit().getScreenSize().getHeight()
+                      - this.getSize().getHeight())
+                  / 2.0D));
       this.setResizable(false);
     }
 
@@ -398,15 +406,14 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel implements Run
     }
 
     public void itemStateChanged(ItemEvent var1) {
-      JRadioButton var2 = (JRadioButton)var1.getSource();
+      JRadioButton var2 = (JRadioButton) var1.getSource();
       if (var2.isSelected()) {
         this.choice = Integer.parseInt(var2.getName());
       }
-
     }
 
     public void actionPerformed(ActionEvent var1) {
-      JButton var2 = (JButton)var1.getSource();
+      JButton var2 = (JButton) var1.getSource();
       if (var2.getName().equals("okay")) {
         this.stopped = false;
       }

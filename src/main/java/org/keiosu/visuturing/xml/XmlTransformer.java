@@ -14,17 +14,20 @@ public class XmlTransformer {
   private final Transformer stylesheet;
 
   public XmlTransformer(String stylesheetFile) throws TransformerConfigurationException {
-    this.stylesheet = TransformerFactory.newDefaultInstance().newTransformer(new StreamSource(new File(stylesheetFile)));
+    this.stylesheet =
+        TransformerFactory.newDefaultInstance()
+            .newTransformer(new StreamSource(new File(stylesheetFile)));
   }
 
-  public void transform(XmlElement xmlElement, OutputStream outputStream) throws TransformerException {
+  public void transform(XmlElement xmlElement, OutputStream outputStream)
+      throws TransformerException {
     String xmlHeader = xmlHeader();
-    this.stylesheet.transform(new StreamSource(new StringReader(xmlHeader + "\n\n" + xmlElement.toXml())), new StreamResult(outputStream));
-
+    this.stylesheet.transform(
+        new StreamSource(new StringReader(xmlHeader + "\n\n" + xmlElement.toXml())),
+        new StreamResult(outputStream));
   }
 
   private String xmlHeader() {
-    return "<?xml version=\"1.0\" ?>\n\n" +
-           "<?program name='VisuTuring' version='2.0.0' ?>";
+    return "<?xml version=\"1.0\" ?>\n\n" + "<?program name='VisuTuring' version='2.0.0' ?>";
   }
 }

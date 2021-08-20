@@ -1,8 +1,5 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -17,6 +14,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JTextArea;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SplashWindow extends JWindow {
   private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -35,7 +34,11 @@ public class SplashWindow extends JWindow {
     contentPane.add(pane);
     label.setVerticalAlignment(0);
     label.setHorizontalAlignment(0);
-    label.setBounds(0, 0, (int)label.getPreferredSize().getWidth(), (int)label.getPreferredSize().getHeight());
+    label.setBounds(
+        0,
+        0,
+        (int) label.getPreferredSize().getWidth(),
+        (int) label.getPreferredSize().getHeight());
     pane.add(label, JLayeredPane.DEFAULT_LAYER);
     this.progressText = new JTextArea(" ");
     this.progressText.setForeground(Color.WHITE);
@@ -46,22 +49,23 @@ public class SplashWindow extends JWindow {
     this.pack();
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Dimension labelSize = label.getPreferredSize();
-    this.setLocation(screenSize.width / 2 - labelSize.width / 2, screenSize.height / 2 - labelSize.height / 2);
+    this.setLocation(
+        screenSize.width / 2 - labelSize.width / 2, screenSize.height / 2 - labelSize.height / 2);
     this.closerRunner = SplashWindow.this::close;
-    this.waitRunner = () -> {
-      try {
-        if (closeDelaySecs > 0) {
-          Thread.sleep(closeDelaySecs);
-        }
+    this.waitRunner =
+        () -> {
+          try {
+            if (closeDelaySecs > 0) {
+              Thread.sleep(closeDelaySecs);
+            }
 
-        SwingUtilities.invokeAndWait(SplashWindow.this.closerRunner);
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-      } catch (InvocationTargetException e) {
-        LOG.error("Error during close: {}", e.getMessage(), e);
-      }
-
-    };
+            SwingUtilities.invokeAndWait(SplashWindow.this.closerRunner);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+          } catch (InvocationTargetException e) {
+            LOG.error("Error during close: {}", e.getMessage(), e);
+          }
+        };
     this.setVisible(true);
   }
 

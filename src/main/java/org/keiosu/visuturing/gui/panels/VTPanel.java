@@ -1,12 +1,12 @@
 package org.keiosu.visuturing.gui.panels;
 
+import static java.util.Objects.requireNonNull;
+
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-
-import static java.util.Objects.requireNonNull;
 
 public class VTPanel extends JPanel {
   protected JPanel panel;
@@ -18,7 +18,11 @@ public class VTPanel extends JPanel {
     setOpaque(false);
     pane.setOpaque(false);
     JLabel imageLabel = new JLabel(createImageIcon("bitmaps/" + imageName));
-    imageLabel.setBounds(0, 0, (int) imageLabel.getPreferredSize().getWidth(), (int) imageLabel.getPreferredSize().getHeight());
+    imageLabel.setBounds(
+        0,
+        0,
+        (int) imageLabel.getPreferredSize().getWidth(),
+        (int) imageLabel.getPreferredSize().getHeight());
     setPreferredSize(imageLabel.getPreferredSize());
     pane.setPreferredSize(imageLabel.getPreferredSize());
     pane.add(imageLabel, JLayeredPane.DEFAULT_LAYER);

@@ -1,9 +1,9 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.panels.EditAlphabetPanel;
 import java.awt.Frame;
 import java.util.List;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.panels.EditAlphabetPanel;
 
 public class EditAlphabetDialog extends AbstractDialog {
   private EditAlphabetPanel alphabetEditor;

@@ -1,8 +1,5 @@
 package org.keiosu.visuturing.gui.panels;
 
-import org.keiosu.visuturing.diagram.DiagramEditor;
-import org.keiosu.visuturing.gui.dialogs.AbstractDialog;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,6 +17,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.keiosu.visuturing.diagram.DiagramEditor;
+import org.keiosu.visuturing.gui.dialogs.AbstractDialog;
 
 public class DiagramPrinter extends AbstractDialog implements ChangeListener, KeyListener {
   private PrintableDiagram diagram;
@@ -117,7 +116,6 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
       widthTF.setEnabled(true);
       heightTF.setEnabled(true);
     }
-
   }
 
   public void stateChanged(ChangeEvent var1) {
@@ -145,7 +143,6 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
         var5.printStackTrace();
       }
     }
-
   }
 
   public void setPrintSize(Dimension var1) {
@@ -164,11 +161,9 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
     return size;
   }
 
-  public void keyTyped(KeyEvent var1) {
-  }
+  public void keyTyped(KeyEvent var1) {}
 
-  public void keyPressed(KeyEvent var1) {
-  }
+  public void keyPressed(KeyEvent var1) {}
 
   public void keyReleased(KeyEvent var1) {
     double var2;

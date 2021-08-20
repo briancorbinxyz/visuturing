@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.persistence.VisuTuringFileFilter;
+import static java.util.Objects.requireNonNull;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -23,8 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import static java.util.Objects.requireNonNull;
+import org.keiosu.visuturing.persistence.VisuTuringFileFilter;
 
 public class SampleDialog extends AbstractDialog implements ListSelectionListener, MouseListener {
   private JList<String> sampleNames;
@@ -64,12 +64,13 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
     fileFilter.addExtension("vt");
 
     try {
-      URL sampleUrl = requireNonNull(SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
+      URL sampleUrl =
+          requireNonNull(SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
       Path path = Paths.get(sampleUrl.toURI());
       File directory = path.toFile();
-      return directory.isDirectory() ? directory.list(fileFilter) : new String []{};
+      return directory.isDirectory() ? directory.list(fileFilter) : new String[] {};
     } catch (Exception ignore) {
-      return new String[]{};
+      return new String[] {};
     }
   }
 
@@ -81,12 +82,12 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
       cancelled = false;
       setVisible(false);
     }
-
   }
 
   public File getSelectedFile() {
     try {
-      URL sampleUrl = requireNonNull(SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
+      URL sampleUrl =
+          requireNonNull(SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
       return Paths.get(sampleUrl.toURI()).resolve(selectedFile).toFile();
     } catch (URISyntaxException e) {
       return null;
@@ -110,22 +111,19 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
     return new ImageIcon(requireNonNull(getClass().getClassLoader().getResource(imageUri)));
   }
 
-  public void mousePressed(MouseEvent event) {
-  }
+  public void mousePressed(MouseEvent event) {}
 
-  public void mouseReleased(MouseEvent event) {
-  }
+  public void mouseReleased(MouseEvent event) {}
 
-  public void mouseEntered(MouseEvent event) {
-  }
+  public void mouseEntered(MouseEvent event) {}
 
-  public void mouseExited(MouseEvent event) {
-  }
+  public void mouseExited(MouseEvent event) {}
 
   class SampleListCellRenderer extends JLabel implements ListCellRenderer<String> {
     ImageIcon icon = SampleDialog.this.createImageIcon("bitmaps/vt.gif");
 
-    public Component getListCellRendererComponent(JList list, String text, int index, boolean selected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(
+        JList list, String text, int index, boolean selected, boolean cellHasFocus) {
       setText(text);
       setIcon(icon);
       setHorizontalAlignment(0);

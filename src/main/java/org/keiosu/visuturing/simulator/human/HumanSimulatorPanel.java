@@ -1,10 +1,5 @@
 package org.keiosu.visuturing.simulator.human;
 
-import org.keiosu.visuturing.core.Configuration;
-import org.keiosu.visuturing.core.Symbols;
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -20,6 +15,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import org.keiosu.visuturing.core.Configuration;
+import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
 
 public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runnable, ImageObserver {
   private Hand hand;
@@ -119,13 +118,18 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
     stateImage = toolkit.getImage(pathToURL("bitmaps/simulator/human/state.gif"));
     instrImage = toolkit.getImage(pathToURL("bitmaps/simulator/human/instr.gif"));
     titleImage = toolkit.getImage(pathToURL("bitmaps/simulator/human/title.gif"));
-    hand = new Hand(pathToURL("bitmaps/simulator/hand.gif"), new Double(0.0D, 16.0D), new Double(450.0D, 400.0D), this);
+    hand =
+        new Hand(
+            pathToURL("bitmaps/simulator/hand.gif"),
+            new Double(0.0D, 16.0D),
+            new Double(450.0D, 400.0D),
+            this);
     runner = null;
   }
 
   public void paintComponent(Graphics graphics) {
     super.paintComponent(graphics);
-    Graphics2D graphics2D = (Graphics2D)graphics;
+    Graphics2D graphics2D = (Graphics2D) graphics;
     tape.draw(graphics2D);
     hand.draw(graphics2D);
     graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -151,17 +155,18 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
     config = new Configuration(currentState, inputWord, 0);
     Symbols.trimToHead(config);
     hand.moveTo(
-            25, (double) ((int)tape.getPosition().getX() + tape.getCellWidth() + 2), (double) ((int)tape.getPosition().getY() + 2)
-    );
+        25,
+        (double) ((int) tape.getPosition().getX() + tape.getCellWidth() + 2),
+        (double) ((int) tape.getPosition().getY() + 2));
     if (config.getWord().length() > 0) {
       initializingTape = true;
     }
 
-    while(true) {
+    while (true) {
       try {
         simulationLock.lock();
         try {
-          while(true) {
+          while (true) {
             if (!paused) {
               if (stopped) {
                 return;
@@ -185,7 +190,7 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         }
 
         repaint();
-        Thread.sleep((long)((1000.0 / (double)fps) / speed));
+        Thread.sleep((long) ((1000.0 / (double) fps) / speed));
       } catch (InterruptedException ie) {
         Thread.currentThread().interrupt();
       }
@@ -199,7 +204,10 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
           hand.squiggle(8, tape.getCellBounds());
           charWaiting = inputWord.charAt(inputIndex++);
         } else if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
-          hand.moveTo(5, (double) ((int)hand.getLocation().getX() + tape.getCellWidth()), (double) (int)hand.getLocation().getY());
+          hand.moveTo(
+              5,
+              (double) ((int) hand.getLocation().getX() + tape.getCellWidth()),
+              (double) (int) hand.getLocation().getY());
         } else {
           tape.forward();
         }
@@ -207,7 +215,10 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         textOn = !textOn;
       } else {
         tape.reset();
-        hand.moveTo(20, (double) ((int)tape.getPosition().getX() + tape.getCellWidth() + 1), (double) ((int)tape.getPosition().getY() + 1));
+        hand.moveTo(
+            20,
+            (double) ((int) tape.getPosition().getX() + tape.getCellWidth() + 1),
+            (double) ((int) tape.getPosition().getY() + 1));
         initializingTape = false;
       }
 
@@ -232,13 +243,19 @@ public class HumanSimulatorPanel extends AbstractSimulatorPanel implements Runna
         if (configuration != null) {
           if (configuration.getIndex() < config.getIndex()) {
             if (tape.findCellAtPoint(hand.getLocation()) <= tape.visibleCells() / 2) {
-              hand.moveTo(5, (double) ((int)hand.getLocation().getX() - tape.getCellWidth()), (double) (int)hand.getLocation().getY());
+              hand.moveTo(
+                  5,
+                  (double) ((int) hand.getLocation().getX() - tape.getCellWidth()),
+                  (double) (int) hand.getLocation().getY());
             } else {
               tape.reverse();
             }
           } else if (configuration.getIndex() > config.getIndex()) {
             if (tape.findCellAtPoint(hand.getLocation()) < tape.visibleCells() / 2) {
-              hand.moveTo(5, (double) ((int)hand.getLocation().getX() + tape.getCellWidth()), (double) (int)hand.getLocation().getY());
+              hand.moveTo(
+                  5,
+                  (double) ((int) hand.getLocation().getX() + tape.getCellWidth()),
+                  (double) (int) hand.getLocation().getY());
             } else {
               tape.forward();
             }

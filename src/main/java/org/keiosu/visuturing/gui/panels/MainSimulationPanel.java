@@ -1,16 +1,15 @@
 package org.keiosu.visuturing.gui.panels;
 
-import org.keiosu.visuturing.core.Symbols;
-import org.keiosu.visuturing.gui.common.CommonGraphics;
-import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
+import javax.swing.*;
+import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.gui.common.CommonGraphics;
+import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
 
 public class MainSimulationPanel extends JPanel implements ActionListener, KeyListener {
   public static final Dimension DIAGRAM_SIZE = new Dimension(5000, 5000);
@@ -22,7 +21,8 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
   public static final String CLEAR = "Clear the tape";
   public static final String INCREASE_SPEED = "Increase the speed";
   public static final String DECREASE_SPEED = "Decrease the speed";
-  public static final String INSTRUCTIONS = "Type Input here. Press INSERT to insert the blank character.";
+  public static final String INSTRUCTIONS =
+      "Type Input here. Press INSERT to insert the blank character.";
   ActionListener externalListener;
   AbstractSimulatorPanel simulator;
   MainSimulationPanel.InputWordBox inputBox;
@@ -98,7 +98,7 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
 
   public void actionPerformed(ActionEvent var1) {
     if (var1.getSource() instanceof JComponent) {
-      JComponent var2 = (JComponent)var1.getSource();
+      JComponent var2 = (JComponent) var1.getSource();
       String var3 = var2.getName();
       if (var3.equals("Simulate this machine on the input word")) {
         if (this.inputBox.getText() != null) {
@@ -124,19 +124,18 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
         this.popupAlphabet(var4);
       }
     }
-
   }
 
   private boolean isAcceptableWord(String var1) {
     List var2 = this.simulator.getMachine().getAlphabet();
     boolean var3 = true;
 
-    for(int var4 = 0; var4 < var1.length(); ++var4) {
+    for (int var4 = 0; var4 < var1.length(); ++var4) {
       boolean var5 = false;
       char var6 = var1.charAt(var4);
 
-      for(int var7 = 0; var7 < var2.size(); ++var7) {
-        String var8 = (String)var2.get(var7);
+      for (int var7 = 0; var7 < var2.size(); ++var7) {
+        String var8 = (String) var2.get(var7);
         if (var8.charAt(0) == var6) {
           var5 = true;
           break;
@@ -150,7 +149,11 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
     }
 
     if (!var3) {
-      JOptionPane.showMessageDialog(this, "Invalid Input.\n\nOnly symbols from the alphabet may be     \nused in the input word. \n\nClick the ADD SYMBOL button for a list of \nvalid symbols.", "Invalid Input", 0);
+      JOptionPane.showMessageDialog(
+          this,
+          "Invalid Input.\n\nOnly symbols from the alphabet may be     \nused in the input word. \n\nClick the ADD SYMBOL button for a list of \nvalid symbols.",
+          "Invalid Input",
+          0);
     }
 
     return var3;
@@ -165,25 +168,38 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
     this.alphabetMenu = new JPopupMenu("Alphabet");
     List var2 = this.simulator.getMachine().getAlphabet();
     Font var3 = new Font("Helvetica", 0, 14);
-    ActionListener var4 = new ActionListener() {
-      public void actionPerformed(ActionEvent var1) {
-        String var2 = ((Component)var1.getSource()).getName();
-        if (var2.equals("Close alphabet menu")) {
-          MainSimulationPanel.this.alphabetMenu.setVisible(false);
-        } else if (var2.equals("Clear the tape")) {
-          MainSimulationPanel.this.inputBox.setText("");
-        } else {
-          MainSimulationPanel.this.inputBox.setText(MainSimulationPanel.this.inputBox.getText().substring(0, MainSimulationPanel.this.inputBox.getField().getCaretPosition()) + var2 + MainSimulationPanel.this.inputBox.getText().substring(MainSimulationPanel.this.inputBox.getField().getCaretPosition(), MainSimulationPanel.this.inputBox.getField().getText().length()));
-        }
-      }
-    };
+    ActionListener var4 =
+        new ActionListener() {
+          public void actionPerformed(ActionEvent var1) {
+            String var2 = ((Component) var1.getSource()).getName();
+            if (var2.equals("Close alphabet menu")) {
+              MainSimulationPanel.this.alphabetMenu.setVisible(false);
+            } else if (var2.equals("Clear the tape")) {
+              MainSimulationPanel.this.inputBox.setText("");
+            } else {
+              MainSimulationPanel.this.inputBox.setText(
+                  MainSimulationPanel.this
+                          .inputBox
+                          .getText()
+                          .substring(
+                              0, MainSimulationPanel.this.inputBox.getField().getCaretPosition())
+                      + var2
+                      + MainSimulationPanel.this
+                          .inputBox
+                          .getText()
+                          .substring(
+                              MainSimulationPanel.this.inputBox.getField().getCaretPosition(),
+                              MainSimulationPanel.this.inputBox.getField().getText().length()));
+            }
+          }
+        };
     JMenuItem var5 = this.alphabetMenu.add("clear");
     var5.setName("Clear the tape");
     var5.addActionListener(var4);
     this.alphabetMenu.addSeparator();
 
-    for(int var6 = 0; var6 < var2.size(); ++var6) {
-      String var7 = (String)var2.get(var6);
+    for (int var6 = 0; var6 < var2.size(); ++var6) {
+      String var7 = (String) var2.get(var6);
       if (var7.charAt(0) != Symbols.LEFT_END_MARKER) {
         JMenuItem var8 = new JMenuItem(var7);
         var8.setFont(var3);
@@ -205,17 +221,21 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
     this.simulator.refresh();
   }
 
-  public void keyTyped(KeyEvent var1) {
-  }
+  public void keyTyped(KeyEvent var1) {}
 
-  public void keyReleased(KeyEvent var1) {
-  }
+  public void keyReleased(KeyEvent var1) {}
 
   public void keyPressed(KeyEvent var1) {
     if (var1.getKeyCode() == 155) {
-      this.inputBox.setText(this.inputBox.getText().substring(0, this.inputBox.getField().getCaretPosition()) + Symbols.SPACE + this.inputBox.getText().substring(this.inputBox.getField().getCaretPosition(), this.inputBox.getField().getText().length()));
+      this.inputBox.setText(
+          this.inputBox.getText().substring(0, this.inputBox.getField().getCaretPosition())
+              + Symbols.SPACE
+              + this.inputBox
+                  .getText()
+                  .substring(
+                      this.inputBox.getField().getCaretPosition(),
+                      this.inputBox.getField().getText().length()));
     }
-
   }
 
   public void setVisible(boolean var1) {
@@ -224,7 +244,6 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
       this.alphabetMenu.setVisible(false);
       this.alphabetMenu = null;
     }
-
   }
 
   public class SpeedShifter extends JPanel {
@@ -232,8 +251,13 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
 
     public SpeedShifter() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(MainSimulationPanel.this.createImageIcon("bitmaps/simulator/speed.gif"));
-      var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
+      JLabel var2 =
+          new JLabel(MainSimulationPanel.this.createImageIcon("bitmaps/simulator/speed.gif"));
+      var2.setBounds(
+          0,
+          0,
+          (int) var2.getPreferredSize().getWidth(),
+          (int) var2.getPreferredSize().getHeight());
       JButton var3 = MainSimulationPanel.this.createMediaButton("Increase the speed", "increase");
       var3.setBounds(14, 18, 22, 22);
       JButton var4 = MainSimulationPanel.this.createMediaButton("Decrease the speed", "decrease");
@@ -258,8 +282,13 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
 
     public InputWordBox(ActionListener var2, KeyListener var3) {
       super(new BorderLayout(0, 0));
-      JLabel var4 = new JLabel(MainSimulationPanel.this.createImageIcon("bitmaps/simulator/inputw.gif"));
-      var4.setBounds(0, 0, (int)var4.getPreferredSize().getWidth(), (int)var4.getPreferredSize().getHeight());
+      JLabel var4 =
+          new JLabel(MainSimulationPanel.this.createImageIcon("bitmaps/simulator/inputw.gif"));
+      var4.setBounds(
+          0,
+          0,
+          (int) var4.getPreferredSize().getWidth(),
+          (int) var4.getPreferredSize().getHeight());
       this.inputWord = new JTextField("");
       this.inputWord.setFont(new Font("monospaced", 0, 16));
       this.inputWord.setBounds(21, 17, 260, 23);
@@ -291,9 +320,16 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
   public class SymbolButton extends JPanel {
     public SymbolButton() {
       super(new BorderLayout(0, 0));
-      JLabel var2 = new JLabel(MainSimulationPanel.this.createImageIcon("bitmaps/simulator/alphabet.gif"));
-      var2.setBounds(0, 0, (int)var2.getPreferredSize().getWidth(), (int)var2.getPreferredSize().getHeight());
-      JButton var3 = MainSimulationPanel.this.createMediaButton("Insert a symbol from the alphabet", "addsymbol");
+      JLabel var2 =
+          new JLabel(MainSimulationPanel.this.createImageIcon("bitmaps/simulator/alphabet.gif"));
+      var2.setBounds(
+          0,
+          0,
+          (int) var2.getPreferredSize().getWidth(),
+          (int) var2.getPreferredSize().getHeight());
+      JButton var3 =
+          MainSimulationPanel.this.createMediaButton(
+              "Insert a symbol from the alphabet", "addsymbol");
       var3.setBounds(7, 19, 78, 18);
       JLayeredPane var4 = new JLayeredPane();
       var4.setPreferredSize(var2.getPreferredSize());

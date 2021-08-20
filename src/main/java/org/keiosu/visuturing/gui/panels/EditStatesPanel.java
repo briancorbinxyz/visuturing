@@ -1,17 +1,11 @@
 package org.keiosu.visuturing.gui.panels;
 
-import org.keiosu.visuturing.core.State;
-import org.keiosu.visuturing.core.Symbols;
-import org.keiosu.visuturing.core.Transition;
-import org.keiosu.visuturing.core.TuringMachine;
-
 import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -21,6 +15,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.keiosu.visuturing.core.State;
+import org.keiosu.visuturing.core.Symbols;
+import org.keiosu.visuturing.core.Transition;
+import org.keiosu.visuturing.core.TuringMachine;
 
 public class EditStatesPanel extends VTPanel implements ActionListener, ListSelectionListener {
   JTextField stateField;
@@ -44,8 +42,8 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
     List var2 = this.machine.getTransitions();
     boolean var3 = false;
 
-    for(int var4 = 0; var4 < var2.size(); ++var4) {
-      Transition var5 = (Transition)var2.get(var4);
+    for (int var4 = 0; var4 < var2.size(); ++var4) {
+      Transition var5 = (Transition) var2.get(var4);
       if (var5.getCurrentState().equals(var1) || var5.getNextState().equals(var1)) {
         var3 = true;
         return var3;
@@ -102,7 +100,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
 
   public void actionPerformed(ActionEvent var1) {
     if (var1.getSource() instanceof JButton) {
-      JButton var2 = (JButton)var1.getSource();
+      JButton var2 = (JButton) var1.getSource();
       int var5;
       if (var2.getName().equals("Add")) {
         String var3 = this.stateField.getText();
@@ -110,13 +108,15 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
           boolean var4 = false;
           var5 = 0;
 
-          while(var5 < this.states.size() && !var4) {
-            if (var3.equals(((State)this.states.get(var5++)).getName())) {
+          while (var5 < this.states.size() && !var4) {
+            if (var3.equals(((State) this.states.get(var5++)).getName())) {
               var4 = true;
             }
           }
 
-          if (!var4 && !var3.equals(Symbols.STATE_HALTING_STATE) && !var3.equals(Symbols.STATE_BEGINNING_STATE)) {
+          if (!var4
+              && !var3.equals(Symbols.STATE_HALTING_STATE)
+              && !var3.equals(Symbols.STATE_BEGINNING_STATE)) {
             this.states.add(new State(var3, new Point(100 * (this.noAdditions + 1), 50)));
             ++this.noAdditions;
           }
@@ -130,8 +130,12 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
       } else if (var2.getName().equals("Remove")) {
         int var6 = this.stateList.getSelectedIndex();
         if (var6 > -1) {
-          if (this.hasTransitions(((State)this.states.get(var6)).getName())) {
-            JOptionPane.showMessageDialog(this, "The selected state has one or more transitions.\n\nPlease delete these before removing the state.", "VisuTuring - Integrity Protect", 0);
+          if (this.hasTransitions(((State) this.states.get(var6)).getName())) {
+            JOptionPane.showMessageDialog(
+                this,
+                "The selected state has one or more transitions.\n\nPlease delete these before removing the state.",
+                "VisuTuring - Integrity Protect",
+                0);
           } else {
             this.states.remove(var6);
             this.stateList.setListData(this.states.toArray());
@@ -142,27 +146,31 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
         boolean var7 = false;
         List var8 = new ArrayList();
 
-        for(var5 = 0; var5 < this.states.size(); ++var5) {
-          if (!((State)this.states.get(var5)).getName().equals(Symbols.STATE_BEGINNING_STATE) && !((State)this.states.get(var5)).getName().equals(Symbols.STATE_HALTING_STATE)) {
-            if (this.hasTransitions(((State)this.states.get(var5)).getName())) {
+        for (var5 = 0; var5 < this.states.size(); ++var5) {
+          if (!((State) this.states.get(var5)).getName().equals(Symbols.STATE_BEGINNING_STATE)
+              && !((State) this.states.get(var5)).getName().equals(Symbols.STATE_HALTING_STATE)) {
+            if (this.hasTransitions(((State) this.states.get(var5)).getName())) {
               var7 = true;
-              var8.add((State)this.states.get(var5));
+              var8.add((State) this.states.get(var5));
             }
           } else {
-            var8.add((State)this.states.get(var5));
+            var8.add((State) this.states.get(var5));
           }
         }
 
         this.states = var8;
         this.stateList.setListData(this.states.toArray());
         if (var7) {
-          JOptionPane.showMessageDialog(this, "One or more of the states have transitions and were not removed.\n\nPlease delete these tranistions before removing the state(s).", "VisuTuring - Integrity Protect", 0);
+          JOptionPane.showMessageDialog(
+              this,
+              "One or more of the states have transitions and were not removed.\n\nPlease delete these tranistions before removing the state(s).",
+              "VisuTuring - Integrity Protect",
+              0);
         }
 
         this.removeAllButton.setEnabled(false);
       }
     }
-
   }
 
   public void valueChanged(ListSelectionEvent var1) {
@@ -172,8 +180,9 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
   public void updateButtonStates() {
     int var1 = this.stateList.getSelectedIndex();
     if (var1 > -1) {
-      String var2 = ((State)this.states.get(var1)).getName();
-      if (!var2.equals(Symbols.STATE_BEGINNING_STATE) && !var2.equals(Symbols.STATE_HALTING_STATE)) {
+      String var2 = ((State) this.states.get(var1)).getName();
+      if (!var2.equals(Symbols.STATE_BEGINNING_STATE)
+          && !var2.equals(Symbols.STATE_HALTING_STATE)) {
         this.removeButton.setEnabled(true);
       } else {
         this.removeButton.setEnabled(false);
@@ -187,7 +196,6 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
     } else if (this.removeAllButton.isEnabled()) {
       this.removeAllButton.setEnabled(false);
     }
-
   }
 
   public List<State> getStates() {

@@ -1,16 +1,16 @@
 package org.keiosu.visuturing.gui.dialogs;
 
-import org.keiosu.visuturing.core.TuringMachine;
-import org.keiosu.visuturing.gui.panels.EditAlphabetPanel;
-import org.keiosu.visuturing.gui.panels.EditDescriptionPanel;
-import org.keiosu.visuturing.gui.panels.EditStatesPanel;
-import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 import java.awt.CardLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import org.keiosu.visuturing.core.TuringMachine;
+import org.keiosu.visuturing.gui.panels.EditAlphabetPanel;
+import org.keiosu.visuturing.gui.panels.EditDescriptionPanel;
+import org.keiosu.visuturing.gui.panels.EditStatesPanel;
+import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 
 public class CreationWizard extends AbstractDialog implements ActionListener {
   private TuringMachine tm;
@@ -101,7 +101,7 @@ public class CreationWizard extends AbstractDialog implements ActionListener {
   }
 
   private void updateTuringMachine() {
-    switch(cardIndex) {
+    switch (cardIndex) {
       case 0:
         tm.setName(edp.getName());
         tm.setDescription(edp.getDescription());
