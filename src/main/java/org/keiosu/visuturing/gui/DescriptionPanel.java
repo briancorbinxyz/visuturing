@@ -1,6 +1,8 @@
 package org.keiosu.visuturing.gui;
 
 import org.keiosu.visuturing.core.TuringMachine;
+
+import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -9,88 +11,67 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import javax.swing.JPanel;
 
 public class DescriptionPanel extends JPanel {
-  TuringMachine machine;
-  AttributedCharacterIterator paragraph;
 
-  public DescriptionPanel(TuringMachine var1) {
-    this.machine = var1;
-    String var2 = var1.getDescription();
-    Font var3 = new Font("Helvetica", 0, 15);
-    AttributedString var4 = new AttributedString(var2);
-    var4.addAttribute(TextAttribute.FONT, var3);
-    this.paragraph = var4.getIterator();
+  private final TuringMachine machine;
+
+  private AttributedCharacterIterator paragraph;
+
+  public DescriptionPanel(TuringMachine machine) {
+    this.machine = machine;
   }
 
-  public void paintComponent(Graphics var1) {
-    Graphics2D var2 = (Graphics2D)var1;
-    var2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    GradientPaint var3 = new GradientPaint(0.0F, 0.0F, new Color(204, 218, 234), 165.0F, 0.0F, Color.white);
-    int var4 = this.getWidth();
-    var2.setPaint(var3);
-    Rectangle var5 = var2.getClipBounds();
-    var2.fill(var5);
-    String var6 = this.machine.getName();
-    String var7 = this.machine.getDescription();
-    Font var8 = new Font("Helvetica", 0, 100);
-    var2.setFont(var8);
-    FontRenderContext var9 = var2.getFontRenderContext();
-    var2.setColor(new Color(237, 242, 250));
-    String var10 = new String(var6);
-    TextLayout var11 = new TextLayout(var10, var8, var9);
-    var2.setClip(0, 0, (int)var5.getWidth(), 75);
-    float var12 = (float)var11.getBounds().getWidth();
-    AffineTransform var13 = new AffineTransform();
-    var13.setToTranslation((double)((float)var4 - var12), 90.0D);
-    var13.rotate(Math.toRadians(-3.0D));
-    Shape var14 = var11.getOutline(var13);
-    var2.fill(var14);
-    var2.setClip(var5);
-    var2.setStroke(new BasicStroke(2.0F));
-    var2.drawLine(0, 75, (int)var5.getWidth(), 75);
-    var8 = new Font("Helvetica", 0, 50);
-    var2.setColor(new Color(177, 194, 217));
-    var10 = new String(var6);
-    var11 = new TextLayout(var10, var8, var9);
-    var12 = (float)var11.getBounds().getWidth();
-    var13.setToTranslation((double)((float)var4 - var12 - 50.0F), 50.0D);
-    var14 = var11.getOutline(var13);
-    var2.fill(var14);
-    var2.setColor(Color.BLACK);
-    var9 = var2.getFontRenderContext();
-    var8 = new Font("Helvetica", 0, 15);
-    AttributedString var15 = new AttributedString(var7);
-    var15.addAttribute(TextAttribute.FONT, var8);
-    this.paragraph = var15.getIterator();
-    LineBreakMeasurer var16 = new LineBreakMeasurer(this.paragraph, var9);
-    var16.setPosition(this.paragraph.getBeginIndex());
-    float var17 = 100.0F;
-    short var18 = 200;
-    int var19 = this.getWidth() - var18;
+  public void paintComponent(Graphics graphics) {
+    Graphics2D canvas = (Graphics2D)graphics;
+    canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    applyPaint(canvas);
+    Rectangle clipBounds = canvas.getClipBounds();
+    canvas.fill(clipBounds);
+    canvas.setFont(new Font("Helvetica", Font.PLAIN, 100));
+    canvas.setColor(new Color(237, 242, 250));
+    TextLayout largeMachineName = new TextLayout(this.machine.getName(), new Font("Helvetica", Font.PLAIN, 100), canvas.getFontRenderContext());
+    canvas.setClip(0, 0, (int) clipBounds.getWidth(), 75);
+    AffineTransform transform = new AffineTransform();
+    transform.setToTranslation((float) this.getWidth() - (float) largeMachineName.getBounds().getWidth(), 90.0D);
+    transform.rotate(Math.toRadians(-3.0D));
+    canvas.fill(largeMachineName.getOutline(transform));
+    canvas.setClip(clipBounds);
+    canvas.setStroke(new BasicStroke(2.0F));
+    canvas.drawLine(0, 75, (int)clipBounds.getWidth(), 75);
+    canvas.setColor(new Color(177, 194, 217));
+    transform.setToTranslation((float) this.getWidth() - (float) new TextLayout(this.machine.getName(), new Font("Helvetica", Font.PLAIN, 50), canvas.getFontRenderContext()).getBounds().getWidth() - 50.0F, 50.0D);
+    canvas.fill(new TextLayout(this.machine.getName(), new Font("Helvetica", Font.PLAIN, 50), canvas.getFontRenderContext()).getOutline(transform));
+    canvas.setColor(Color.BLACK);
+    this.paragraph = asAttributedString(machine.getDescription()).getIterator();
+    LineBreakMeasurer measurer = new LineBreakMeasurer(this.paragraph, canvas.getFontRenderContext());
+    measurer.setPosition(this.paragraph.getBeginIndex());
+    applyParagraph(canvas, measurer, (float) (this.getWidth() - 200));
+  }
 
-    TextLayout var21;
-    for(int var20 = this.paragraph.getEndIndex(); var16.getPosition() < var20; var17 += var21.getDescent() + var21.getLeading()) {
-      var21 = var16.nextLayout((float)var19);
-      var17 += var21.getAscent() * 2.0F;
-      float var22;
-      if (var21.isLeftToRight()) {
-        var22 = (float)var18;
-      } else {
-        var22 = (float)var19 - var21.getAdvance();
-      }
-
-      var21.draw(var2, var22, var17);
+  private void applyParagraph(Graphics2D canvas, LineBreakMeasurer measurer, float wrappingWidth) {
+    TextLayout nextLine;
+    float yOffset = 100.0f;
+    for(int endIndex = this.paragraph.getEndIndex(); measurer.getPosition() < endIndex; yOffset += nextLine.getDescent() + nextLine.getLeading()) {
+      nextLine = measurer.nextLayout(wrappingWidth);
+      yOffset += nextLine.getAscent() * 2.0F;
+      nextLine.draw(canvas, nextLine.isLeftToRight() ? (float) 200.0 : wrappingWidth - nextLine.getAdvance(), yOffset);
     }
+  }
 
+  private void applyPaint(Graphics2D canvas) {
+    canvas.setPaint(new GradientPaint(0.0F, 0.0F, new Color(204, 218, 234), 165.0F, 0.0F, Color.white));
+  }
+
+  private AttributedString asAttributedString(String text) {
+    AttributedString attributedText = new AttributedString(text);
+    attributedText.addAttribute(TextAttribute.FONT, new Font("Helvetica", Font.PLAIN, 15));
+    return attributedText;
   }
 }
