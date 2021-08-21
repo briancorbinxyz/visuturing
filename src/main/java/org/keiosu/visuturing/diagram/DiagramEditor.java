@@ -29,14 +29,12 @@ import org.keiosu.visuturing.core.Symbols;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.DiagramPrinter;
-import org.keiosu.visuturing.mousetools.AbstractMouseTool;
-import org.keiosu.visuturing.mousetools.SelectTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramSelectTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramTool;
 import org.keiosu.visuturing.persistence.Persistence;
 
 public class DiagramEditor extends JPanel {
     public static double BORDER = 20.0D;
-    public static final double STATE_RADIUS = 20.0D;
-    public static final double LOOP_LENGTH = 60.0D;
     public static final Color STATE_COLOUR = new Color(255, 255, 255);
     public static final Color HALTING_STATE_COLOUR = new Color(255, 255, 255);
     public static final Color SELECTED_STATE_COLOUR = new Color(255, 255, 204);
@@ -44,11 +42,12 @@ public class DiagramEditor extends JPanel {
     public static final int TRANSITION_MARGIN = 10;
     public static final int ARROW_LENGTH = 7;
     public boolean gridOn;
-    private TuringMachine currentMachine;
+    private final TuringMachine currentMachine;
     private State selectedState;
     private Transition selectedTransition;
+    public Diagram diagram;
     private DiagramEditor.Mousey m;
-    private AbstractMouseTool tool;
+    private TuringMachineDiagramTool tool;
     protected AffineTransform transformation;
     private double[] zoomList;
     private int zoomIndex;
@@ -58,8 +57,9 @@ public class DiagramEditor extends JPanel {
         this.currentMachine = machine;
         this.gridOn = true;
         this.selectedState = null;
-        this.tool = new SelectTool(this);
+        this.tool = new TuringMachineDiagramSelectTool(this);
         this.transformation = new AffineTransform();
+        this.diagram = new Diagram();
         this.m = new DiagramEditor.Mousey();
         this.addMouseListener(this.m);
         this.addMouseMotionListener(this.m);
@@ -70,7 +70,7 @@ public class DiagramEditor extends JPanel {
     }
 
     public void revertToSelect() {
-        this.setTool(new SelectTool(this));
+        this.setTool(new TuringMachineDiagramSelectTool(this));
     }
 
     public void print() {
@@ -84,7 +84,8 @@ public class DiagramEditor extends JPanel {
     public void drawState(State state, Graphics2D graphics2D) {
         double x = state.getLocation().getX();
         double y = state.getLocation().getY();
-        Double stateShape = new Double(x - STATE_RADIUS, y - STATE_RADIUS, 40.0D, 40.0D);
+        Double stateShape =
+                new Double(x - Diagram.STATE_RADIUS, y - Diagram.STATE_RADIUS, 40.0D, 40.0D);
         if (state.getName().equals(Symbols.STATE_HALTING_STATE)) {
             graphics2D.setColor(HALTING_STATE_COLOUR);
         } else if (this.selectedState == state) {
@@ -98,7 +99,11 @@ public class DiagramEditor extends JPanel {
         graphics2D.draw(stateShape);
         if (state.getName().equals(Symbols.STATE_HALTING_STATE)) {
             graphics2D.draw(
-                    new Double(x - STATE_RADIUS + 5.0D, y - STATE_RADIUS + 5.0D, 30.0D, 30.0D));
+                    new Double(
+                            x - Diagram.STATE_RADIUS + 5.0D,
+                            y - Diagram.STATE_RADIUS + 5.0D,
+                            30.0D,
+                            30.0D));
         }
 
         graphics2D.setColor(Color.BLACK);
@@ -117,10 +122,16 @@ public class DiagramEditor extends JPanel {
         if (state.getName().equals(Symbols.STATE_BEGINNING_STATE)) {
             graphics2D.draw(
                     new java.awt.geom.Line2D.Double(
-                            x - STATE_RADIUS - 12.0D, y - 12.0D, x - STATE_RADIUS, y));
+                            x - Diagram.STATE_RADIUS - 12.0D,
+                            y - 12.0D,
+                            x - Diagram.STATE_RADIUS,
+                            y));
             graphics2D.draw(
                     new java.awt.geom.Line2D.Double(
-                            x - STATE_RADIUS - 12.0D, y + 12.0D, x - STATE_RADIUS, y));
+                            x - Diagram.STATE_RADIUS - 12.0D,
+                            y + 12.0D,
+                            x - Diagram.STATE_RADIUS,
+                            y));
         }
     }
 
@@ -142,7 +153,11 @@ public class DiagramEditor extends JPanel {
         int var13;
         int var14;
         if (!transition.getCurrentState().equals(transition.getNextState())) {
-            QuadCurve2D var8 = (QuadCurve2D) this.getGraphicEdge(transition);
+            QuadCurve2D var8 =
+                    (QuadCurve2D)
+                            this.diagram.transitionCurve(
+                                    transition,
+                                    this.currentMachine.stateFor(transition.getCurrentState()));
             graphics2D.draw(var8);
             cp = var8.getCtrlPt();
             p2 = var8.getP2();
@@ -152,7 +167,7 @@ public class DiagramEditor extends JPanel {
             var8.subdivide(var10, var11);
             var12 = new Point((int) var10.getP2().getX(), (int) var10.getP2().getY());
             var13 = (int) graphics2D.getFontMetrics().getStringBounds(var9, graphics2D).getWidth();
-            var14 = 10;
+            var14 = TRANSITION_MARGIN;
             if (var10.getY1() < var10.getY2()) {
                 var14 = -(var14 + graphics2D.getFontMetrics().getAscent());
             }
@@ -160,7 +175,11 @@ public class DiagramEditor extends JPanel {
             graphics2D.drawString(
                     var9, (int) (var12.getX() - (double) (var13 / 2)), (int) var12.getY() - var14);
         } else {
-            CubicCurve2D var15 = (CubicCurve2D) this.getGraphicEdge(transition);
+            CubicCurve2D var15 =
+                    (CubicCurve2D)
+                            this.diagram.transitionCurve(
+                                    transition,
+                                    this.currentMachine.stateFor(transition.getCurrentState()));
             graphics2D.draw(var15);
             cp = var15.getCtrlP2();
             p2 = var15.getP2();
@@ -170,7 +189,7 @@ public class DiagramEditor extends JPanel {
             var15.subdivide(var17, var19);
             var12 = new Point((int) var17.getP2().getX(), (int) var17.getP2().getY());
             var13 = (int) graphics2D.getFontMetrics().getStringBounds(var9, graphics2D).getWidth();
-            var14 = 10;
+            var14 = TRANSITION_MARGIN;
             if (var17.getY1() < var17.getY2()) {
                 var14 = -(var14 + graphics2D.getFontMetrics().getAscent());
             }
@@ -242,13 +261,9 @@ public class DiagramEditor extends JPanel {
         }
     }
 
-    public void setTool(AbstractMouseTool var1) {
+    public void setTool(TuringMachineDiagramTool var1) {
         this.tool = var1;
         this.setCursor(var1.getCursor());
-    }
-
-    public void setCurrentMachine(TuringMachine var1) {
-        this.currentMachine = var1;
     }
 
     public void setSelectedState(State var1) {
@@ -259,7 +274,7 @@ public class DiagramEditor extends JPanel {
         this.selectedTransition = var1;
     }
 
-    public AbstractMouseTool getTool() {
+    public TuringMachineDiagramTool getTool() {
         return this.tool;
     }
 
@@ -353,12 +368,12 @@ public class DiagramEditor extends JPanel {
             State var8 = (State) var6.get(var7);
             double var9 = var8.getLocation().getX();
             double var11 = var8.getLocation().getY();
-            if (var2 < var9 + STATE_RADIUS + BORDER) {
-                var2 = var9 + STATE_RADIUS + BORDER;
+            if (var2 < var9 + Diagram.STATE_RADIUS + BORDER) {
+                var2 = var9 + Diagram.STATE_RADIUS + BORDER;
             }
 
-            if (var4 < var11 + STATE_RADIUS + BORDER) {
-                var4 = var11 + STATE_RADIUS + BORDER;
+            if (var4 < var11 + Diagram.STATE_RADIUS + BORDER) {
+                var4 = var11 + Diagram.STATE_RADIUS + BORDER;
             }
         }
 
@@ -367,7 +382,9 @@ public class DiagramEditor extends JPanel {
 
         for (int var16 = 0; var16 < var14.size(); ++var16) {
             Transition var10 = (Transition) var14.get(var16);
-            Shape var13 = this.getGraphicEdge(var10);
+            Shape var13 =
+                    this.diagram.transitionCurve(
+                            var10, this.currentMachine.stateFor(var10.getCurrentState()));
             Rectangle var12 = var15.createStrokedShape(var13).getBounds();
             if (var2 < var12.getX() + var12.getWidth() + BORDER) {
                 var2 = var12.getX() + var12.getWidth() + BORDER;
@@ -388,58 +405,6 @@ public class DiagramEditor extends JPanel {
         Dimension var2 = this.getExtents();
         BufferedImage var3 = this.makeBuffer((int) var2.getWidth(), (int) var2.getHeight());
         Persistence.saveJPEG(var3, var1.toString());
-    }
-
-    public Shape getGraphicEdge(Transition var1) {
-        Point2D var2 = var1.getP1();
-        Point2D var3 = var1.getP2();
-        Point2D var4 = var1.getControlPoint();
-        if (var1.getCurrentState().equals(var1.getNextState())) {
-            Point2D var25 = this.currentMachine.stateFor(var1.getCurrentState()).getLocation();
-            double var6 =
-                    Math.sqrt(
-                            (var4.getX() - var25.getX()) * (var4.getX() - var25.getX())
-                                    + (var4.getY() - var25.getY()) * (var4.getY() - var25.getY()));
-            double var8 = Math.sqrt(3600.0D + var6 * var6);
-            double var10 = Math.atan(LOOP_LENGTH / var6);
-            double var12 = var6 * (var4.getX() - var25.getX());
-            double var14 = Math.acos(var12 / (var6 * var6));
-            if (var25.getY() < var4.getY()) {
-                var14 = -var14;
-            }
-
-            java.awt.geom.Point2D.Double var16 =
-                    new java.awt.geom.Point2D.Double(
-                            var25.getX() + var8 * Math.cos(-var10 - var14),
-                            var25.getY() + var8 * Math.sin(-var10 - var14));
-            java.awt.geom.Point2D.Double var17 =
-                    new java.awt.geom.Point2D.Double(
-                            var25.getX() + var8 * Math.cos(var10 - var14),
-                            var25.getY() + var8 * Math.sin(var10 - var14));
-            double var18 = var16.getX() - var3.getX();
-            double var20 = var16.getY() - var3.getY();
-            double var22 = 20.0D / Math.sqrt(var18 * var18 + var20 * var20);
-            var3.setLocation(var3.getX() + var18 * var22, var3.getY() + var20 * var22);
-            var18 = var17.getX() - var2.getX();
-            var20 = var17.getY() - var2.getY();
-            var22 = 20.0D / Math.sqrt(var18 * var18 + var20 * var20);
-            var2.setLocation(var2.getX() + var18 * var22, var2.getY() + var20 * var22);
-            java.awt.geom.CubicCurve2D.Double var24 = new java.awt.geom.CubicCurve2D.Double();
-            var24.setCurve(var2, var17, var16, var3);
-            return var24;
-        } else {
-            double var5 = var4.getX() - var3.getX();
-            double var7 = var4.getY() - var3.getY();
-            double var9 = 20.0D / Math.sqrt(var5 * var5 + var7 * var7);
-            var3.setLocation(var3.getX() + var5 * var9, var3.getY() + var7 * var9);
-            var5 = var4.getX() - var2.getX();
-            var7 = var4.getY() - var2.getY();
-            var9 = 20.0D / Math.sqrt(var5 * var5 + var7 * var7);
-            var2.setLocation(var2.getX() + var5 * var9, var2.getY() + var7 * var9);
-            java.awt.geom.QuadCurve2D.Double var11 = new java.awt.geom.QuadCurve2D.Double();
-            var11.setCurve(var2, var4, var3);
-            return var11;
-        }
     }
 
     static {

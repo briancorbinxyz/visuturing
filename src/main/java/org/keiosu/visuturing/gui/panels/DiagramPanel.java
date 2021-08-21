@@ -17,10 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.common.CommonGraphics;
-import org.keiosu.visuturing.mousetools.DeleteTool;
-import org.keiosu.visuturing.mousetools.SelectTool;
-import org.keiosu.visuturing.mousetools.SelfTransitionTool;
-import org.keiosu.visuturing.mousetools.TransitionTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramDeleteTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramSelectTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramSelfTransitionTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramTransitionTool;
 
 public class DiagramPanel extends JPanel implements ActionListener {
     public static final Dimension DIAGRAM_SIZE = new Dimension(5000, 5000);
@@ -119,7 +119,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
             String var3 = var2.getName();
             if (!var3.equals("Edit states") && !var3.equals("Edit the alphabet")) {
                 if (var3.equals("Select tool")) {
-                    diagram.setTool(new SelectTool(this.diagram));
+                    diagram.setTool(new TuringMachineDiagramSelectTool(this.diagram));
                 } else if (var3.equals("Check to see if this Turing Machine is deterministic")) {
                     JOptionPane.showMessageDialog(
                             this,
@@ -130,11 +130,11 @@ public class DiagramPanel extends JPanel implements ActionListener {
                             "Non-Determinism",
                             1);
                 } else if (var3.equals("Add state changing transition")) {
-                    diagram.setTool(new TransitionTool(this.diagram));
+                    diagram.setTool(new TuringMachineDiagramTransitionTool(this.diagram));
                 } else if (var3.equals("Add transition")) {
-                    diagram.setTool(new SelfTransitionTool(this.diagram));
+                    diagram.setTool(new TuringMachineDiagramSelfTransitionTool(this.diagram));
                 } else if (var3.equals("Remove a transition")) {
-                    diagram.setTool(new DeleteTool(this.diagram));
+                    diagram.setTool(new TuringMachineDiagramDeleteTool(this.diagram));
                 } else if (var3.equals("Zoom in")) {
                     diagram.zoomIn();
                 } else if (var3.equals("Zoom out")) {

@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.diagram.DiagramEditor;
 
-public class DeleteTool extends AbstractMouseTool {
+public class TuringMachineDiagramDeleteTool extends TuringMachineDiagramTool {
     private Transition currentTransition = null;
 
     public void preDraw(Graphics2D var1) {}
@@ -27,7 +27,12 @@ public class DeleteTool extends AbstractMouseTool {
         if (this.currentTransition != null) {
             var1.setColor(Color.red);
             var1.setStroke(new BasicStroke(3.0F));
-            Shape var2 = this.diagram.getGraphicEdge(this.currentTransition);
+            Shape var2 =
+                    this.diagramEditor.diagram.transitionCurve(
+                            this.currentTransition,
+                            this.diagramEditor
+                                    .getCurrentMachine()
+                                    .stateFor(this.currentTransition.getCurrentState()));
             if (var2 instanceof QuadCurve2D) {
                 QuadCurve2D var3 = (QuadCurve2D) var2;
                 Double var4 = new Double();
@@ -66,7 +71,7 @@ public class DeleteTool extends AbstractMouseTool {
         }
     }
 
-    public DeleteTool(DiagramEditor var1) {
+    public TuringMachineDiagramDeleteTool(DiagramEditor var1) {
         super(var1);
 
         try {
@@ -83,8 +88,8 @@ public class DeleteTool extends AbstractMouseTool {
 
     public void mousePressed(MouseEvent var1) {
         if (SwingUtilities.isRightMouseButton(var1)) {
-            this.diagram.revertToSelect();
-            this.diagram.repaint();
+            this.diagramEditor.revertToSelect();
+            this.diagramEditor.repaint();
         }
 
         if (this.currentTransition != null) {
@@ -98,8 +103,8 @@ public class DeleteTool extends AbstractMouseTool {
                             "VisuTuring - Transition Removal",
                             1);
             if (var3 == 0) {
-                this.diagram.getCurrentMachine().removeTransition(this.currentTransition);
-                this.diagram.repaint();
+                this.diagramEditor.getCurrentMachine().removeTransition(this.currentTransition);
+                this.diagramEditor.repaint();
             }
         }
     }
@@ -107,21 +112,22 @@ public class DeleteTool extends AbstractMouseTool {
     public void mouseMoved(MouseEvent var1) {
         Point var2 = var1.getPoint();
         Point2D var3 =
-                this.diagram.toUser(new java.awt.geom.Point2D.Double(var2.getX(), var2.getY()));
-        List var4 = this.diagram.getCurrentMachine().getTransitions();
+                this.diagramEditor.toUser(
+                        new java.awt.geom.Point2D.Double(var2.getX(), var2.getY()));
+        List var4 = this.diagramEditor.getCurrentMachine().getTransitions();
 
         for (int var5 = 0; var5 < var4.size(); ++var5) {
             Transition var6 = (Transition) var4.get(var5);
             if (this.isOver(var6, var3)) {
                 this.currentTransition = var6;
-                this.diagram.repaint();
+                this.diagramEditor.repaint();
                 return;
             }
         }
 
         if (this.currentTransition != null) {
             this.currentTransition = null;
-            this.diagram.repaint();
+            this.diagramEditor.repaint();
         }
     }
 }

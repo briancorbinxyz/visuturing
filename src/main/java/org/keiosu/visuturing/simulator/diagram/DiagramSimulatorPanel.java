@@ -37,7 +37,7 @@ import org.keiosu.visuturing.core.Symbols;
 import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.diagram.DiagramEditor;
-import org.keiosu.visuturing.mousetools.SimulatingTool;
+import org.keiosu.visuturing.mousetools.TuringMachineDiagramSimulatingTool;
 import org.keiosu.visuturing.simulator.AbstractSimulatorPanel;
 
 public class DiagramSimulatorPanel extends AbstractSimulatorPanel
@@ -48,7 +48,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel
     private JRadioButton nonDeterminismChoiceButton;
     private JTable resultsTable;
     private DiagramEditor diagram;
-    private SimulatingTool simTool;
+    private TuringMachineDiagramSimulatingTool simTool;
     private Configuration config;
     private Configuration prevConfig;
     private JPanel nonDeterminismPanel;
@@ -99,7 +99,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel
         }
 
         this.diagram = new DiagramEditor(turingMachine);
-        this.simTool = new SimulatingTool(this.diagram);
+        this.simTool = new TuringMachineDiagramSimulatingTool(this.diagram);
         this.diagram.setTool(this.simTool);
         this.diagram.setGrid(false);
         this.diagram.setPreferredSize(this.diagram.getExtents());
@@ -163,7 +163,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel
             this.startWord = new String(this.inputWord);
             this.computationText.setText(" ");
             this.addComputation(this.config);
-            this.simTool.setConfig(this.config);
+            this.simTool.setStateFromAlphabet(this.config.getState());
             this.paused = false;
             this.stopped = false;
             this.runner = new Thread(this);
@@ -195,7 +195,7 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel
                 }
 
                 Thread.sleep((long) (1000.0D / this.speed));
-                this.simTool.setConfig(null);
+                this.simTool.setStateFromAlphabet(config.getState());
                 List var2 = this.machine.getNextConfig(this.config);
                 int var3 = -1;
                 this.prevConfig = this.config;
@@ -255,10 +255,10 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel
                     this.diagram.repaint();
                 }
 
-                this.simTool.setFrame(1);
+                this.simTool.reset();
                 this.currentTransition = null;
                 this.simTool.setTransition(this.currentTransition);
-                this.simTool.setConfig(this.config);
+                this.simTool.setStateFromAlphabet(this.config.getState());
                 if (this.config.getState().equals(Symbols.STATE_HALTING_STATE)) {
                     this.stopped = true;
                     this.addResult(this.config);

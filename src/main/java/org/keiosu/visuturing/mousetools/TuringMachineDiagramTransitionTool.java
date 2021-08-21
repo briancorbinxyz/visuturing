@@ -19,13 +19,13 @@ import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.diagram.DiagramEditor;
 import org.keiosu.visuturing.gui.TransitionFrame;
 
-public class TransitionTool extends AbstractMouseTool {
+public class TuringMachineDiagramTransitionTool extends TuringMachineDiagramTool {
     private Transition newTrans;
     private int mouseClicks = 0;
     private TransitionFrame transitionEditor;
     private Point currentPoint;
 
-    public TransitionTool(DiagramEditor var1) {
+    public TuringMachineDiagramTransitionTool(DiagramEditor var1) {
         super(var1);
 
         try {
@@ -44,14 +44,15 @@ public class TransitionTool extends AbstractMouseTool {
 
     public void mousePressed(MouseEvent var1) {
         if (SwingUtilities.isRightMouseButton(var1)) {
-            this.diagram.revertToSelect();
-            this.diagram.repaint();
+            this.diagramEditor.revertToSelect();
+            this.diagramEditor.repaint();
         }
 
         this.currentPoint = var1.getPoint();
         Point2D var2 =
-                this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-        List var3 = this.diagram.getCurrentMachine().getStates();
+                this.diagramEditor.toUser(
+                        new Double(this.currentPoint.getX(), this.currentPoint.getY()));
+        List var3 = this.diagramEditor.getCurrentMachine().getStates();
 
         for (int var4 = 0; var4 < var3.size(); ++var4) {
             State var5 = (State) var3.get(var4);
@@ -66,8 +67,8 @@ public class TransitionTool extends AbstractMouseTool {
                     return;
                 }
 
-                this.diagram.setSelectedState(var5);
-                this.diagram.setSelectedTransition((Transition) null);
+                this.diagramEditor.setSelectedState(var5);
+                this.diagramEditor.setSelectedTransition((Transition) null);
                 break;
             }
         }
@@ -76,9 +77,10 @@ public class TransitionTool extends AbstractMouseTool {
     public void mouseReleased(MouseEvent var1) {
         this.currentPoint = var1.getPoint();
         Point2D var2 =
-                this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-        State var3 = this.diagram.getSelectedState();
-        Transition var4 = this.diagram.getSelectedTransition();
+                this.diagramEditor.toUser(
+                        new Double(this.currentPoint.getX(), this.currentPoint.getY()));
+        State var3 = this.diagramEditor.getSelectedState();
+        Transition var4 = this.diagramEditor.getSelectedTransition();
         double var5;
         double var7;
         if (var3 != null && this.mouseClicks == 0) {
@@ -88,7 +90,7 @@ public class TransitionTool extends AbstractMouseTool {
             this.newTrans = new Transition(var3.getName(), '0', var3.getName(), '0');
             this.newTrans.setP1(new Double(var7, var12));
             ++this.mouseClicks;
-            this.diagram.setSelectedTransition((Transition) null);
+            this.diagramEditor.setSelectedTransition((Transition) null);
         } else if (var3 != null && this.mouseClicks == 1) {
             var5 = var3.getLocation().getX();
             var7 = var3.getLocation().getY();
@@ -100,7 +102,7 @@ public class TransitionTool extends AbstractMouseTool {
                 this.newTrans.setTask(Symbols.SPACE);
                 this.newTrans.setCurrentSymbol(Symbols.SPACE);
                 this.transitionEditor =
-                        new TransitionFrame(this.diagram.getCurrentMachine(), this.newTrans);
+                        new TransitionFrame(this.diagramEditor.getCurrentMachine(), this.newTrans);
                 this.newTrans.setControlPoint(
                         new Double(
                                 var9.getX() + (var10.getX() - var9.getX()) / 2.0D,
@@ -114,13 +116,13 @@ public class TransitionTool extends AbstractMouseTool {
                 this.transitionEditor.setLocation(var11);
                 this.transitionEditor.setVisible(true);
                 this.newTrans = this.transitionEditor.getTransition();
-                this.diagram.getCurrentMachine().addTransition(this.newTrans);
+                this.diagramEditor.getCurrentMachine().addTransition(this.newTrans);
                 this.newTrans = null;
-                this.diagram.repaint();
+                this.diagramEditor.repaint();
             }
 
             this.mouseClicks = 0;
-            this.diagram.setSelectedTransition((Transition) null);
+            this.diagramEditor.setSelectedTransition((Transition) null);
         }
     }
 
@@ -131,19 +133,20 @@ public class TransitionTool extends AbstractMouseTool {
     private void mouseEvent(MouseEvent var1) {
         this.currentPoint = var1.getPoint();
         Point2D var2 =
-                this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-        List var3 = this.diagram.getCurrentMachine().getStates();
+                this.diagramEditor.toUser(
+                        new Double(this.currentPoint.getX(), this.currentPoint.getY()));
+        List var3 = this.diagramEditor.getCurrentMachine().getStates();
 
         for (int var4 = 0; var4 < var3.size(); ++var4) {
             State var5 = (State) var3.get(var4);
             if (var5.contains(var2)) {
-                var2 = this.diagram.toWorld(var5.getLocation());
+                var2 = this.diagramEditor.toWorld(var5.getLocation());
                 this.currentPoint = new Point((int) var2.getX(), (int) var2.getY());
                 break;
             }
         }
 
-        this.diagram.repaint();
+        this.diagramEditor.repaint();
     }
 
     public void mouseMoved(MouseEvent var1) {
@@ -156,7 +159,7 @@ public class TransitionTool extends AbstractMouseTool {
         Object var2 = new Double();
         if (this.currentPoint != null) {
             var2 =
-                    this.diagram.toUser(
+                    this.diagramEditor.toUser(
                             new Double(this.currentPoint.getX(), this.currentPoint.getY()));
         }
 

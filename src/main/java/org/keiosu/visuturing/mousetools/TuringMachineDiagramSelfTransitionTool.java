@@ -19,13 +19,13 @@ import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.diagram.DiagramEditor;
 import org.keiosu.visuturing.gui.TransitionFrame;
 
-public class SelfTransitionTool extends AbstractMouseTool {
+public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagramTool {
     private Transition newTrans;
     private int mouseClicks = 0;
     private TransitionFrame transitionEditor;
     private Point currentPoint;
 
-    public SelfTransitionTool(DiagramEditor var1) {
+    public TuringMachineDiagramSelfTransitionTool(DiagramEditor var1) {
         super(var1);
 
         try {
@@ -44,14 +44,15 @@ public class SelfTransitionTool extends AbstractMouseTool {
 
     public void mouseReleased(MouseEvent var1) {
         if (SwingUtilities.isRightMouseButton(var1)) {
-            this.diagram.revertToSelect();
-            this.diagram.repaint();
+            this.diagramEditor.revertToSelect();
+            this.diagramEditor.repaint();
         }
 
         this.currentPoint = var1.getPoint();
         Point2D var2 =
-                this.diagram.toUser(new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-        List var3 = this.diagram.getCurrentMachine().getStates();
+                this.diagramEditor.toUser(
+                        new Double(this.currentPoint.getX(), this.currentPoint.getY()));
+        List var3 = this.diagramEditor.getCurrentMachine().getStates();
 
         for (int var4 = 0; var4 < var3.size(); ++var4) {
             State var5 = (State) var3.get(var4);
@@ -68,7 +69,7 @@ public class SelfTransitionTool extends AbstractMouseTool {
 
                 double var6 = var5.getLocation().getX();
                 double var8 = var5.getLocation().getY();
-                this.diagram.setSelectedTransition((Transition) null);
+                this.diagramEditor.setSelectedTransition((Transition) null);
                 this.newTrans =
                         new Transition(
                                 var5.getName(), Symbols.SPACE, var5.getName(), Symbols.SPACE);
@@ -78,15 +79,15 @@ public class SelfTransitionTool extends AbstractMouseTool {
                 Point2D var11 = this.newTrans.getP2();
                 this.newTrans.setControlPoint(new Double(var10.getX(), var10.getY() - 60.0D));
                 this.transitionEditor =
-                        new TransitionFrame(this.diagram.getCurrentMachine(), this.newTrans);
+                        new TransitionFrame(this.diagramEditor.getCurrentMachine(), this.newTrans);
                 Point var12 = new Point(this.currentPoint);
                 SwingUtilities.convertPointToScreen(var12, (Component) var1.getSource());
                 this.transitionEditor.setLocation(var12);
                 this.transitionEditor.setVisible(true);
                 this.newTrans = this.transitionEditor.getTransition();
-                this.diagram.getCurrentMachine().addTransition(this.newTrans);
+                this.diagramEditor.getCurrentMachine().addTransition(this.newTrans);
                 this.newTrans = null;
-                this.diagram.repaint();
+                this.diagramEditor.repaint();
                 return;
             }
         }
@@ -98,7 +99,7 @@ public class SelfTransitionTool extends AbstractMouseTool {
         Object var2 = new Double();
         if (this.currentPoint != null) {
             var2 =
-                    this.diagram.toUser(
+                    this.diagramEditor.toUser(
                             new Double(this.currentPoint.getX(), this.currentPoint.getY()));
         }
 
