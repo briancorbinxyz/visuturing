@@ -85,7 +85,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
     }
 
     public EditTransitionsPanel(TuringMachine var1) {
-        super("etpanel.gif");
+        super("edit-transitions-panel.gif");
         this.machine = var1;
         JLayeredPane var2 = new JLayeredPane();
         this.panel.add(var2);

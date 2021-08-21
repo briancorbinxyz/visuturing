@@ -31,7 +31,7 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
     int noAdditions;
 
     public EditStatesPanel(TuringMachine var1) {
-        super("espanel.gif");
+        super("edit-states-panel.gif");
         this.states = new ArrayList(var1.getStates());
         this.machine = var1;
         this.initialize();

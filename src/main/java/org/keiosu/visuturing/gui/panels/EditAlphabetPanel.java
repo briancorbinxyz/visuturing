@@ -27,7 +27,7 @@ public class EditAlphabetPanel extends VTPanel implements ActionListener, ListSe
     TuringMachine machine;
 
     public EditAlphabetPanel(TuringMachine var1) {
-        super("eapanel.gif");
+        super("edit-alphabet-panel.gif");
         this.machine = var1;
         JLayeredPane var2 = new JLayeredPane();
         this.panel.setLayout(new BorderLayout());
