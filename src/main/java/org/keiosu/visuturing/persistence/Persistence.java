@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.persistence;
 
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -14,7 +15,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.keiosu.visuturing.core.State;
 import org.keiosu.visuturing.core.Symbols;
@@ -24,16 +24,32 @@ import org.keiosu.visuturing.xml.XmlElement;
 import org.keiosu.visuturing.xml.XmlTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 public class Persistence {
+
     private static final Logger LOGGER =
             LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+    public static void exportToHTML(XmlElement xmlElement, String filename)
+        throws IOException, TransformerException {
+        XmlTransformer xmlTransformer = new XmlTransformer("web/tm.xsl");
+        String htmlFilename = filename;
+        if (!htmlFilename.endsWith("html") && !htmlFilename.endsWith("htm")) {
+            htmlFilename = htmlFilename + ".html";
+        }
+
+        File htmlFile = new File(htmlFilename);
+        if (htmlFile.createNewFile()) {
+           LOGGER.atInfo().log("Created new file: {}", htmlFilename);
+        }
+        try (FileOutputStream file = new FileOutputStream(htmlFile)) {
+            xmlTransformer.transform(xmlElement, file);
+        }
+    }
 
     private Persistence() {
         // do nothing
@@ -44,216 +60,219 @@ public class Persistence {
         return indexOfExtension < 0 ? filename : filename.substring(0, indexOfExtension);
     }
 
-    public static void exportToHTML(XmlElement var0, String var1)
-            throws IOException, TransformerException, TransformerConfigurationException {
-        XmlTransformer var2 = new XmlTransformer("web/tm.xsl");
-        String var3 = new String(var1);
-        if (!var3.endsWith("html") && !var3.endsWith("htm")) {
-            var3 = var3 + ".html";
+    public static void save(XmlElement xmlElement, String filename) throws IOException {
+        save(xmlElement, new File(filename));
+    }
+
+    public static void save(XmlElement xmlElement, File file) throws IOException {
+        String filename = trimExtension(file.toString());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename.concat(".vt")))) {
+          String header =
+              "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
+          writer.write(header + xmlElement.toXml());
         }
-
-        File var4 = new File(var3);
-        if (!var4.exists()) {
-            var4.createNewFile();
-        }
-
-        FileOutputStream var5 = new FileOutputStream(var4);
-        var2.transform(var0, var5);
-        var5.close();
     }
 
-    public static void save(XmlElement var0, String var1) throws IOException {
-        save(var0, new File(var1));
+    public static TuringMachine load(File file) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Element element = builder.parse(file).getDocumentElement();
+        return retrieveTuringMachine(element);
     }
 
-    public static void save(XmlElement var0, File var1) throws IOException {
-        String var2 = trimExtension(var1.toString());
-        BufferedWriter var3 = new BufferedWriter(new FileWriter(var2.concat(".vt")));
-        String var4 =
-                "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
-        var3.write(var4 + var0.toXml());
-        var3.close();
-    }
+    private static TuringMachine retrieveTuringMachine(Element machineElement) {
+        String machineName = "<no-name>";
+        String machineDescription = "none";
+        boolean machineHasDiagram = false;
+        List<State> machineStates = new ArrayList<>();
+        List<String> machineAlphabet = new ArrayList<>();
+        List<Transition> machineTransitions = new ArrayList<>();
+        NodeList nodes = machineElement.getChildNodes();
 
-    public static TuringMachine load(File var0) throws SAXException, Exception {
-        DocumentBuilderFactory var1 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder var2 = var1.newDocumentBuilder();
-        Document var3 = var2.parse(var0);
-        Element var4 = var3.getDocumentElement();
-        return retrieveTuringMachine(var4);
-    }
-
-    private static TuringMachine retrieveTuringMachine(Element var0) {
-        String var1 = "<no-name>";
-        String var2 = "none";
-        boolean var3 = false;
-        List var4 = new ArrayList();
-        List var5 = new ArrayList();
-        List var6 = new ArrayList();
-        NodeList var7 = var0.getChildNodes();
-
-        for (int var8 = 0; var8 < var7.getLength(); ++var8) {
-            Node var9 = var7.item(var8);
-            if (var9 instanceof Element) {
-                Element var10 = (Element) var9;
-                Text var11 = (Text) var10.getFirstChild();
-                if (var10.getTagName().equals("name")) {
-                    var1 = var11.getData();
-                } else if (var10.getTagName().equals("description")) {
-                    var2 = var11.getData();
-                } else if (var10.getTagName().equals("has-diagram")) {
-                    var3 = var11.getData().equals("true");
-                } else if (var10.getTagName().equals("states")) {
-                    var4 = getStates(var10);
-                } else if (var10.getTagName().equals("alphabet")) {
-                    var5 = getAlphabet(var10);
-                } else if (var10.getTagName().equals("transitions")) {
-                    var6 = getTransitions(var10);
+        for (int i = 0; i < nodes.getLength(); ++i) {
+            Node node = nodes.item(i);
+            if (node instanceof Element) {
+                Element element = (Element) node;
+                Text text = (Text) element.getFirstChild();
+                switch (element.getTagName()) {
+                    case "name":
+                        machineName = text.getData();
+                        break;
+                    case "description":
+                        machineDescription = text.getData();
+                        break;
+                    case "has-diagram":
+                        machineHasDiagram = text.getData().equals("true");
+                        break;
+                    case "states":
+                        machineStates = getStates(element);
+                        break;
+                    case "alphabet":
+                        machineAlphabet = getAlphabet(element);
+                        break;
+                    case "transitions":
+                        machineTransitions = getTransitions(element);
+                        break;
                 }
             }
         }
 
-        TuringMachine var12 = new TuringMachine(var1, var2, var6, var5, var4);
-        var12.setHasDiagram(var3);
-        return var12;
+        TuringMachine machine = new TuringMachine(machineName, machineDescription, machineTransitions,
+            machineAlphabet,
+            machineStates);
+        machine.setHasDiagram(machineHasDiagram);
+        return machine;
     }
 
-    private static List getStates(Element var0) {
-        List var1 = new ArrayList();
-        NodeList var2 = var0.getChildNodes();
+    private static List<State> getStates(Element element) {
+        List<State> states = new ArrayList<>();
+        NodeList nodes = element.getChildNodes();
 
-        for (int var3 = 0; var3 < var2.getLength(); ++var3) {
-            Node var4 = var2.item(var3);
-            if (var4 instanceof Element) {
-                String var5 = "";
-                double var6 = (double) ((var3 + 1) * 50);
-                double var8 = 50.0D;
-                Element var10 = (Element) var4;
-                if (var10.getTagName().equals("state")) {
-                    NodeList var11 = var10.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); ++i) {
+            Node node = nodes.item(i);
+            if (node instanceof Element) {
+                Element n = (Element) node;
+                if (n.getTagName().equals("state")) {
+                    states.add(getState(n, (i + 1) * 50));
+                }
+            }
+        }
 
-                    for (int var12 = 0; var12 < var11.getLength(); ++var12) {
-                        Node var13 = var11.item(var12);
-                        if (var13 instanceof Element) {
-                            Element var14 = (Element) var13;
-                            Text var15 = (Text) var14.getFirstChild();
-                            if (var14.getTagName().equals("name")) {
-                                var5 = var15.getData();
-                            } else if (var14.getTagName().equals("location")) {
-                                var6 = Double.parseDouble(var14.getAttribute("x"));
-                                var8 = Double.parseDouble(var14.getAttribute("y"));
-                            }
-                        }
+        return states;
+    }
+
+    private static State getState(Element stateElement, double defaultOffset) {
+        NodeList nodes = stateElement.getChildNodes();
+
+        String text = "";
+        double xOffset = defaultOffset;
+        double yOffset = 50.0D;
+        for (int j = 0; j < nodes.getLength(); ++j) {
+            Node node = nodes.item(j);
+            if (node instanceof Element) {
+                Element n = (Element) node;
+                if (n.getTagName().equals("name")) {
+                    text = ((Text) n.getFirstChild()).getData();
+                } else if (n.getTagName().equals("location")) {
+                    xOffset = Double.parseDouble(n.getAttribute("x"));
+                    yOffset = Double.parseDouble(n.getAttribute("y"));
+                }
+            }
+        }
+
+        return new State(text, new Point((int) xOffset, (int) yOffset));
+    }
+
+    private static List<String> getAlphabet(Element alphabetElement) {
+        List<String> alphabet = new ArrayList<>();
+        NodeList nodes = alphabetElement.getChildNodes();
+
+        for (int i = 0; i < nodes.getLength(); ++i) {
+            Node node = nodes.item(i);
+            if (node instanceof Element) {
+                Element element = (Element) node;
+                Text text = (Text) element.getFirstChild();
+                if (element.getTagName().equals("symbol")) {
+                    alphabet.add("" + Symbols.unicodeToChar(text.getData()));
+                }
+            }
+        }
+
+        return alphabet;
+    }
+
+    private static List<Transition> getTransitions(Element transitionElement) {
+        List<Transition> transitions = new ArrayList<>();
+        NodeList nodes = transitionElement.getChildNodes();
+
+        for (int i = 0; i < nodes.getLength(); ++i) {
+            Node node = nodes.item(i);
+            if (node instanceof Element) {
+                Element element = (Element) node;
+                if (element.getTagName().equals("transition")) {
+                    transitions.add(getTransition(element));
+                }
+            }
+        }
+
+        return transitions;
+    }
+
+    private static Transition getTransition(Element element) {
+        NodeList transitionNodes = element.getChildNodes();
+
+        String fromState = "";
+        String toState = "";
+        char currentSymbol = ' ';
+        char task = ' ';
+        Shape curve = new QuadCurve2D.Double();
+        for (int i = 0; i < transitionNodes.getLength(); ++i) {
+            Node node = transitionNodes.item(i);
+            if (node instanceof Element) {
+                Element n = (Element) node;
+                Text text = (Text) n.getFirstChild();
+                if (n.getTagName().equals("current-state")) {
+                    fromState = text.getData();
+                } else {
+                    switch (n.getTagName()) {
+                        case "current-symbol":
+                            currentSymbol = Symbols.unicodeToChar(text.getData());
+                            break;
+                        case "next-state":
+                            toState = text.getData();
+                            break;
+                        case "task":
+                            task = Symbols.unicodeToChar(text.getData());
+                            break;
+                        case "edge":
+                            curve = getEdge(n);
+                            break;
                     }
-
-                    var1.add(new State(var5, new Point((int) var6, (int) var8)));
                 }
             }
         }
 
-        return var1;
+        Transition transition = new Transition(fromState, currentSymbol, toState, task);
+        transition.setEdge(curve);
+        return transition;
     }
 
-    private static List getAlphabet(Element var0) {
-        List var1 = new ArrayList();
-        NodeList var2 = var0.getChildNodes();
+    private static QuadCurve2D getEdge(Element curveElement) {
+        java.awt.geom.Point2D.Double startPoint = new java.awt.geom.Point2D.Double();
+        java.awt.geom.Point2D.Double endPoint = new java.awt.geom.Point2D.Double();
+        java.awt.geom.Point2D.Double cp1 = new java.awt.geom.Point2D.Double();
+        NodeList nodes = curveElement.getChildNodes();
 
-        for (int var3 = 0; var3 < var2.getLength(); ++var3) {
-            Node var4 = var2.item(var3);
-            if (var4 instanceof Element) {
-                Element var5 = (Element) var4;
-                Text var6 = (Text) var5.getFirstChild();
-                if (var5.getTagName().equals("symbol")) {
-                    var1.add("" + Symbols.unicodeToChar(var6.getData()));
-                }
-            }
-        }
-
-        return var1;
-    }
-
-    private static List getTransitions(Element var0) {
-        List var1 = new ArrayList();
-        NodeList var2 = var0.getChildNodes();
-
-        for (int var3 = 0; var3 < var2.getLength(); ++var3) {
-            String var4 = "";
-            String var5 = "";
-            char var6 = ' ';
-            char var7 = ' ';
-            Object var8 = new java.awt.geom.QuadCurve2D.Double();
-            Node var9 = var2.item(var3);
-            if (var9 instanceof Element) {
-                Element var10 = (Element) var9;
-                if (var10.getTagName().equals("transition")) {
-                    NodeList var11 = var10.getChildNodes();
-
-                    for (int var12 = 0; var12 < var11.getLength(); ++var12) {
-                        Node var13 = var11.item(var12);
-                        if (var13 instanceof Element) {
-                            Element var14 = (Element) var13;
-                            Text var15 = (Text) var14.getFirstChild();
-                            if (var14.getTagName().equals("current-state")) {
-                                var4 = var15.getData();
-                            } else {
-                                char var16;
-                                if (var14.getTagName().equals("current-symbol")) {
-                                    var16 = Symbols.unicodeToChar(var15.getData());
-                                    var6 = var16;
-                                } else if (var14.getTagName().equals("next-state")) {
-                                    var5 = var15.getData();
-                                } else if (var14.getTagName().equals("task")) {
-                                    var16 = Symbols.unicodeToChar(var15.getData());
-                                    var7 = var16;
-                                } else if (var14.getTagName().equals("edge")) {
-                                    var8 = getEdge(var14);
-                                }
-                            }
-                        }
-                    }
-
-                    Transition var17 = new Transition(var4, var6, var5, var7);
-                    var17.setEdge((QuadCurve2D) var8);
-                    var1.add(var17);
-                }
-            }
-        }
-
-        return var1;
-    }
-
-    private static QuadCurve2D getEdge(Element var0) {
-        java.awt.geom.Point2D.Double var1 = new java.awt.geom.Point2D.Double();
-        java.awt.geom.Point2D.Double var2 = new java.awt.geom.Point2D.Double();
-        java.awt.geom.Point2D.Double var3 = new java.awt.geom.Point2D.Double();
-        NodeList var4 = var0.getChildNodes();
-
-        for (int var5 = 0; var5 < var4.getLength(); ++var5) {
-            Node var6 = var4.item(var5);
-            if (var6 instanceof Element) {
-                Element var7 = (Element) var6;
-                Text var8 = (Text) var7.getFirstChild();
-                if (var7.getTagName().equals("p1")) {
-                    var1 =
+        for (int i = 0; i < nodes.getLength(); ++i) {
+            Node node = nodes.item(i);
+            if (node instanceof Element) {
+                Element n = (Element) node;
+                n.getFirstChild();
+                switch (n.getTagName()) {
+                    case "p1":
+                        startPoint =
                             new java.awt.geom.Point2D.Double(
-                                    Double.parseDouble(var7.getAttribute("x")),
-                                    Double.parseDouble(var7.getAttribute("y")));
-                } else if (var7.getTagName().equals("p2")) {
-                    var2 =
+                                Double.parseDouble(n.getAttribute("x")),
+                                Double.parseDouble(n.getAttribute("y")));
+                        break;
+                    case "p2":
+                        endPoint =
                             new java.awt.geom.Point2D.Double(
-                                    Double.parseDouble(var7.getAttribute("x")),
-                                    Double.parseDouble(var7.getAttribute("y")));
-                } else if (var7.getTagName().equals("p3")) {
-                    var3 =
+                                Double.parseDouble(n.getAttribute("x")),
+                                Double.parseDouble(n.getAttribute("y")));
+                        break;
+                    case "p3":
+                        cp1 =
                             new java.awt.geom.Point2D.Double(
-                                    Double.parseDouble(var7.getAttribute("x")),
-                                    Double.parseDouble(var7.getAttribute("y")));
+                                Double.parseDouble(n.getAttribute("x")),
+                                Double.parseDouble(n.getAttribute("y")));
+                        break;
                 }
             }
         }
 
         return new java.awt.geom.QuadCurve2D.Double(
-                var1.getX(), var1.getY(), var3.getX(), var3.getY(), var2.getX(), var2.getY());
+                startPoint.getX(), startPoint.getY(), cp1.getX(), cp1.getY(), endPoint.getX(), endPoint.getY());
     }
 
     public static void saveJPEG(BufferedImage image, String filename) {

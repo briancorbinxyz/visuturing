@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.core;
 
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.QuadCurve2D.Double;
@@ -16,6 +17,10 @@ public class Transition implements XmlElement {
 
     public Transition(String currentState, char currentSymbol, String nextState, char task) {
         this(currentState, currentSymbol, nextState, task, new Point(), new Point(), new Point());
+    }
+
+    public void setEdge(Shape edge) {
+        setEdge((QuadCurve2D) edge);
     }
 
     public void setEdge(QuadCurve2D edge) {
