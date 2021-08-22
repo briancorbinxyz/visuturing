@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.event.MouseInputAdapter;
 import org.keiosu.visuturing.core.Transition;
@@ -25,8 +26,9 @@ public abstract class TuringMachineDiagramTool extends MouseInputAdapter impleme
         this.machine = diagramEditor.getCurrentMachine();
     }
 
-    public ImageIcon createImageIcon(String var1) {
-        return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
+    public ImageIcon createImageIcon(String imageResource) {
+        return new ImageIcon(
+            Objects.requireNonNull(this.getClass().getClassLoader().getResource(imageResource)));
     }
 
     public Cursor getCursor() {
@@ -37,31 +39,30 @@ public abstract class TuringMachineDiagramTool extends MouseInputAdapter impleme
         return this.overCursor;
     }
 
-    public void setCursor(Cursor var1) {
-        this.cursor = var1;
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
-    public void setOverCursor(Cursor var1) {
-        this.overCursor = var1;
+    public void setOverCursor(Cursor cursor) {
+        this.overCursor = cursor;
     }
 
-    public void setCursor(int var1) {
-        this.cursor = Cursor.getPredefinedCursor(var1);
+    public void setCursor(int cursor) {
+        this.cursor = Cursor.getPredefinedCursor(cursor);
     }
 
-    public void setOverCursor(int var1) {
-        this.overCursor = Cursor.getPredefinedCursor(var1);
+    public void setOverCursor(int cursor) {
+        this.overCursor = Cursor.getPredefinedCursor(cursor);
     }
 
-    public boolean isOver(Transition var1, Point2D var2) {
-        BasicStroke var3 = new BasicStroke(10.0F);
-        return var3.createStrokedShape(
+    public boolean isOver(Transition transition, Point2D point) {
+        return new BasicStroke(10.0F).createStrokedShape(
                         this.diagramEditor.diagram.transitionCurve(
-                                var1, machine.stateFor(var1.getCurrentState())))
-                .contains(var2);
+                                transition, machine.stateFor(transition.getCurrentState())))
+                .contains(point);
     }
 
-    public abstract void preDraw(Graphics2D var1);
+    public abstract void preDraw(Graphics2D canvas);
 
-    public abstract void postDraw(Graphics2D var1);
+    public abstract void postDraw(Graphics2D canvas);
 }

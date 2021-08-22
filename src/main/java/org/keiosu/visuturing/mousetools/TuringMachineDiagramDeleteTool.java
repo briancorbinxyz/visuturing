@@ -21,7 +21,7 @@ import org.keiosu.visuturing.diagram.DiagramEditor;
 public class TuringMachineDiagramDeleteTool extends TuringMachineDiagramTool {
     private Transition currentTransition = null;
 
-    public void preDraw(Graphics2D g) {}
+    public void preDraw(Graphics2D canvas) {}
 
     public void postDraw(Graphics2D canvas) {
         if (this.currentTransition != null) {

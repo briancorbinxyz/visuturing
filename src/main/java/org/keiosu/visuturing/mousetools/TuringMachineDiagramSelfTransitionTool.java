@@ -93,9 +93,9 @@ public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagram
         }
     }
 
-    public void postDraw(Graphics2D var1) {}
+    public void postDraw(Graphics2D canvas) {}
 
-    public void preDraw(Graphics2D var1) {
+    public void preDraw(Graphics2D canvas) {
         Object var2 = new Double();
         if (this.currentPoint != null) {
             var2 =
@@ -104,13 +104,13 @@ public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagram
         }
 
         if (this.newTrans != null) {
-            var1.setRenderingHint(
+            canvas.setRenderingHint(
                     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            var1.setColor(Color.BLACK);
+            canvas.setColor(Color.BLACK);
             Point2D var3 = this.newTrans.getP1();
             java.awt.geom.Line2D.Double var4 =
                     new java.awt.geom.Line2D.Double(var3, (Point2D) var2);
-            var1.draw(var4);
+            canvas.draw(var4);
             double var5 = var3.getX() - ((Point2D) var2).getX();
             double var7 = var3.getY() - ((Point2D) var2).getY();
             double var9 = Math.sqrt(var5 * var5 + var7 * var7);
@@ -122,13 +122,13 @@ public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagram
                     ((Point2D) var2).getY(),
                     ((Point2D) var2).getX() - (-var5 - var7),
                     ((Point2D) var2).getY() - (-var7 + var5));
-            var1.draw(var11);
+            canvas.draw(var11);
             var11.setLine(
                     ((Point2D) var2).getX(),
                     ((Point2D) var2).getY(),
                     ((Point2D) var2).getX() - (-var5 + var7),
                     ((Point2D) var2).getY() - (-var7 - var5));
-            var1.draw(var11);
+            canvas.draw(var11);
         }
     }
 }

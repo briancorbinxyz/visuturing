@@ -228,14 +228,14 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
         this.diagramEditor.setCursor(this.getCursor());
     }
 
-    public void preDraw(Graphics2D var1) {}
+    public void preDraw(Graphics2D canvas) {}
 
-    public void postDraw(Graphics2D var1) {
+    public void postDraw(Graphics2D canvas) {
         Transition var2 = this.diagramEditor.getSelectedTransition();
         if (var2 != null) {
-            var1.setRenderingHint(
+            canvas.setRenderingHint(
                     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            var1.setStroke(new BasicStroke(2.0F));
+            canvas.setStroke(new BasicStroke(2.0F));
             Point2D var3 = var2.getControlPoint();
             java.awt.geom.Ellipse2D.Double var4 =
                     new java.awt.geom.Ellipse2D.Double(
@@ -243,10 +243,10 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
                             (double) ((int) var3.getY()) - HANDLE_DIMENSION.getHeight() / 2.0D,
                             HANDLE_DIMENSION.getWidth(),
                             HANDLE_DIMENSION.getHeight());
-            var1.setColor(Color.LIGHT_GRAY);
-            var1.fill(var4);
-            var1.setColor(Color.black);
-            var1.draw(var4);
+            canvas.setColor(Color.LIGHT_GRAY);
+            canvas.fill(var4);
+            canvas.setColor(Color.black);
+            canvas.draw(var4);
         }
     }
 }
