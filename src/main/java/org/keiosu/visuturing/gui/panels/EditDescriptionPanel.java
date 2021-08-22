@@ -14,7 +14,8 @@ import org.keiosu.visuturing.core.TuringMachine;
 
 public class EditDescriptionPanel extends VTPanel implements ActionListener {
 
-    public static final String INSERT_LEFT_END_MARKER_SYMBOL = "Insert " + Symbols.LEFT_END_MARKER + " Symbol";
+    public static final String INSERT_LEFT_END_MARKER_SYMBOL =
+            "Insert " + Symbols.LEFT_END_MARKER + " Symbol";
     public static final String INSERT_SPACE_SYMBOL = "Insert " + Symbols.SPACE + " Symbol";
 
     private final JTextArea description;
@@ -70,9 +71,12 @@ public class EditDescriptionPanel extends VTPanel implements ActionListener {
         if (event.getSource() instanceof JButton) {
             JButton button = (JButton) event.getSource();
             if (button.getName().equals(INSERT_SPACE_SYMBOL)) {
-                this.description.insert(String.valueOf(Symbols.SPACE), this.description.getCaretPosition());
+                this.description.insert(
+                        String.valueOf(Symbols.SPACE), this.description.getCaretPosition());
             } else if (button.getName().equals(INSERT_LEFT_END_MARKER_SYMBOL)) {
-                this.description.insert(String.valueOf(Symbols.LEFT_END_MARKER), this.description.getCaretPosition());
+                this.description.insert(
+                        String.valueOf(Symbols.LEFT_END_MARKER),
+                        this.description.getCaretPosition());
             }
         }
     }

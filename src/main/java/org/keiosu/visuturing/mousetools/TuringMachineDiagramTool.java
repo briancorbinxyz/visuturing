@@ -28,7 +28,8 @@ public abstract class TuringMachineDiagramTool extends MouseInputAdapter impleme
 
     public ImageIcon createImageIcon(String imageResource) {
         return new ImageIcon(
-            Objects.requireNonNull(this.getClass().getClassLoader().getResource(imageResource)));
+                Objects.requireNonNull(
+                        this.getClass().getClassLoader().getResource(imageResource)));
     }
 
     public Cursor getCursor() {
@@ -56,7 +57,8 @@ public abstract class TuringMachineDiagramTool extends MouseInputAdapter impleme
     }
 
     public boolean isOver(Transition transition, Point2D point) {
-        return new BasicStroke(10.0F).createStrokedShape(
+        return new BasicStroke(10.0F)
+                .createStrokedShape(
                         this.diagramEditor.diagram.transitionCurve(
                                 transition, machine.stateFor(transition.getCurrentState())))
                 .contains(point);
