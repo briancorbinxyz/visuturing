@@ -27,7 +27,7 @@ class PreviewGraphic extends JPanel {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        Graphics2D g = (Graphics2D) graphics;
+        Graphics2D canvas = (Graphics2D) graphics;
         double xScale = 0.15119047610696146D;
         double yScale = 0.15441451547051574D;
         Rectangle printRect =
@@ -35,40 +35,40 @@ class PreviewGraphic extends JPanel {
                         new Dimension(
                                 (int) (this.diagramPrinter.getPrintSize().getWidth() * xScale),
                                 (int) (this.diagramPrinter.getPrintSize().getHeight() * yScale)));
-        Rectangle var8;
-        Rectangle var9;
+        Rectangle imageRect;
+        Rectangle previewRect;
         if (this.portraitOrientation) {
-            var9 = new Rectangle(50, 15, 90, 130);
-            var8 = getRectangle(g, xScale, yScale, var9, 1, 45, 10);
+            previewRect = new Rectangle(50, 15, 90, 130);
+            imageRect = getRectangle(canvas, xScale, yScale, previewRect, 1, 45, 10);
             printRect.translate(45, 10);
         } else {
-            var9 = new Rectangle(30, 35, 130, 90);
-            var8 = getRectangle(g, xScale, yScale, var9, 2, 25, 30);
+            previewRect = new Rectangle(30, 35, 130, 90);
+            imageRect = getRectangle(canvas, xScale, yScale, previewRect, 2, 25, 30);
             printRect.translate(25, 30);
         }
 
         if (this.diagramPrinter.isFitToPage()) {
-            double var13 = var8.getWidth() / printRect.getWidth();
-            double var11 = var8.getHeight() / printRect.getHeight();
+            double w = imageRect.getWidth() / printRect.getWidth();
+            double h = imageRect.getHeight() / printRect.getHeight();
             printRect.setSize(
-                    (int) (printRect.getWidth() * (var13 < var11 ? var13 : var11)),
-                    (int) (printRect.getHeight() * (var13 < var11 ? var13 : var11)));
+                    (int) (printRect.getWidth() * (Math.min(w, h))),
+                    (int) (printRect.getHeight() * (Math.min(w, h))));
         }
 
         printRect.translate(
                 (int) (this.pageFormat.getImageableX() * xScale),
                 (int) (this.pageFormat.getImageableY() * yScale));
-        var8.setSize((int) var8.getWidth() + 1, (int) var8.getHeight() + 1);
-        g.setClip(var8);
-        g.setColor(Color.red);
-        g.draw(printRect);
-        g.draw(
+        imageRect.setSize((int) imageRect.getWidth() + 1, (int) imageRect.getHeight() + 1);
+        canvas.setClip(imageRect);
+        canvas.setColor(Color.red);
+        canvas.draw(printRect);
+        canvas.draw(
                 new Double(
                         printRect.getX(),
                         printRect.getY(),
                         printRect.getWidth() + printRect.getX(),
                         printRect.getHeight() + printRect.getY()));
-        g.draw(
+        canvas.draw(
                 new Double(
                         printRect.getWidth() + printRect.getX(),
                         printRect.getY(),
