@@ -139,10 +139,10 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
         return this.description.getText();
     }
 
-    public List getTransitions() {
+    public List<Transition> getTransitions() {
         DefaultTableModel var1 = (DefaultTableModel) this.table.getModel();
         List var2 = var1.getDataVector();
-        List var3 = new ArrayList();
+        List<Transition> transitions = new ArrayList<>();
 
         for (int var4 = 0; var4 < var2.size(); ++var4) {
             boolean var5 = false;
@@ -190,14 +190,14 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
                 var13.setEdge(var17);
                 Transition var18 = this.machine.getEqualTransition(var13);
                 if (var18 != null) {
-                    var3.add(var18);
+                    transitions.add(var18);
                 } else {
-                    var3.add(var13);
+                    transitions.add(var13);
                 }
             }
         }
 
-        return var3;
+        return transitions;
     }
 
     public void actionPerformed(ActionEvent var1) {

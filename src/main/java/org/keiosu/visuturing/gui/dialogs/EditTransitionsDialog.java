@@ -2,6 +2,7 @@ package org.keiosu.visuturing.gui.dialogs;
 
 import java.awt.Frame;
 import java.util.List;
+import org.keiosu.visuturing.core.Transition;
 import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 
@@ -14,7 +15,7 @@ public class EditTransitionsDialog extends AbstractDialog {
         init(transitionEditor);
     }
 
-    public List getTransitions() {
+    public List<Transition> getTransitions() {
         return transitionEditor.getTransitions();
     }
 }
