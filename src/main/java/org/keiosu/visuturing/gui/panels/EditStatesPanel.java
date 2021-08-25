@@ -22,63 +22,57 @@ import org.keiosu.visuturing.core.TuringMachine;
 
 public class EditStatesPanel extends VTPanel implements ActionListener, ListSelectionListener {
     JTextField stateField;
-    JList stateList;
+    JList<State> stateList;
     List<State> states;
     JButton removeButton;
     JButton removeAllButton;
     TuringMachine machine;
-    ActionListener listener;
     int noAdditions;
 
-    public EditStatesPanel(TuringMachine var1) {
+    public EditStatesPanel(TuringMachine machine) {
         super("edit-states-panel.gif");
-        this.states = new ArrayList(var1.getStates());
-        this.machine = var1;
+        this.states = new ArrayList<>(machine.getStates());
+        this.machine = machine;
         this.initialize();
         this.noAdditions = 0;
     }
 
-    public boolean hasTransitions(String var1) {
-        List var2 = this.machine.getTransitions();
-        boolean var3 = false;
-
-        for (int var4 = 0; var4 < var2.size(); ++var4) {
-            Transition var5 = (Transition) var2.get(var4);
-            if (var5.getCurrentState().equals(var1) || var5.getNextState().equals(var1)) {
-                var3 = true;
-                return var3;
+    public boolean hasTransitions(String state) {
+        List<Transition> transitions = this.machine.getTransitions();
+        for (Transition transition : transitions) {
+            if (transition.getCurrentState().equals(state) || transition.getNextState().equals(state)) {
+                return true;
             }
         }
-
-        return var3;
+        return false;
     }
 
     public void initialize() {
         if (this.states.size() <= 1) {
-            this.states = new ArrayList();
+            this.states = new ArrayList<>();
             this.states.add(new State(Symbols.STATE_BEGINNING_STATE));
             this.states.add(new State(Symbols.STATE_HALTING_STATE));
         }
 
-        this.stateList = new JList(this.states.toArray());
-        JLayeredPane var1 = new JLayeredPane();
+        this.stateList = new JList<>(this.states.toArray(new State[]{}));
+        JLayeredPane pane = new JLayeredPane();
         this.panel.setLayout(new BorderLayout());
-        this.panel.add(var1);
-        var1.setPreferredSize(this.panel.getPreferredSize());
-        JLabel var2 = new JLabel("State:");
-        var2.setBounds(0, 16, 65, 20);
+        this.panel.add(pane);
+        pane.setPreferredSize(this.panel.getPreferredSize());
+        JLabel stateLabel = new JLabel("State:");
+        stateLabel.setBounds(0, 16, 65, 20);
         this.stateField = new JTextField();
         this.stateField.setBounds(79, 16, 119, 20);
-        JButton var3 = new JButton("Add");
-        var3.setName("Add");
-        var3.addActionListener(this);
-        var3.setBounds(205, 16, 94, 20);
-        JLabel var4 = new JLabel("States:");
-        var4.setBounds(0, 49, 65, 20);
-        this.stateList = new JList(this.states.toArray());
+        JButton addLabel = new JButton("Add");
+        addLabel.setName("Add");
+        addLabel.addActionListener(this);
+        addLabel.setBounds(205, 16, 94, 20);
+        JLabel statesLabel = new JLabel("States:");
+        statesLabel.setBounds(0, 49, 65, 20);
+        this.stateList = new JList<>(this.states.toArray(new State[]{}));
         this.stateList.addListSelectionListener(this);
-        JScrollPane var5 = new JScrollPane(this.stateList);
-        var5.setBounds(79, 48, 120, 170);
+        JScrollPane statesPane = new JScrollPane(this.stateList);
+        statesPane.setBounds(79, 48, 120, 170);
         this.removeButton = new JButton("Remove");
         this.removeButton.setName("Remove");
         this.removeButton.addActionListener(this);
@@ -89,109 +83,107 @@ public class EditStatesPanel extends VTPanel implements ActionListener, ListSele
         this.removeAllButton.addActionListener(this);
         this.removeAllButton.setEnabled(false);
         this.removeAllButton.setBounds(205, 76, 94, 20);
-        var1.add(var2, JLayeredPane.DEFAULT_LAYER);
-        var1.add(this.stateField, JLayeredPane.DEFAULT_LAYER);
-        var1.add(var4, JLayeredPane.DEFAULT_LAYER);
-        var1.add(var3, JLayeredPane.DEFAULT_LAYER);
-        var1.add(var5, JLayeredPane.DEFAULT_LAYER);
-        var1.add(this.removeAllButton, JLayeredPane.DEFAULT_LAYER);
-        var1.add(this.removeButton, JLayeredPane.DEFAULT_LAYER);
+        pane.add(stateLabel, JLayeredPane.DEFAULT_LAYER);
+        pane.add(this.stateField, JLayeredPane.DEFAULT_LAYER);
+        pane.add(statesLabel, JLayeredPane.DEFAULT_LAYER);
+        pane.add(addLabel, JLayeredPane.DEFAULT_LAYER);
+        pane.add(statesPane, JLayeredPane.DEFAULT_LAYER);
+        pane.add(this.removeAllButton, JLayeredPane.DEFAULT_LAYER);
+        pane.add(this.removeButton, JLayeredPane.DEFAULT_LAYER);
     }
 
-    public void actionPerformed(ActionEvent var1) {
-        if (var1.getSource() instanceof JButton) {
-            JButton var2 = (JButton) var1.getSource();
-            int var5;
-            if (var2.getName().equals("Add")) {
-                String var3 = this.stateField.getText();
-                if (var3 != null && !var3.trim().equals("")) {
-                    boolean var4 = false;
-                    var5 = 0;
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() instanceof JButton) {
+            JButton source = (JButton) event.getSource();
+            switch (source.getName()) {
+                case "Add":
+                    String stateName = this.stateField.getText();
+                    if (stateName != null && !stateName.trim().equals("")) {
+                        boolean stateExists = false;
+                        int idx = 0;
+                        while (idx < this.states.size() && !stateExists) {
+                            if (stateName.equals(this.states.get(idx++).getName())) {
+                                stateExists = true;
+                            }
+                        }
 
-                    while (var5 < this.states.size() && !var4) {
-                        if (var3.equals(((State) this.states.get(var5++)).getName())) {
-                            var4 = true;
+                        if (!stateExists
+                            && !stateName.equals(Symbols.STATE_HALTING_STATE)
+                            && !stateName.equals(Symbols.STATE_BEGINNING_STATE)) {
+                            this.states.add(
+                                new State(stateName, new Point(100 * (this.noAdditions + 1), 50)));
+                            ++this.noAdditions;
+                        }
+
+                        this.stateList.setListData(this.states.toArray(new State[]{}));
+                        this.stateField.setText("");
+                        if (!this.removeAllButton.isEnabled()) {
+                            this.removeAllButton.setEnabled(true);
                         }
                     }
-
-                    if (!var4
-                            && !var3.equals(Symbols.STATE_HALTING_STATE)
-                            && !var3.equals(Symbols.STATE_BEGINNING_STATE)) {
-                        this.states.add(
-                                new State(var3, new Point(100 * (this.noAdditions + 1), 50)));
-                        ++this.noAdditions;
-                    }
-
-                    this.stateList.setListData(this.states.toArray());
-                    this.stateField.setText("");
-                    if (!this.removeAllButton.isEnabled()) {
-                        this.removeAllButton.setEnabled(true);
-                    }
-                }
-            } else if (var2.getName().equals("Remove")) {
-                int var6 = this.stateList.getSelectedIndex();
-                if (var6 > -1) {
-                    if (this.hasTransitions(((State) this.states.get(var6)).getName())) {
-                        JOptionPane.showMessageDialog(
+                    break;
+                case "Remove":
+                    int selectedIndex = this.stateList.getSelectedIndex();
+                    if (selectedIndex > -1) {
+                        if (this.hasTransitions(this.states.get(selectedIndex).getName())) {
+                            JOptionPane.showMessageDialog(
                                 this,
                                 "The selected state has one or more transitions.\n\nPlease delete these before removing the state.",
                                 "VisuTuring - Integrity Protect",
-                                0);
-                    } else {
-                        this.states.remove(var6);
-                        this.stateList.setListData(this.states.toArray());
-                        this.removeButton.setEnabled(false);
-                    }
-                }
-            } else if (var2.getName().equals("Remove All")) {
-                boolean var7 = false;
-                List var8 = new ArrayList();
-
-                for (var5 = 0; var5 < this.states.size(); ++var5) {
-                    if (!((State) this.states.get(var5))
-                                    .getName()
-                                    .equals(Symbols.STATE_BEGINNING_STATE)
-                            && !((State) this.states.get(var5))
-                                    .getName()
-                                    .equals(Symbols.STATE_HALTING_STATE)) {
-                        if (this.hasTransitions(((State) this.states.get(var5)).getName())) {
-                            var7 = true;
-                            var8.add((State) this.states.get(var5));
+                                JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            this.states.remove(selectedIndex);
+                            this.stateList.setListData(this.states.toArray(new State[]{}));
+                            this.removeButton.setEnabled(false);
                         }
-                    } else {
-                        var8.add((State) this.states.get(var5));
                     }
-                }
+                    break;
+                case "Remove All":
+                    boolean customStatesHaveTransitions = false;
+                    List<State> customStates = new ArrayList<>();
 
-                this.states = var8;
-                this.stateList.setListData(this.states.toArray());
-                if (var7) {
-                    JOptionPane.showMessageDialog(
+                    for (State state : this.states) {
+                        if (!state
+                            .getName()
+                            .equals(Symbols.STATE_BEGINNING_STATE)
+                            && !state
+                            .getName()
+                            .equals(Symbols.STATE_HALTING_STATE)) {
+                            if (this.hasTransitions(state.getName())) {
+                                customStatesHaveTransitions = true;
+                                customStates.add(state);
+                            }
+                        } else {
+                            customStates.add(state);
+                        }
+                    }
+
+                    if (customStatesHaveTransitions) {
+                        JOptionPane.showMessageDialog(
                             this,
-                            "One or more of the states have transitions and were not removed.\n\nPlease delete these tranistions before removing the state(s).",
+                            "One or more of the states have transitions and were not removed.\n\nPlease delete these transitions before removing the state(s).",
                             "VisuTuring - Integrity Protect",
-                            0);
-                }
-
-                this.removeAllButton.setEnabled(false);
+                            JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                    this.states = customStates;
+                    this.stateList.setListData(this.states.toArray(new State[]{}));
+                    this.removeAllButton.setEnabled(false);
+                    break;
             }
         }
     }
 
-    public void valueChanged(ListSelectionEvent var1) {
+    public void valueChanged(ListSelectionEvent event) {
         this.updateButtonStates();
     }
 
     public void updateButtonStates() {
-        int var1 = this.stateList.getSelectedIndex();
-        if (var1 > -1) {
-            String var2 = ((State) this.states.get(var1)).getName();
-            if (!var2.equals(Symbols.STATE_BEGINNING_STATE)
-                    && !var2.equals(Symbols.STATE_HALTING_STATE)) {
-                this.removeButton.setEnabled(true);
-            } else {
-                this.removeButton.setEnabled(false);
-            }
+        int selectedIndex = this.stateList.getSelectedIndex();
+        if (selectedIndex > -1) {
+            String selectedState = this.states.get(selectedIndex).getName();
+            this.removeButton.setEnabled(!selectedState.equals(Symbols.STATE_BEGINNING_STATE)
+                && !selectedState.equals(Symbols.STATE_HALTING_STATE));
         }
 
         if (this.states.size() > 2) {
