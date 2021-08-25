@@ -3,6 +3,7 @@ package org.keiosu.visuturing.mousetools;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -12,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.List;
-import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.keiosu.visuturing.core.State;
@@ -25,26 +25,23 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
     private boolean overHandle = false;
     private Point lastPoint;
     public static final Dimension HANDLE_DIMENSION = new Dimension(10, 10);
-    public static final Color HANDLE_COLOUR = new Color(10, 10, 255);
 
-    public TuringMachineDiagramSelectTool(DiagramEditor var1) {
-        super(var1);
-        this.setCursor(0);
-        this.setOverCursor(13);
+    public TuringMachineDiagramSelectTool(DiagramEditor diagramEditor) {
+        super(diagramEditor);
+        this.setCursor(Cursor.DEFAULT_CURSOR);
+        this.setOverCursor(Cursor.MOVE_CURSOR);
     }
 
-    public void mousePressed(MouseEvent var1) {
-        Point var2 = var1.getPoint();
-        Point2D var3 = this.diagramEditor.toUser(new Double(var2.getX(), var2.getY()));
-        List var4 = this.diagramEditor.getCurrentMachine().getStates();
-        State var5 = this.diagramEditor.getSelectedState();
-        Transition var6 = this.diagramEditor.getSelectedTransition();
+    public void mousePressed(MouseEvent event) {
+        Point2D eventPoint = this.diagramEditor.toUser(new Double(
+            event.getPoint().getX(), event.getPoint().getY()));
+        List<State> states = this.diagramEditor.getCurrentMachine().getStates();
+        Transition selectedTransition = this.diagramEditor.getSelectedTransition();
 
-        for (int var7 = 0; var7 < var4.size(); ++var7) {
-            State var8 = (State) var4.get(var7);
-            if (var8.contains(var3)) {
-                this.diagramEditor.setSelectedState(var8);
-                this.diagramEditor.setSelectedTransition((Transition) null);
+        for (State state : states) {
+            if (state.contains(eventPoint)) {
+                this.diagramEditor.setSelectedState(state);
+                this.diagramEditor.setSelectedTransition(null);
                 this.diagramEditor.repaint();
                 this.overHandle = false;
                 break;
@@ -52,50 +49,45 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
         }
 
         if (this.diagramEditor.getSelectedState() == null) {
-            if (var6 != null) {
-                Rectangle var10 = new Rectangle(HANDLE_DIMENSION);
-                var10.setLocation(
-                        (int) (var6.getControlPoint().getX() - HANDLE_DIMENSION.getWidth() / 2.0D),
+            if (selectedTransition != null) {
+                Rectangle controlHandleArea = new Rectangle(HANDLE_DIMENSION);
+                controlHandleArea.setLocation(
+                        (int) (selectedTransition.getControlPoint().getX() - HANDLE_DIMENSION.getWidth() / 2.0D),
                         (int)
-                                (var6.getControlPoint().getY()
+                                (selectedTransition.getControlPoint().getY()
                                         - HANDLE_DIMENSION.getHeight() / 2.0D));
-                if (var1.getClickCount() > 1) {
-                    TransitionFrame var12 =
-                            new TransitionFrame(this.diagramEditor.getCurrentMachine(), var6);
-                    Point var9 = new Point(var2);
-                    SwingUtilities.convertPointToScreen(var9, (Component) var1.getSource());
-                    var12.setLocation(var9);
-                    var12.setVisible(true);
-                    if (var12.getTransition() != null) {
-                        this.diagramEditor.getCurrentMachine().removeTransition(var6);
-                        var6 = var12.getTransition();
-                        this.diagramEditor.getCurrentMachine().addTransition(var6);
+                if (event.getClickCount() > 1) {
+                    TransitionFrame transitionFrame =
+                            new TransitionFrame(this.diagramEditor.getCurrentMachine(), selectedTransition);
+                    Point currentPoint = new Point(event.getPoint());
+                    SwingUtilities.convertPointToScreen(currentPoint, (Component) event.getSource());
+                    transitionFrame.setLocation(currentPoint);
+                    transitionFrame.setVisible(true);
+                    if (transitionFrame.getTransition() != null) {
+                        this.diagramEditor.getCurrentMachine().removeTransition(selectedTransition);
+                        selectedTransition = transitionFrame.getTransition();
+                        this.diagramEditor.getCurrentMachine().addTransition(selectedTransition);
                         this.diagramEditor.repaint();
                     } else {
                         JOptionPane.showMessageDialog(
                                 this.diagramEditor,
                                 "Transitions reading the left end marker can only\ngo right.",
                                 "Invalid Transition",
-                                0,
-                                (Icon) null);
+                            JOptionPane.ERROR_MESSAGE,
+                            null);
                     }
                 }
 
-                if (var10.contains(this.diagramEditor.toUser(this.lastPoint))) {
-                    this.overHandle = true;
-                } else {
-                    this.overHandle = false;
-                }
+                this.overHandle = controlHandleArea.contains(this.diagramEditor.toUser(this.lastPoint));
             }
 
             if (!this.overHandle) {
-                List var11 = this.diagramEditor.getCurrentMachine().getTransitions();
+                List<Transition> transitions = this.diagramEditor.getCurrentMachine().getTransitions();
 
-                for (int var13 = 0; var13 < var11.size(); ++var13) {
-                    Transition var14 = (Transition) var11.get(var13);
-                    if (this.isOver(var14, var3)
-                            && var14 != this.diagramEditor.getSelectedTransition()) {
-                        this.diagramEditor.setSelectedTransition(var14);
+                for (Transition transition : transitions) {
+                    if (this.isOver(transition, eventPoint)
+                        && transition != this.diagramEditor.getSelectedTransition()) {
+                        this.diagramEditor.setSelectedTransition(transition);
                         this.diagramEditor.repaint();
                         break;
                     }
@@ -103,123 +95,121 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
             }
         }
 
-        this.lastPoint = var2;
+        this.lastPoint = event.getPoint();
     }
 
-    public void mouseReleased(MouseEvent var1) {
-        Point var2 = var1.getPoint();
-        State var3 = this.diagramEditor.getSelectedState();
-        Transition var4 = this.diagramEditor.getSelectedTransition();
-        if (var3 != null) {
-            double var5 =
-                    this.diagramEditor.toUser(var2).getX()
+    public void mouseReleased(MouseEvent event) {
+        Point eventPoint = event.getPoint();
+        State selectedState = this.diagramEditor.getSelectedState();
+        Transition selectedTransition = this.diagramEditor.getSelectedTransition();
+        if (selectedState != null) {
+            double ex =
+                    this.diagramEditor.toUser(eventPoint).getX()
                             - this.diagramEditor.toUser(this.lastPoint).getX();
-            double var7 =
-                    this.diagramEditor.toUser(var2).getY()
+            double ey =
+                    this.diagramEditor.toUser(eventPoint).getY()
                             - this.diagramEditor.toUser(this.lastPoint).getY();
-            Point2D var9 = var3.getLocation();
-            var9.setLocation(var9.getX() + var5, var9.getY() + var7);
-            var3.setLocation(var9);
-            this.diagramEditor.getCurrentMachine().setChanged(true);
-            this.diagramEditor.setSelectedState((State) null);
-            this.diagramEditor.repaint();
-            TuringMachine var10 = this.diagramEditor.getCurrentMachine();
-            List var11 = var10.getTransitions();
+            moveStateBy(selectedState, ex, ey);
+            TuringMachine machine = this.diagramEditor.getCurrentMachine();
+            List<Transition> transitions = machine.getTransitions();
 
-            for (int var12 = 0; var12 < var11.size(); ++var12) {
-                Transition var13 = (Transition) var11.get(var12);
-                if (var13.getCurrentState().equals(var3.getName())
-                        && var13.getCurrentState().equals(var13.getNextState())) {
-                    Point2D var14 = var13.getControlPoint();
-                    Double var15 = new Double(var14.getX() + var5, var14.getY() + var7);
-                    var13.setControlPoint(var15);
+            for (Transition transition : transitions) {
+                if (transition.getCurrentState().equals(selectedState.getName())
+                    && transition.getCurrentState().equals(transition.getNextState())) {
+                    Point2D cp = transition.getControlPoint();
+                    Double newControlPoint = new Double(cp.getX() + ex, cp.getY() + ey);
+                    transition.setControlPoint(newControlPoint);
                 }
             }
-        } else if (var4 != null) {
-            this.moveHandle(var2);
-            this.diagramEditor.setSelectedState((State) null);
+        } else if (selectedTransition != null) {
+            this.moveHandle(eventPoint);
+            this.diagramEditor.setSelectedState(null);
             this.diagramEditor.repaint();
         }
 
-        if (var1.getButton() != 1) {
-            this.diagramEditor.setSelectedTransition((Transition) null);
+        if (event.getButton() != 1) {
+            this.diagramEditor.setSelectedTransition(null);
         }
     }
 
-    private void moveHandle(Point var1) {
-        Transition var2 = this.diagramEditor.getSelectedTransition();
-        double var3 =
-                this.diagramEditor.toUser(var1).getX()
+    private void moveStateBy(State state, double ex, double ey) {
+        Point2D stateLocation = state.getLocation();
+        stateLocation.setLocation(stateLocation.getX() + ex, stateLocation.getY() + ey);
+        state.setLocation(stateLocation);
+        this.diagramEditor.getCurrentMachine().setChanged(true);
+        this.diagramEditor.setSelectedState(null);
+        this.diagramEditor.repaint();
+    }
+
+    private void moveHandle(Point point) {
+        Transition transition = this.diagramEditor.getSelectedTransition();
+        double ex =
+                this.diagramEditor.toUser(point).getX()
                         - this.diagramEditor.toUser(this.lastPoint).getX();
-        double var5 =
-                this.diagramEditor.toUser(var1).getY()
+        double ey =
+                this.diagramEditor.toUser(point).getY()
                         - this.diagramEditor.toUser(this.lastPoint).getY();
-        Rectangle var7 = new Rectangle(HANDLE_DIMENSION);
-        var7.setLocation(
-                (int) (var2.getControlPoint().getX() - HANDLE_DIMENSION.getWidth() / 2.0D),
-                (int) (var2.getControlPoint().getY() - HANDLE_DIMENSION.getHeight() / 2.0D));
-        if (var7.contains(this.diagramEditor.toUser(this.lastPoint))) {
-            Point2D var8 = var2.getControlPoint();
-            var8.setLocation(var8.getX() + var3, var8.getY() + var5);
-            var2.setControlPoint(var8);
+        Rectangle boundingBox = new Rectangle(HANDLE_DIMENSION);
+        boundingBox.setLocation(
+                (int) (transition.getControlPoint().getX() - HANDLE_DIMENSION.getWidth() / 2.0D),
+                (int) (transition.getControlPoint().getY() - HANDLE_DIMENSION.getHeight() / 2.0D));
+        if (boundingBox.contains(this.diagramEditor.toUser(this.lastPoint))) {
+            Point2D cp = transition.getControlPoint();
+            cp.setLocation(cp.getX() + ex, cp.getY() + ey);
+            transition.setControlPoint(cp);
             this.diagramEditor.getCurrentMachine().setChanged(true);
         }
     }
 
-    public void mouseDragged(MouseEvent var1) {
-        Point var2 = var1.getPoint();
-        State var3 = this.diagramEditor.getSelectedState();
-        Transition var4 = this.diagramEditor.getSelectedTransition();
-        if (var3 != null) {
-            double var5 =
-                    this.diagramEditor.toUser(var2).getX()
+    public void mouseDragged(MouseEvent event) {
+        Point eventPoint = event.getPoint();
+        State selectedState = this.diagramEditor.getSelectedState();
+        Transition selectedTransition = this.diagramEditor.getSelectedTransition();
+        if (selectedState != null) {
+            double ex =
+                    this.diagramEditor.toUser(eventPoint).getX()
                             - this.diagramEditor.toUser(this.lastPoint).getX();
-            double var7 =
-                    this.diagramEditor.toUser(var2).getY()
+            double ey =
+                    this.diagramEditor.toUser(eventPoint).getY()
                             - this.diagramEditor.toUser(this.lastPoint).getY();
-            Point2D var9 = var3.getLocation();
-            var9.setLocation(var9.getX() + var5, var9.getY() + var7);
-            var3.setLocation(var9);
-            this.diagramEditor.repaint();
-            List var10 = this.diagramEditor.getCurrentMachine().getTransitions();
+            moveStateBy(selectedState, ex, ey);
+            List<Transition> transitions = this.diagramEditor.getCurrentMachine().getTransitions();
 
-            for (int var11 = 0; var11 < var10.size(); ++var11) {
-                Transition var12 = (Transition) var10.get(var11);
-                if (var12.getCurrentState().equals(var3.getName())) {
-                    var9 = var12.getP1();
-                    var9.setLocation(var9.getX() + var5, var9.getY() + var7);
-                    var12.setP1(var9);
+            for (Transition transition : transitions) {
+                if (transition.getCurrentState().equals(selectedState.getName())) {
+                    Point2D transitionLocation = transition.getP1();
+                    transitionLocation.setLocation(transitionLocation.getX() + ex, transitionLocation.getY() + ey);
+                    transition.setP1(transitionLocation);
                 }
 
-                if (var12.getNextState().equals(var3.getName())) {
-                    var9 = var12.getP2();
-                    var9.setLocation(var9.getX() + var5, var9.getY() + var7);
-                    var12.setP2(var9);
+                if (transition.getNextState().equals(selectedState.getName())) {
+                    Point2D transitionLocation = transition.getP2();
+                    transitionLocation.setLocation(transitionLocation.getX() + ex, transitionLocation.getY() + ey);
+                    transition.setP2(transitionLocation);
                 }
 
-                if (var12.getCurrentState().equals(var3.getName())
-                        && var12.getCurrentState().equals(var12.getNextState())) {
-                    Point2D var13 = var12.getControlPoint();
-                    Double var14 = new Double(var13.getX() + var5, var13.getY() + var7);
-                    var12.setControlPoint(var14);
+                if (transition.getCurrentState().equals(selectedState.getName())
+                    && transition.getCurrentState().equals(transition.getNextState())) {
+                    Point2D cp = transition.getControlPoint();
+                    Double newControlPoint = new Double(cp.getX() + ex, cp.getY() + ey);
+                    transition.setControlPoint(newControlPoint);
                 }
             }
-        } else if (var4 != null) {
-            this.moveHandle(var2);
+        } else if (selectedTransition != null) {
+            this.moveHandle(eventPoint);
             this.diagramEditor.repaint();
         }
 
-        this.lastPoint = var2;
+        this.lastPoint = eventPoint;
     }
 
-    public void mouseMoved(MouseEvent var1) {
-        Point var2 = var1.getPoint();
-        Point2D var3 = this.diagramEditor.toUser(new Double(var2.getX(), var2.getY()));
-        List var4 = this.diagramEditor.getCurrentMachine().getStates();
+    public void mouseMoved(MouseEvent event) {
+        Point eventPoint = event.getPoint();
+        Point2D userPoint = this.diagramEditor.toUser(new Double(eventPoint.getX(), eventPoint.getY()));
+        List<State> states = this.diagramEditor.getCurrentMachine().getStates();
 
-        for (int var5 = 0; var5 < var4.size(); ++var5) {
-            State var6 = (State) var4.get(var5);
-            if (var6.contains(var3)) {
+        for (State state : states) {
+            if (state.contains(userPoint)) {
                 this.diagramEditor.setCursor(this.getOverCursor());
                 return;
             }
@@ -231,22 +221,26 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
     public void preDraw(Graphics2D canvas) {}
 
     public void postDraw(Graphics2D canvas) {
-        Transition var2 = this.diagramEditor.getSelectedTransition();
-        if (var2 != null) {
-            canvas.setRenderingHint(
-                    RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            canvas.setStroke(new BasicStroke(2.0F));
-            Point2D var3 = var2.getControlPoint();
-            java.awt.geom.Ellipse2D.Double var4 =
-                    new java.awt.geom.Ellipse2D.Double(
-                            (double) ((int) var3.getX()) - HANDLE_DIMENSION.getWidth() / 2.0D,
-                            (double) ((int) var3.getY()) - HANDLE_DIMENSION.getHeight() / 2.0D,
-                            HANDLE_DIMENSION.getWidth(),
-                            HANDLE_DIMENSION.getHeight());
-            canvas.setColor(Color.LIGHT_GRAY);
-            canvas.fill(var4);
-            canvas.setColor(Color.black);
-            canvas.draw(var4);
+        Transition transition = this.diagramEditor.getSelectedTransition();
+        if (transition != null) {
+            drawControlHandle(canvas, transition);
         }
+    }
+
+    private void drawControlHandle(Graphics2D canvas, Transition transition) {
+        canvas.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        canvas.setStroke(new BasicStroke(2.0F));
+        Point2D cp = transition.getControlPoint();
+        java.awt.geom.Ellipse2D.Double controlHandle =
+                new java.awt.geom.Ellipse2D.Double(
+                        (double) ((int) cp.getX()) - HANDLE_DIMENSION.getWidth() / 2.0D,
+                        (double) ((int) cp.getY()) - HANDLE_DIMENSION.getHeight() / 2.0D,
+                        HANDLE_DIMENSION.getWidth(),
+                        HANDLE_DIMENSION.getHeight());
+        canvas.setColor(Color.LIGHT_GRAY);
+        canvas.fill(controlHandle);
+        canvas.setColor(Color.black);
+        canvas.draw(controlHandle);
     }
 }
