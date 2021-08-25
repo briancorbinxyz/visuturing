@@ -35,7 +35,7 @@ public class Persistence {
             LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public static void exportToHTML(XmlElement xmlElement, String filename)
-        throws IOException, TransformerException {
+            throws IOException, TransformerException {
         XmlTransformer xmlTransformer = new XmlTransformer("web/tm.xsl");
         String htmlFilename = filename;
         if (!htmlFilename.endsWith("html") && !htmlFilename.endsWith("htm")) {
@@ -44,7 +44,7 @@ public class Persistence {
 
         File htmlFile = new File(htmlFilename);
         if (htmlFile.createNewFile()) {
-           LOGGER.atInfo().log("Created new file: {}", htmlFilename);
+            LOGGER.atInfo().log("Created new file: {}", htmlFilename);
         }
         try (FileOutputStream file = new FileOutputStream(htmlFile)) {
             xmlTransformer.transform(xmlElement, file);
@@ -67,9 +67,9 @@ public class Persistence {
     public static void save(XmlElement xmlElement, File file) throws IOException {
         String filename = trimExtension(file.toString());
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename.concat(".vt")))) {
-          String header =
-              "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
-          writer.write(header + xmlElement.toXml());
+            String header =
+                    "<?xml version=\"1.0\" ?>\n\n<?author name='Brian L A Corbin' ?>\n<?program name='VisuTuring' version='1.0 3YP' ?>";
+            writer.write(header + xmlElement.toXml());
         }
     }
 
@@ -117,9 +117,13 @@ public class Persistence {
             }
         }
 
-        TuringMachine machine = new TuringMachine(machineName, machineDescription, machineTransitions,
-            machineAlphabet,
-            machineStates);
+        TuringMachine machine =
+                new TuringMachine(
+                        machineName,
+                        machineDescription,
+                        machineTransitions,
+                        machineAlphabet,
+                        machineStates);
         machine.setHasDiagram(machineHasDiagram);
         return machine;
     }
@@ -251,28 +255,33 @@ public class Persistence {
                 switch (n.getTagName()) {
                     case "p1":
                         startPoint =
-                            new java.awt.geom.Point2D.Double(
-                                Double.parseDouble(n.getAttribute("x")),
-                                Double.parseDouble(n.getAttribute("y")));
+                                new java.awt.geom.Point2D.Double(
+                                        Double.parseDouble(n.getAttribute("x")),
+                                        Double.parseDouble(n.getAttribute("y")));
                         break;
                     case "p2":
                         endPoint =
-                            new java.awt.geom.Point2D.Double(
-                                Double.parseDouble(n.getAttribute("x")),
-                                Double.parseDouble(n.getAttribute("y")));
+                                new java.awt.geom.Point2D.Double(
+                                        Double.parseDouble(n.getAttribute("x")),
+                                        Double.parseDouble(n.getAttribute("y")));
                         break;
                     case "p3":
                         cp1 =
-                            new java.awt.geom.Point2D.Double(
-                                Double.parseDouble(n.getAttribute("x")),
-                                Double.parseDouble(n.getAttribute("y")));
+                                new java.awt.geom.Point2D.Double(
+                                        Double.parseDouble(n.getAttribute("x")),
+                                        Double.parseDouble(n.getAttribute("y")));
                         break;
                 }
             }
         }
 
         return new java.awt.geom.QuadCurve2D.Double(
-                startPoint.getX(), startPoint.getY(), cp1.getX(), cp1.getY(), endPoint.getX(), endPoint.getY());
+                startPoint.getX(),
+                startPoint.getY(),
+                cp1.getX(),
+                cp1.getY(),
+                endPoint.getX(),
+                endPoint.getY());
     }
 
     public static void saveJPEG(BufferedImage image, String filename) {

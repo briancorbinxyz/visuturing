@@ -44,11 +44,11 @@ public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagram
             if (state.contains(eventPoint)) {
                 if (state.getName().equals(Symbols.STATE_HALTING_STATE)) {
                     JOptionPane.showMessageDialog(
-                        null,
-                        "You cannot create transitions out of the halting state.",
-                        "VisuTuring",
-                        JOptionPane.ERROR_MESSAGE,
-                        null);
+                            null,
+                            "You cannot create transitions out of the halting state.",
+                            "VisuTuring",
+                            JOptionPane.ERROR_MESSAGE,
+                            null);
                     return;
                 }
 
@@ -56,8 +56,8 @@ public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagram
                 double y = state.getLocation().getY();
                 this.diagramEditor.setSelectedTransition(null);
                 this.newTrans =
-                    new Transition(
-                        state.getName(), Symbols.SPACE, state.getName(), Symbols.SPACE);
+                        new Transition(
+                                state.getName(), Symbols.SPACE, state.getName(), Symbols.SPACE);
                 this.newTrans.setP1(new Double(x, y));
                 this.newTrans.setP2(new Double(x, y));
                 Point2D p1 = this.newTrans.getP1();
@@ -69,5 +69,4 @@ public class TuringMachineDiagramSelfTransitionTool extends TuringMachineDiagram
     }
 
     public void postDraw(Graphics2D canvas) {}
-
 }

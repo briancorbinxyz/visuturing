@@ -52,11 +52,11 @@ public class TuringMachineDiagramTransitionTool extends TuringMachineDiagramTool
             if (state.contains(eventPoint)) {
                 if (state.getName().equals(Symbols.STATE_HALTING_STATE) && this.mouseClicks == 0) {
                     JOptionPane.showMessageDialog(
-                        null,
-                        "You cannot create transitions out of the halting state.",
-                        "VisuTuring",
-                        JOptionPane.ERROR_MESSAGE,
-                        null);
+                            null,
+                            "You cannot create transitions out of the halting state.",
+                            "VisuTuring",
+                            JOptionPane.ERROR_MESSAGE,
+                            null);
                     return;
                 }
 
@@ -170,8 +170,7 @@ public class TuringMachineDiagramTransitionTool extends TuringMachineDiagramTool
                     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             canvas.setColor(Color.BLACK);
             Point2D p1 = this.newTrans.getP1();
-            java.awt.geom.Line2D.Double eventLine =
-                    new java.awt.geom.Line2D.Double(p1, eventPoint);
+            java.awt.geom.Line2D.Double eventLine = new java.awt.geom.Line2D.Double(p1, eventPoint);
             canvas.draw(eventLine);
             double ex = p1.getX() - eventPoint.getX();
             double ey = p1.getY() - eventPoint.getY();

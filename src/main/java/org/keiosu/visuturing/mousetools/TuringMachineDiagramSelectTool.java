@@ -33,8 +33,9 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
     }
 
     public void mousePressed(MouseEvent event) {
-        Point2D eventPoint = this.diagramEditor.toUser(new Double(
-            event.getPoint().getX(), event.getPoint().getY()));
+        Point2D eventPoint =
+                this.diagramEditor.toUser(
+                        new Double(event.getPoint().getX(), event.getPoint().getY()));
         List<State> states = this.diagramEditor.getCurrentMachine().getStates();
         Transition selectedTransition = this.diagramEditor.getSelectedTransition();
 
@@ -52,15 +53,19 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
             if (selectedTransition != null) {
                 Rectangle controlHandleArea = new Rectangle(HANDLE_DIMENSION);
                 controlHandleArea.setLocation(
-                        (int) (selectedTransition.getControlPoint().getX() - HANDLE_DIMENSION.getWidth() / 2.0D),
+                        (int)
+                                (selectedTransition.getControlPoint().getX()
+                                        - HANDLE_DIMENSION.getWidth() / 2.0D),
                         (int)
                                 (selectedTransition.getControlPoint().getY()
                                         - HANDLE_DIMENSION.getHeight() / 2.0D));
                 if (event.getClickCount() > 1) {
                     TransitionFrame transitionFrame =
-                            new TransitionFrame(this.diagramEditor.getCurrentMachine(), selectedTransition);
+                            new TransitionFrame(
+                                    this.diagramEditor.getCurrentMachine(), selectedTransition);
                     Point currentPoint = new Point(event.getPoint());
-                    SwingUtilities.convertPointToScreen(currentPoint, (Component) event.getSource());
+                    SwingUtilities.convertPointToScreen(
+                            currentPoint, (Component) event.getSource());
                     transitionFrame.setLocation(currentPoint);
                     transitionFrame.setVisible(true);
                     if (transitionFrame.getTransition() != null) {
@@ -73,20 +78,22 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
                                 this.diagramEditor,
                                 "Transitions reading the left end marker can only\ngo right.",
                                 "Invalid Transition",
-                            JOptionPane.ERROR_MESSAGE,
-                            null);
+                                JOptionPane.ERROR_MESSAGE,
+                                null);
                     }
                 }
 
-                this.overHandle = controlHandleArea.contains(this.diagramEditor.toUser(this.lastPoint));
+                this.overHandle =
+                        controlHandleArea.contains(this.diagramEditor.toUser(this.lastPoint));
             }
 
             if (!this.overHandle) {
-                List<Transition> transitions = this.diagramEditor.getCurrentMachine().getTransitions();
+                List<Transition> transitions =
+                        this.diagramEditor.getCurrentMachine().getTransitions();
 
                 for (Transition transition : transitions) {
                     if (this.isOver(transition, eventPoint)
-                        && transition != this.diagramEditor.getSelectedTransition()) {
+                            && transition != this.diagramEditor.getSelectedTransition()) {
                         this.diagramEditor.setSelectedTransition(transition);
                         this.diagramEditor.repaint();
                         break;
@@ -115,7 +122,7 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
 
             for (Transition transition : transitions) {
                 if (transition.getCurrentState().equals(selectedState.getName())
-                    && transition.getCurrentState().equals(transition.getNextState())) {
+                        && transition.getCurrentState().equals(transition.getNextState())) {
                     Point2D cp = transition.getControlPoint();
                     Double newControlPoint = new Double(cp.getX() + ex, cp.getY() + ey);
                     transition.setControlPoint(newControlPoint);
@@ -178,18 +185,20 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
             for (Transition transition : transitions) {
                 if (transition.getCurrentState().equals(selectedState.getName())) {
                     Point2D transitionLocation = transition.getP1();
-                    transitionLocation.setLocation(transitionLocation.getX() + ex, transitionLocation.getY() + ey);
+                    transitionLocation.setLocation(
+                            transitionLocation.getX() + ex, transitionLocation.getY() + ey);
                     transition.setP1(transitionLocation);
                 }
 
                 if (transition.getNextState().equals(selectedState.getName())) {
                     Point2D transitionLocation = transition.getP2();
-                    transitionLocation.setLocation(transitionLocation.getX() + ex, transitionLocation.getY() + ey);
+                    transitionLocation.setLocation(
+                            transitionLocation.getX() + ex, transitionLocation.getY() + ey);
                     transition.setP2(transitionLocation);
                 }
 
                 if (transition.getCurrentState().equals(selectedState.getName())
-                    && transition.getCurrentState().equals(transition.getNextState())) {
+                        && transition.getCurrentState().equals(transition.getNextState())) {
                     Point2D cp = transition.getControlPoint();
                     Double newControlPoint = new Double(cp.getX() + ex, cp.getY() + ey);
                     transition.setControlPoint(newControlPoint);
@@ -205,7 +214,8 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
 
     public void mouseMoved(MouseEvent event) {
         Point eventPoint = event.getPoint();
-        Point2D userPoint = this.diagramEditor.toUser(new Double(eventPoint.getX(), eventPoint.getY()));
+        Point2D userPoint =
+                this.diagramEditor.toUser(new Double(eventPoint.getX(), eventPoint.getY()));
         List<State> states = this.diagramEditor.getCurrentMachine().getStates();
 
         for (State state : states) {
@@ -228,8 +238,7 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
     }
 
     private void drawControlHandle(Graphics2D canvas, Transition transition) {
-        canvas.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         canvas.setStroke(new BasicStroke(2.0F));
         Point2D cp = transition.getControlPoint();
         java.awt.geom.Ellipse2D.Double controlHandle =
