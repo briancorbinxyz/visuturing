@@ -83,7 +83,7 @@ public class TransitionFrame extends JDialog implements ActionListener {
                 : transition;
     }
 
-    public void actionPerformed(ActionEvent var1) {
+    public void actionPerformed(ActionEvent event) {
         setVisible(false);
     }
 
