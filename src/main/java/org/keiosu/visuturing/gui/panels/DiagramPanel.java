@@ -7,9 +7,11 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -23,7 +25,6 @@ import org.keiosu.visuturing.mousetools.TuringMachineDiagramSelfTransitionTool;
 import org.keiosu.visuturing.mousetools.TuringMachineDiagramTransitionTool;
 
 public class DiagramPanel extends JPanel implements ActionListener {
-    public static final Dimension DIAGRAM_SIZE = new Dimension(5000, 5000);
     public static final String ADD_TRANSITION = "Add state changing transition";
     public static final String ADD_SELF_TRANSITION = "Add transition";
     public static final String REMOVE_TRANSITION = "Remove a transition";
@@ -36,68 +37,68 @@ public class DiagramPanel extends JPanel implements ActionListener {
     public static final String SELECT = "Select tool";
     public static final String ZOOM_IN = "Zoom in";
     public static final String ZOOM_OUT = "Zoom out";
-    private ActionListener externalListener;
-    private TuringMachine machine;
-    private GraphicsPanel diagram;
+    private final ActionListener externalListener;
+    private final TuringMachine machine;
+    private final GraphicsPanel diagram;
 
     public DiagramPanel(ActionListener actionListener, TuringMachine machine) {
         this.machine = machine;
         externalListener = actionListener;
         setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
-        JPanel var3 = new JPanel(new BorderLayout(0, 0));
-        var3.setOpaque(false);
-        add(var3, "North");
-        var3.add(new JLabel(this.createImageIcon("bitmaps/diagram/title.gif")), "West");
-        JPanel var4 = new JPanel(new BorderLayout(0, 0));
-        var3.add(var4, "Center");
-        JPanel var5 = new JPanel(new BorderLayout(0, 0));
-        var5.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
-        var5.setBackground(Color.BLACK);
-        JPanel var6 = new JPanel(new BorderLayout(0, 0));
-        var6.setBackground(Color.white);
-        var6.add(var5, "North");
-        var4.add(var6, "Center");
-        var4.add(new JLabel(this.createImageIcon("bitmaps/diagram/rightcorner.gif")), "East");
-        JPanel var7 = new JPanel(new BorderLayout(0, 0));
-        var7.setBackground(Color.BLACK);
-        var7.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
-        add(var7, "East");
-        JPanel var8 = new JPanel(new BorderLayout(0, 0));
-        var8.setBackground(Color.BLACK);
-        var8.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
-        add(var8, "West");
-        JPanel var9 = new JPanel(new BorderLayout(0, 0));
-        var9.setBackground(Color.BLACK);
-        var9.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
-        add(var9, "South");
-        JPanel var10 = new JPanel(new BorderLayout(0, 0));
-        JPanel var11 = new JPanel(new BorderLayout(0, 0));
-        var11.setBackground(Color.WHITE);
-        var10.add(var11, "North");
-        JPanel var12 = new JPanel(new FlowLayout(3, 10, 10));
-        var12.setOpaque(false);
-        JPanel var13 = new JPanel(new FlowLayout(4, 10, 10));
-        var13.setOpaque(false);
-        var12.add(this.createMediaButton("Select tool", "select"));
-        var12.add(this.createMediaButton("Add state changing transition", "addtrans"));
-        var12.add(this.createMediaButton("Add transition", "addstran"));
-        var12.add(this.createMediaButton("Remove a transition", "destroy"));
-        var13.add(new DiagramPanel.NonDeterminismButton());
-        var13.add(
-                this.createMediaButton("Edit the description of this Turing Machine", "editdesc"));
-        var13.add(this.createMediaButton("Edit states", "editsts"));
-        var13.add(this.createMediaButton("Edit the alphabet", "editalph"));
-        var13.add(new DiagramPanel.GenerateButton());
-        var13.add(new DiagramPanel.ZoomModifier());
-        var11.add(var12, "West");
-        var11.add(var13, "East");
+        JPanel titlePanel = new JPanel(new BorderLayout(0, 0));
+        titlePanel.setOpaque(false);
+        add(titlePanel, "North");
+        titlePanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/title.gif")), "West");
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
+        titlePanel.add(rightPanel, "Center");
+        JPanel northPanel = new JPanel(new BorderLayout(0, 0));
+        northPanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
+        northPanel.setBackground(Color.BLACK);
+        JPanel centerPanel = new JPanel(new BorderLayout(0, 0));
+        centerPanel.setBackground(Color.white);
+        centerPanel.add(northPanel, "North");
+        rightPanel.add(centerPanel, "Center");
+        rightPanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/rightcorner.gif")), "East");
+        JPanel eastPanel = new JPanel(new BorderLayout(0, 0));
+        eastPanel.setBackground(Color.BLACK);
+        eastPanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
+        add(eastPanel, "East");
+        JPanel westPanel = new JPanel(new BorderLayout(0, 0));
+        westPanel.setBackground(Color.BLACK);
+        westPanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
+        add(westPanel, "West");
+        JPanel southPanel = new JPanel(new BorderLayout(0, 0));
+        southPanel.setBackground(Color.BLACK);
+        southPanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/topborder.gif")));
+        add(southPanel, "South");
+        JPanel northBorder = new JPanel(new BorderLayout(0, 0));
+        JPanel border = new JPanel(new BorderLayout(0, 0));
+        border.setBackground(Color.WHITE);
+        northBorder.add(border, "North");
+        JPanel mediaPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
+        mediaPanel.setOpaque(false);
+        JPanel editPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING, 10, 10));
+        editPanel.setOpaque(false);
+        mediaPanel.add(this.createMediaButton(SELECT, "select"));
+        mediaPanel.add(this.createMediaButton(ADD_TRANSITION, "addtrans"));
+        mediaPanel.add(this.createMediaButton(ADD_SELF_TRANSITION, "addstran"));
+        mediaPanel.add(this.createMediaButton(REMOVE_TRANSITION, "destroy"));
+        editPanel.add(new DiagramPanel.NonDeterminismButton());
+        editPanel.add(
+                this.createMediaButton(EDIT_DESCRIPTION, "editdesc"));
+        editPanel.add(this.createMediaButton(EDIT_STATES, "editsts"));
+        editPanel.add(this.createMediaButton(EDIT_ALPHABET, "editalph"));
+        editPanel.add(new DiagramPanel.GenerateButton());
+        editPanel.add(new DiagramPanel.ZoomModifier());
+        border.add(mediaPanel, "West");
+        border.add(editPanel, "East");
         diagram = new GraphicsPanel(machine);
-        JScrollPane var14 = new JScrollPane(this.diagram);
-        var14.setWheelScrollingEnabled(true);
-        var14.setBorder(BorderFactory.createEmptyBorder());
-        var10.add(var14, "Center");
-        add(var10, "Center");
+        JScrollPane diagramPane = new JScrollPane(this.diagram);
+        diagramPane.setWheelScrollingEnabled(true);
+        diagramPane.setBorder(BorderFactory.createEmptyBorder());
+        northBorder.add(diagramPane, "Center");
+        add(northBorder, "Center");
     }
 
     JButton createMediaButton(String name, String diagramIconName) {
@@ -109,114 +110,119 @@ public class DiagramPanel extends JPanel implements ActionListener {
         return button;
     }
 
-    public ImageIcon createImageIcon(String var1) {
-        return new ImageIcon(this.getClass().getClassLoader().getResource(var1));
+    public ImageIcon createImageIcon(String resource) {
+        return new ImageIcon(
+            Objects.requireNonNull(this.getClass().getClassLoader().getResource(resource)));
     }
 
-    public void actionPerformed(ActionEvent var1) {
-        if (var1.getSource() instanceof JButton) {
-            JButton var2 = (JButton) var1.getSource();
-            String var3 = var2.getName();
-            if (!var3.equals("Edit states") && !var3.equals("Edit the alphabet")) {
-                if (var3.equals("Select tool")) {
-                    diagram.setTool(new TuringMachineDiagramSelectTool(this.diagram));
-                } else if (var3.equals("Check to see if this Turing Machine is deterministic")) {
-                    JOptionPane.showMessageDialog(
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() instanceof JButton) {
+            JButton source = (JButton) event.getSource();
+            String sourceName = source.getName();
+            if (!sourceName.equals(EDIT_STATES) && !sourceName.equals(EDIT_ALPHABET)) {
+                switch (sourceName) {
+                    case SELECT:
+                        diagram.setTool(new TuringMachineDiagramSelectTool(this.diagram));
+                        break;
+                    case CHECK_NON_DETERMINISM:
+                        JOptionPane.showMessageDialog(
                             this,
                             "This Turing Machine is "
-                                    + (this.machine.isDeterministic()
-                                            ? "deterministic."
-                                            : "non-deterministic."),
+                                + (this.machine.isDeterministic()
+                                ? "deterministic."
+                                : "non-deterministic."),
                             "Non-Determinism",
-                            1);
-                } else if (var3.equals("Add state changing transition")) {
-                    diagram.setTool(new TuringMachineDiagramTransitionTool(this.diagram));
-                } else if (var3.equals("Add transition")) {
-                    diagram.setTool(new TuringMachineDiagramSelfTransitionTool(this.diagram));
-                } else if (var3.equals("Remove a transition")) {
-                    diagram.setTool(new TuringMachineDiagramDeleteTool(this.diagram));
-                } else if (var3.equals("Zoom in")) {
-                    diagram.zoomIn();
-                } else if (var3.equals("Zoom out")) {
-                    diagram.zoomOut();
+                            JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case ADD_TRANSITION:
+                        diagram.setTool(new TuringMachineDiagramTransitionTool(this.diagram));
+                        break;
+                    case ADD_SELF_TRANSITION:
+                        diagram.setTool(new TuringMachineDiagramSelfTransitionTool(this.diagram));
+                        break;
+                    case REMOVE_TRANSITION:
+                        diagram.setTool(new TuringMachineDiagramDeleteTool(this.diagram));
+                        break;
+                    case ZOOM_IN:
+                        diagram.zoomIn();
+                        break;
+                    case ZOOM_OUT:
+                        diagram.zoomOut();
+                        break;
                 }
             }
         }
     }
 
-    public void exportToJPEG(File var1) {
-        diagram.exportToJPEG(var1);
+    public void exportToJPEG(File file) {
+        diagram.exportToJPEG(file);
     }
 
     public void printDiagram() {
         diagram.print();
     }
 
+    private void createDiagramButton(JComponent component, String iconName, String name) {
+        JButton button =
+            DiagramPanel.this.createMediaButton(
+                name, iconName);
+        button.setBounds(7, 19, 78, 18);
+        JLayeredPane pane = new JLayeredPane();
+        pane.setPreferredSize(component.getPreferredSize());
+        add(pane);
+        pane.add(component, JLayeredPane.DEFAULT_LAYER);
+        pane.add(button, JLayeredPane.POPUP_LAYER);
+        setPreferredSize(pane.getPreferredSize());
+    }
+
     public class ZoomModifier extends JPanel {
         public ZoomModifier() {
             super(new BorderLayout(0, 0));
-            JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/zoom.gif"));
-            var2.setBounds(
+            JLabel zoomLabel = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/zoom.gif"));
+            zoomLabel.setBounds(
                     0,
                     0,
-                    (int) var2.getPreferredSize().getWidth(),
-                    (int) var2.getPreferredSize().getHeight());
-            JButton var3 = DiagramPanel.this.createMediaButton("Zoom in", "increase");
-            var3.setBounds(14, 18, 22, 22);
-            JButton var4 = DiagramPanel.this.createMediaButton("Zoom out", "decrease");
-            var4.setBounds(56, 18, 22, 22);
-            JLayeredPane var5 = new JLayeredPane();
-            var5.setPreferredSize(var2.getPreferredSize());
-            add(var5);
-            var5.add(var2, JLayeredPane.DEFAULT_LAYER);
-            var5.add(var3, JLayeredPane.POPUP_LAYER);
-            var5.add(var4, JLayeredPane.POPUP_LAYER);
-            setPreferredSize(var5.getPreferredSize());
+                    (int) zoomLabel.getPreferredSize().getWidth(),
+                    (int) zoomLabel.getPreferredSize().getHeight());
+            JButton zoomIn = DiagramPanel.this.createMediaButton(ZOOM_IN, "increase");
+            zoomIn.setBounds(14, 18, 22, 22);
+            JButton zoomOut = DiagramPanel.this.createMediaButton(ZOOM_OUT, "decrease");
+            zoomOut.setBounds(56, 18, 22, 22);
+            JLayeredPane pane = new JLayeredPane();
+            pane.setPreferredSize(zoomLabel.getPreferredSize());
+            add(pane);
+            pane.add(zoomLabel, JLayeredPane.DEFAULT_LAYER);
+            pane.add(zoomIn, JLayeredPane.POPUP_LAYER);
+            pane.add(zoomOut, JLayeredPane.POPUP_LAYER);
+            setPreferredSize(pane.getPreferredSize());
         }
     }
 
     public class NonDeterminismButton extends JPanel {
         public NonDeterminismButton() {
             super(new BorderLayout(0, 0));
-            JLabel var2 = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/nd.gif"));
-            var2.setBounds(
+            JLabel nonDeterministicButton = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/nd.gif"));
+            nonDeterministicButton.setBounds(
                     0,
                     0,
-                    (int) var2.getPreferredSize().getWidth(),
-                    (int) var2.getPreferredSize().getHeight());
-            JButton var3 =
-                    DiagramPanel.this.createMediaButton(
-                            "Check to see if this Turing Machine is deterministic", "check");
-            var3.setBounds(7, 19, 78, 18);
-            JLayeredPane var4 = new JLayeredPane();
-            var4.setPreferredSize(var2.getPreferredSize());
-            add(var4);
-            var4.add(var2, JLayeredPane.DEFAULT_LAYER);
-            var4.add(var3, JLayeredPane.POPUP_LAYER);
-            setPreferredSize(var4.getPreferredSize());
+                    (int) nonDeterministicButton.getPreferredSize().getWidth(),
+                    (int) nonDeterministicButton.getPreferredSize().getHeight());
+            createDiagramButton(nonDeterministicButton, CHECK_NON_DETERMINISM, "check");
         }
     }
 
     public class GenerateButton extends JPanel {
         public GenerateButton() {
             super(new BorderLayout(0, 0));
-            JLabel var2 =
+            JLabel diagramLabel =
                     new JLabel(DiagramPanel.this.createImageIcon("buttons/diagram/diagram.gif"));
-            var2.setBounds(
+            diagramLabel.setBounds(
                     0,
                     0,
-                    (int) var2.getPreferredSize().getWidth(),
-                    (int) var2.getPreferredSize().getHeight());
-            JButton var3 =
-                    DiagramPanel.this.createMediaButton(
-                            "Generate a new diagram based on transition table", "generate");
-            var3.setBounds(7, 19, 78, 18);
-            JLayeredPane var4 = new JLayeredPane();
-            var4.setPreferredSize(var2.getPreferredSize());
-            add(var4);
-            var4.add(var2, JLayeredPane.DEFAULT_LAYER);
-            var4.add(var3, JLayeredPane.POPUP_LAYER);
-            setPreferredSize(var4.getPreferredSize());
+                    (int) diagramLabel.getPreferredSize().getWidth(),
+                    (int) diagramLabel.getPreferredSize().getHeight());
+            createDiagramButton(diagramLabel, "generate", GENERATE);
         }
+
     }
 }
