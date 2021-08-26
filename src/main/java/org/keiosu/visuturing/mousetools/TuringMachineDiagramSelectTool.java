@@ -117,6 +117,7 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
                     this.diagramEditor.toUser(eventPoint).getY()
                             - this.diagramEditor.toUser(this.lastPoint).getY();
             moveStateBy(selectedState, ex, ey);
+            this.diagramEditor.setSelectedState(null);
             TuringMachine machine = this.diagramEditor.getCurrentMachine();
             List<Transition> transitions = machine.getTransitions();
 
@@ -144,7 +145,6 @@ public class TuringMachineDiagramSelectTool extends TuringMachineDiagramTool {
         stateLocation.setLocation(stateLocation.getX() + ex, stateLocation.getY() + ey);
         state.setLocation(stateLocation);
         this.diagramEditor.getCurrentMachine().setChanged(true);
-        this.diagramEditor.setSelectedState(null);
         this.diagramEditor.repaint();
     }
 

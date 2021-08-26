@@ -74,16 +74,13 @@ public class TuringMachineDiagramTransitionTool extends TuringMachineDiagramTool
         }
 
         this.currentPoint = event.getPoint();
-        Point2D eventPoint =
-                this.diagramEditor.toUser(
-                        new Double(this.currentPoint.getX(), this.currentPoint.getY()));
-        return eventPoint;
+        return this.diagramEditor.toUser(
+                new Double(this.currentPoint.getX(), this.currentPoint.getY()));
     }
 
     public void mouseReleased(MouseEvent event) {
         this.currentPoint = event.getPoint();
         State state = this.diagramEditor.getSelectedState();
-        Transition transition = this.diagramEditor.getSelectedTransition();
         if (state != null && this.mouseClicks == 0) {
             double x = state.getLocation().getX();
             double y = state.getLocation().getY();
@@ -99,8 +96,8 @@ public class TuringMachineDiagramTransitionTool extends TuringMachineDiagramTool
                 Point2D p1 = this.newTrans.getP1();
                 Point2D p2 = this.newTrans.getP2();
                 this.newTrans.setNextState(state.getName());
-                this.newTrans.setTask(transition.getTask());
-                this.newTrans.setCurrentSymbol(transition.getCurrentSymbol());
+                this.newTrans.setTask(Symbols.SPACE);
+                this.newTrans.setCurrentSymbol(Symbols.SPACE);
                 this.transitionEditor =
                         new TransitionFrame(this.diagramEditor.getCurrentMachine(), this.newTrans);
                 this.newTrans.setControlPoint(
