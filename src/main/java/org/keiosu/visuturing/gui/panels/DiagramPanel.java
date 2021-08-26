@@ -207,7 +207,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
                     0,
                     (int) nonDeterministicButton.getPreferredSize().getWidth(),
                     (int) nonDeterministicButton.getPreferredSize().getHeight());
-            createDiagramButton(nonDeterministicButton, CHECK_NON_DETERMINISM, "check");
+            createDiagramButton(nonDeterministicButton, "check", CHECK_NON_DETERMINISM);
         }
     }
 
