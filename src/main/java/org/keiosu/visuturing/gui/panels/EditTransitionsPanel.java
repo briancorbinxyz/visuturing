@@ -134,6 +134,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
         return this.description.getText();
     }
 
+    @SuppressWarnings("rawtypes")
     public List<Transition> getTransitions() {
         DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
         Vector<Vector> transitionModel = tableModel.getDataVector();
