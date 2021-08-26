@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import org.keiosu.visuturing.gui.VisuTuring;
 
 public class StartupWizardPanel extends JPanel {
-    private VisuTuring app;
-    private ActionListener listener;
+    private final VisuTuring app;
+    private final ActionListener listener;
 
     StartupWizardPanel(ActionListener actionListener, VisuTuring app) {
         super(new BorderLayout());

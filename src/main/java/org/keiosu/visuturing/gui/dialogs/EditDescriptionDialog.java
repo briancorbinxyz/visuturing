@@ -7,7 +7,7 @@ import org.keiosu.visuturing.gui.panels.EditDescriptionPanel;
 
 public class EditDescriptionDialog extends AbstractDialog implements ActionListener {
 
-    private EditDescriptionPanel descriptionEditor;
+    private final EditDescriptionPanel descriptionEditor;
 
     public EditDescriptionDialog(Frame frame, TuringMachine turingMachine) {
         super(frame, "Edit Description");

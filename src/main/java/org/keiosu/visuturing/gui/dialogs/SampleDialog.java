@@ -27,7 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import org.keiosu.visuturing.persistence.VisuTuringFileFilter;
 
 public class SampleDialog extends AbstractDialog implements ListSelectionListener, MouseListener {
-    private JList<String> sampleNames;
+    private final JList<String> sampleNames;
     private String selectedFile = null;
     private static final String SAMPLE_DIR = "samples/";
 

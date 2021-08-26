@@ -20,15 +20,15 @@ public class CreationWizard extends AbstractDialog implements ActionListener {
     public static final String ES_PANEL = "Edit States";
     public static final String EA_PANEL = "Edit Alphabet";
     public static final String ET_PANEL = "Edit Transitions";
-    private CardLayout cl = new CardLayout();
-    private JPanel wizardPanel = new JPanel();
-    private JButton backButton;
-    private JButton nextButton;
+    private final CardLayout cl = new CardLayout();
+    private final JPanel wizardPanel = new JPanel();
+    private final JButton backButton;
+    private final JButton nextButton;
     private int cardIndex;
-    private EditDescriptionPanel edp;
-    private EditStatesPanel esp;
-    private EditAlphabetPanel eap;
-    private EditTransitionsPanel etp;
+    private final EditDescriptionPanel edp;
+    private final EditStatesPanel esp;
+    private final EditAlphabetPanel eap;
+    private final EditTransitionsPanel etp;
 
     public CreationWizard(Frame frame) {
         super(frame, "New Turing Machine Wizard");

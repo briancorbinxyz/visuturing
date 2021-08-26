@@ -7,7 +7,7 @@ import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditTransitionsPanel;
 
 public class EditTransitionsDialog extends AbstractDialog {
-    private EditTransitionsPanel transitionEditor;
+    private final EditTransitionsPanel transitionEditor;
 
     public EditTransitionsDialog(Frame frame, TuringMachine turingMachine) {
         super(frame, "Edit Transition Table");

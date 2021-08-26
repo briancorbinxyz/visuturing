@@ -20,7 +20,7 @@ public abstract class AbstractDialog extends JDialog implements ActionListener {
     private static final int MARGIN = 10;
     private static final String CANCEL_BUTTON = "Cancel";
     private static final String OKAY_BUTTON = "Okay";
-    private JPanel buttonPanel;
+    private final JPanel buttonPanel;
     boolean cancelled = true;
 
     public AbstractDialog(Frame owner, String title) {

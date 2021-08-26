@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 
 public class SplashWindow extends JWindow {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private JTextArea progressText;
-    private Runnable waitRunner;
+    private final JTextArea progressText;
+    private final Runnable waitRunner;
     private final Runnable closerRunner;
 
     public SplashWindow(ImageIcon imageIcon, final long closeDelaySecs) {

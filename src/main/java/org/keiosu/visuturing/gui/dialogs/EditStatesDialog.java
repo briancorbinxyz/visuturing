@@ -8,7 +8,7 @@ import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditStatesPanel;
 
 public class EditStatesDialog extends AbstractDialog implements ActionListener {
-    private EditStatesPanel stateEditor;
+    private final EditStatesPanel stateEditor;
 
     public EditStatesDialog(Frame frame, TuringMachine turingMachine) {
         super(frame, "Edit States");

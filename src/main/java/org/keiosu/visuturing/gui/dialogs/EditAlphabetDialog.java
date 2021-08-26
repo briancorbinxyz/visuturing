@@ -6,7 +6,7 @@ import org.keiosu.visuturing.core.TuringMachine;
 import org.keiosu.visuturing.gui.panels.EditAlphabetPanel;
 
 public class EditAlphabetDialog extends AbstractDialog {
-    private EditAlphabetPanel alphabetEditor;
+    private final EditAlphabetPanel alphabetEditor;
 
     public EditAlphabetDialog(Frame frame, TuringMachine turingMachine) {
         super(frame, "Edit Alphabet");
