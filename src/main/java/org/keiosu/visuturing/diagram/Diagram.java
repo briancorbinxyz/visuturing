@@ -1,5 +1,6 @@
 package org.keiosu.visuturing.diagram;
 
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D.Double;
@@ -12,6 +13,7 @@ public class Diagram {
 
     public static final double LOOP_LENGTH = 60.0D;
     public static final double STATE_RADIUS = 20.0D;
+    public static final int ARROW_LENGTH = 7;
 
     public Shape transitionCurve(Transition transition, State state) {
         if (transition.getCurrentState().equals(transition.getNextState())) {
@@ -107,4 +109,18 @@ public class Diagram {
                         + offset * offset * offset * edge.getY2();
         return new Double(cx - 5.0D, cy - 5.0D, 10.0D, 10.0D);
     }
+
+    public void drawArrowHead(Graphics2D canvas, Point2D p2, double xUnit, double yUnit) {
+        double z = Math.sqrt(xUnit * xUnit + yUnit * yUnit);
+        double xDelta = xUnit / z * ARROW_LENGTH;
+        double yDelta = yUnit / z * ARROW_LENGTH;
+        java.awt.geom.Line2D.Double arrowLine = new java.awt.geom.Line2D.Double();
+        arrowLine.setLine(
+            p2.getX(), p2.getY(), p2.getX() - (-xDelta - yDelta), p2.getY() - (-yDelta + xDelta));
+        canvas.draw(arrowLine);
+        arrowLine.setLine(
+            p2.getX(), p2.getY(), p2.getX() - (-xDelta + yDelta), p2.getY() - (-yDelta - xDelta));
+        canvas.draw(arrowLine);
+    }
+
 }

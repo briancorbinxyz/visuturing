@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -17,11 +16,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D.Double;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import javax.swing.JPanel;
 import org.keiosu.visuturing.core.State;
@@ -32,26 +31,27 @@ import org.keiosu.visuturing.gui.panels.DiagramPrinter;
 import org.keiosu.visuturing.mousetools.TuringMachineDiagramSelectTool;
 import org.keiosu.visuturing.mousetools.TuringMachineDiagramTool;
 import org.keiosu.visuturing.persistence.Persistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DiagramEditor extends JPanel {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     public static double BORDER = 20.0D;
     public static final Color STATE_COLOUR = new Color(255, 255, 255);
     public static final Color HALTING_STATE_COLOUR = new Color(255, 255, 255);
     public static final Color SELECTED_STATE_COLOUR = new Color(255, 255, 204);
     public static final Color SELECTED_TRANSITION_COLOUR;
     public static final int TRANSITION_MARGIN = 10;
-    public static final int ARROW_LENGTH = 7;
     public boolean gridOn;
     private final TuringMachine currentMachine;
     private State selectedState;
     private Transition selectedTransition;
     public Diagram diagram;
-    private DiagramEditor.Mousey m;
     private TuringMachineDiagramTool tool;
     protected AffineTransform transformation;
-    private double[] zoomList;
+    private final double[] zoomList;
     private int zoomIndex;
-    private boolean showDescription;
 
     public DiagramEditor(TuringMachine machine) {
         this.currentMachine = machine;
@@ -60,13 +60,12 @@ public class DiagramEditor extends JPanel {
         this.tool = new TuringMachineDiagramSelectTool(this);
         this.transformation = new AffineTransform();
         this.diagram = new Diagram();
-        this.m = new DiagramEditor.Mousey();
-        this.addMouseListener(this.m);
-        this.addMouseMotionListener(this.m);
+        MouseActionHandler mouse = new MouseActionHandler();
+        this.addMouseListener(mouse);
+        this.addMouseMotionListener(mouse);
         this.zoomList = new double[] {0.25D, 0.5D, 1.0D, 1.25D, 1.5D, 1.75D, 2.0D, 3.0D, 4.0D};
         this.zoomIndex = 2;
         this.setBackground(Color.white);
-        this.showDescription = false;
     }
 
     public void revertToSelect() {
@@ -135,147 +134,136 @@ public class DiagramEditor extends JPanel {
         }
     }
 
-    public void drawTransition(Transition transition, Graphics2D graphics2D) {
-        Point2D p1 = transition.getP1();
-        Point2D p2 = transition.getP2();
-        Point2D controlPoint = transition.getControlPoint();
+    public void drawTransition(Transition transition, Graphics2D canvas) {
+        Point2D p2;
         if (transition == this.selectedTransition) {
-            graphics2D.setColor(SELECTED_TRANSITION_COLOUR);
-            graphics2D.setStroke(new BasicStroke(2.0F));
+            canvas.setColor(SELECTED_TRANSITION_COLOUR);
+            canvas.setStroke(new BasicStroke(2.0F));
         } else {
-            graphics2D.setColor(Color.BLACK);
-            graphics2D.setStroke(new BasicStroke(1.0F));
+            canvas.setColor(Color.BLACK);
+            canvas.setStroke(new BasicStroke(1.0F));
         }
 
         Point2D cp;
-        String var9;
-        Point var12;
-        int var13;
-        int var14;
         if (!transition.getCurrentState().equals(transition.getNextState())) {
-            QuadCurve2D var8 =
+            QuadCurve2D transitionCurve =
                     (QuadCurve2D)
                             this.diagram.transitionCurve(
                                     transition,
                                     this.currentMachine.stateFor(transition.getCurrentState()));
-            graphics2D.draw(var8);
-            cp = var8.getCtrlPt();
-            p2 = var8.getP2();
-            var9 = transition.getCurrentSymbol() + " / " + transition.getTask();
-            java.awt.geom.QuadCurve2D.Double var10 = new java.awt.geom.QuadCurve2D.Double();
-            java.awt.geom.QuadCurve2D.Double var11 = new java.awt.geom.QuadCurve2D.Double();
-            var8.subdivide(var10, var11);
-            var12 = new Point((int) var10.getP2().getX(), (int) var10.getP2().getY());
-            var13 = (int) graphics2D.getFontMetrics().getStringBounds(var9, graphics2D).getWidth();
-            var14 = TRANSITION_MARGIN;
-            if (var10.getY1() < var10.getY2()) {
-                var14 = -(var14 + graphics2D.getFontMetrics().getAscent());
-            }
-
-            graphics2D.drawString(
-                    var9, (int) (var12.getX() - (double) (var13 / 2)), (int) var12.getY() - var14);
+            canvas.draw(transitionCurve);
+            cp = transitionCurve.getCtrlPt();
+            p2 = transitionCurve.getP2();
+            drawCurveLabel(transition, canvas, transitionCurve);
+            diagram.drawArrowHead(canvas, p2, cp.getX() - p2.getX(), cp.getY() - p2.getY());
         } else {
-            CubicCurve2D var15 =
+            CubicCurve2D transitionCurve =
                     (CubicCurve2D)
                             this.diagram.transitionCurve(
                                     transition,
                                     this.currentMachine.stateFor(transition.getCurrentState()));
-            graphics2D.draw(var15);
-            cp = var15.getCtrlP2();
-            p2 = var15.getP2();
-            var9 = transition.getCurrentSymbol() + " / " + transition.getTask();
-            java.awt.geom.CubicCurve2D.Double var17 = new java.awt.geom.CubicCurve2D.Double();
-            java.awt.geom.CubicCurve2D.Double var19 = new java.awt.geom.CubicCurve2D.Double();
-            var15.subdivide(var17, var19);
-            var12 = new Point((int) var17.getP2().getX(), (int) var17.getP2().getY());
-            var13 = (int) graphics2D.getFontMetrics().getStringBounds(var9, graphics2D).getWidth();
-            var14 = TRANSITION_MARGIN;
-            if (var17.getY1() < var17.getY2()) {
-                var14 = -(var14 + graphics2D.getFontMetrics().getAscent());
-            }
-
-            graphics2D.drawString(
-                    var9, (int) (var12.getX() - (double) (var13 / 2)), (int) var12.getY() - var14);
+            canvas.draw(transitionCurve);
+            cp = transitionCurve.getCtrlP2();
+            p2 = transitionCurve.getP2();
+            drawCurveLabel(transition, canvas, transitionCurve);
+            diagram.drawArrowHead(canvas, p2, cp.getX() - p2.getX(), cp.getY() - p2.getY());
         }
 
-        double var16 = cp.getX() - p2.getX();
-        double var18 = cp.getY() - p2.getY();
-        double var20 = Math.sqrt(var16 * var16 + var18 * var18);
-        var16 = var16 / var20 * ARROW_LENGTH;
-        var18 = var18 / var20 * ARROW_LENGTH;
-        java.awt.geom.Line2D.Double var21 = new java.awt.geom.Line2D.Double();
-        var21.setLine(
-                p2.getX(), p2.getY(), p2.getX() - (-var16 - var18), p2.getY() - (-var18 + var16));
-        graphics2D.draw(var21);
-        var21.setLine(
-                p2.getX(), p2.getY(), p2.getX() - (-var16 + var18), p2.getY() - (-var18 - var16));
-        graphics2D.draw(var21);
     }
 
-    public void setGrid(boolean var1) {
-        this.gridOn = var1;
+    private void drawCurveLabel(Transition transition, Graphics2D canvas,
+        CubicCurve2D transitionCurve) {
+        String actionOnSymbol;
+        Point actionLabelPoint;
+        int actionLabelBounds;
+        int actionLabelMargin;
+        actionOnSymbol = transition.getCurrentSymbol() + " / " + transition.getTask();
+        CubicCurve2D.Double curveLhs = new CubicCurve2D.Double();
+        transitionCurve.subdivide(curveLhs, null);
+        actionLabelPoint = new Point((int) curveLhs.getP2().getX(), (int) curveLhs.getP2().getY());
+        actionLabelBounds = (int) canvas.getFontMetrics().getStringBounds(actionOnSymbol, canvas).getWidth();
+        actionLabelMargin = TRANSITION_MARGIN;
+        if (curveLhs.getY1() < curveLhs.getY2()) {
+            actionLabelMargin = -(actionLabelMargin + canvas.getFontMetrics().getAscent());
+        }
+        canvas.drawString(
+            actionOnSymbol, (int) (
+                actionLabelPoint.getX() - (double) (actionLabelBounds / 2)), (int) actionLabelPoint.getY() - actionLabelMargin);
     }
 
-    public void paintComponent(Graphics var1) {
-        super.paintComponent(var1);
-        Graphics2D var2 = (Graphics2D) var1;
+    private void drawCurveLabel(Transition transition, Graphics2D canvas,
+        QuadCurve2D transitionCurve) {
+        String actionOnSymbol;
+        Point actionLabelPoint;
+        int actionLabelBounds;
+        int actionLabelMargin;
+        actionOnSymbol = transition.getCurrentSymbol() + " / " + transition.getTask();
+        QuadCurve2D curveLhs = new QuadCurve2D.Double();
+        transitionCurve.subdivide(curveLhs, null);
+        actionLabelPoint = new Point((int) curveLhs.getP2().getX(), (int) curveLhs.getP2().getY());
+        actionLabelBounds = (int) canvas.getFontMetrics().getStringBounds(actionOnSymbol, canvas).getWidth();
+        actionLabelMargin = TRANSITION_MARGIN;
+        if (curveLhs.getY1() < curveLhs.getY2()) {
+            actionLabelMargin = -(actionLabelMargin + canvas.getFontMetrics().getAscent());
+        }
+        canvas.drawString(
+            actionOnSymbol, (int) (
+                actionLabelPoint.getX() - (double) (actionLabelBounds / 2)), (int) actionLabelPoint.getY() - actionLabelMargin);
+    }
+
+    public void setGrid(boolean on) {
+        this.gridOn = on;
+    }
+
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        Graphics2D canvas = (Graphics2D) graphics;
         if (this.gridOn) {
-            var2.setColor(new Color(230, 230, 230));
-            int var3 = this.getWidth();
-            int var4 = this.getHeight();
+            canvas.setColor(new Color(230, 230, 230));
+            int width = this.getWidth();
+            int height = this.getHeight();
 
-            int var5;
-            for (var5 = 0; var5 < var3 / 20; ++var5) {
-                var2.drawLine(var5 * 20, 0, var5 * 20, var4);
+            for (int i = 0; i < width / 20; ++i) {
+                canvas.drawLine(i * 20, 0, i * 20, height);
             }
 
-            for (var5 = 0; var5 < var3 / 20; ++var5) {
-                var2.drawLine(0, var5 * 20, var3, var5 * 20);
+            for (int i = 0; i < width / 20; ++i) {
+                canvas.drawLine(0, i * 20, width, i * 20);
             }
         }
 
-        var2.scale(this.transformation.getScaleX(), this.transformation.getScaleY());
-        this.tool.preDraw(var2);
-        this.render(var2);
-        this.tool.postDraw(var2);
+        canvas.scale(this.transformation.getScaleX(), this.transformation.getScaleY());
+        this.tool.preDraw(canvas);
+        this.render(canvas);
+        this.tool.postDraw(canvas);
     }
 
-    public void render(Graphics2D var1) {
-        FontMetrics var2 = var1.getFontMetrics();
-        var1.setFont(new Font("Helvetica", 0, 14));
-        var1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        var1.setColor(Color.BLACK);
-        List var3 = this.currentMachine.getTransitions();
-
-        for (int var4 = 0; var4 < var3.size(); ++var4) {
-            Transition var5 = (Transition) var3.get(var4);
-            this.drawTransition(var5, var1);
+    public void render(Graphics2D canvas) {
+        canvas.setFont(new Font("Helvetica", Font.PLAIN, 14));
+        canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        canvas.setColor(Color.BLACK);
+        List<Transition> transitions = this.currentMachine.getTransitions();
+        for (Transition transition : transitions) {
+            this.drawTransition(transition, canvas);
         }
-
-        var1.setStroke(new BasicStroke(1.0F));
-        List var7 = this.currentMachine.getStates();
-
-        for (int var8 = 0; var8 < var7.size(); ++var8) {
-            State var6 = (State) var7.get(var8);
-            this.drawState(var6, var1);
+        canvas.setStroke(new BasicStroke(1.0F));
+        List<State> states = this.currentMachine.getStates();
+        for (State state : states) {
+            this.drawState(state, canvas);
         }
     }
 
-    public void setTool(TuringMachineDiagramTool var1) {
-        this.tool = var1;
-        this.setCursor(var1.getCursor());
+    public void setTool(TuringMachineDiagramTool tool) {
+        this.tool = tool;
+        this.setCursor(tool.getCursor());
     }
 
-    public void setSelectedState(State var1) {
-        this.selectedState = var1;
+    public void setSelectedState(State state) {
+        this.selectedState = state;
     }
 
-    public void setSelectedTransition(Transition var1) {
-        this.selectedTransition = var1;
-    }
-
-    public TuringMachineDiagramTool getTool() {
-        return this.tool;
+    public void setSelectedTransition(Transition transition) {
+        this.selectedTransition = transition;
     }
 
     public TuringMachine getCurrentMachine() {
@@ -288,10 +276,6 @@ public class DiagramEditor extends JPanel {
 
     public Transition getSelectedTransition() {
         return this.selectedTransition;
-    }
-
-    public void setTransformation(AffineTransform var1) {
-        this.transformation = var1;
     }
 
     public void zoomIn() {
@@ -316,118 +300,107 @@ public class DiagramEditor extends JPanel {
         this.repaint();
     }
 
-    public void setZoom(double var1) {
+    public void setZoom(double scale) {
         this.transformation = new AffineTransform();
-        this.transformation.scale(var1, var1);
+        this.transformation.scale(scale, scale);
         this.repaint();
     }
 
-    public Point2D toWorld(Point2D var1) {
-        java.awt.geom.Point2D.Double var2 = new java.awt.geom.Point2D.Double();
-        this.transformation.transform(var1, var2);
-        return var2;
+    public Point2D toWorld(Point2D point) {
+        java.awt.geom.Point2D.Double worldPoint = new java.awt.geom.Point2D.Double();
+        this.transformation.transform(point, worldPoint);
+        return worldPoint;
     }
 
-    public Point2D toUser(Point2D var1) {
-        java.awt.geom.Point2D.Double var2 = new java.awt.geom.Point2D.Double();
-
+    public Point2D toUser(Point2D point) {
+        java.awt.geom.Point2D.Double userPoint = new java.awt.geom.Point2D.Double();
         try {
-            this.transformation.inverseTransform(var1, var2);
-        } catch (NoninvertibleTransformException var4) {
-        } catch (Exception var5) {
+            this.transformation.inverseTransform(point, userPoint);
+        } catch (Exception e) {
+            LOG.atError().setCause(e.getCause());
         }
 
-        return var2;
+        return userPoint;
     }
 
-    public BufferedImage makeBuffer(int var1, int var2) {
-        BufferedImage var3 = new BufferedImage(var1, var2, 1);
-        Graphics2D var4 = var3.createGraphics();
-        var4.setColor(Color.WHITE);
-        var4.fillRect(0, 0, var1, var2);
-        this.render(var4);
-        var4.dispose();
-        return var3;
-    }
-
-    public boolean showDescription() {
-        return this.showDescription;
-    }
-
-    public void setDescriptionShown(boolean var1) {
-        this.showDescription = var1;
+    public BufferedImage makeBuffer(int width, int height) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, 1);
+        Graphics2D canvas = bufferedImage.createGraphics();
+        canvas.setColor(Color.WHITE);
+        canvas.fillRect(0, 0, width, height);
+        this.render(canvas);
+        canvas.dispose();
+        return bufferedImage;
     }
 
     public Dimension getExtents() {
-        Dimension var1 = new Dimension();
-        double var2 = 200.0D;
-        double var4 = 200.0D;
-        List var6 = this.currentMachine.getStates();
+        Dimension extents = new Dimension();
+        double width = 200.0D;
+        double height = 200.0D;
+        List<State> states = this.currentMachine.getStates();
 
-        for (int var7 = 0; var7 < var6.size(); ++var7) {
-            State var8 = (State) var6.get(var7);
-            double var9 = var8.getLocation().getX();
-            double var11 = var8.getLocation().getY();
-            if (var2 < var9 + Diagram.STATE_RADIUS + BORDER) {
-                var2 = var9 + Diagram.STATE_RADIUS + BORDER;
+        for (State state : states) {
+            double sx = state.getLocation().getX();
+            double sy = state.getLocation().getY();
+            if (width < sx + Diagram.STATE_RADIUS + BORDER) {
+                width = sx + Diagram.STATE_RADIUS + BORDER;
             }
 
-            if (var4 < var11 + Diagram.STATE_RADIUS + BORDER) {
-                var4 = var11 + Diagram.STATE_RADIUS + BORDER;
-            }
-        }
-
-        List var14 = this.currentMachine.getTransitions();
-        BasicStroke var15 = new BasicStroke(2.0F);
-
-        for (int var16 = 0; var16 < var14.size(); ++var16) {
-            Transition var10 = (Transition) var14.get(var16);
-            Shape var13 =
-                    this.diagram.transitionCurve(
-                            var10, this.currentMachine.stateFor(var10.getCurrentState()));
-            Rectangle var12 = var15.createStrokedShape(var13).getBounds();
-            if (var2 < var12.getX() + var12.getWidth() + BORDER) {
-                var2 = var12.getX() + var12.getWidth() + BORDER;
-            }
-
-            if (var4 < var12.getY() + var12.getHeight() + BORDER) {
-                var4 = var12.getY() + var12.getHeight() + BORDER;
+            if (height < sy + Diagram.STATE_RADIUS + BORDER) {
+                height = sy + Diagram.STATE_RADIUS + BORDER;
             }
         }
 
-        var1.setSize(var2 + 2.0D * BORDER, var4 + 2.0D * BORDER);
-        return var1;
+        List<Transition> transitions = this.currentMachine.getTransitions();
+        BasicStroke stroke = new BasicStroke(2.0F);
+
+        for (Transition transition : transitions) {
+            Shape transitionCurve =
+                this.diagram.transitionCurve(
+                    transition, this.currentMachine.stateFor(transition.getCurrentState()));
+            Rectangle curveBounds = stroke.createStrokedShape(transitionCurve).getBounds();
+            if (width < curveBounds.getX() + curveBounds.getWidth() + BORDER) {
+                width = curveBounds.getX() + curveBounds.getWidth() + BORDER;
+            }
+
+            if (height < curveBounds.getY() + curveBounds.getHeight() + BORDER) {
+                height = curveBounds.getY() + curveBounds.getHeight() + BORDER;
+            }
+        }
+
+        extents.setSize(width + 2.0D * BORDER, height + 2.0D * BORDER);
+        return extents;
     }
 
-    public void exportToJPEG(File var1) {
-        this.setSelectedState((State) null);
-        this.setSelectedTransition((Transition) null);
-        Dimension var2 = this.getExtents();
-        BufferedImage var3 = this.makeBuffer((int) var2.getWidth(), (int) var2.getHeight());
-        Persistence.saveJPEG(var3, var1.toString());
+    public void exportToJPEG(File file) {
+        this.setSelectedState(null);
+        this.setSelectedTransition(null);
+        Dimension extents = this.getExtents();
+        BufferedImage image = this.makeBuffer((int) extents.getWidth(), (int) extents.getHeight());
+        Persistence.saveJPEG(image, file.toString());
     }
 
     static {
         SELECTED_TRANSITION_COLOUR = Color.BLACK;
     }
 
-    public class Mousey extends MouseAdapter implements MouseMotionListener {
-        public Mousey() {}
+    public class MouseActionHandler extends MouseAdapter implements MouseMotionListener {
+        public MouseActionHandler() {}
 
-        public void mousePressed(MouseEvent var1) {
-            DiagramEditor.this.tool.mousePressed(var1);
+        public void mousePressed(MouseEvent event) {
+            DiagramEditor.this.tool.mousePressed(event);
         }
 
-        public void mouseReleased(MouseEvent var1) {
-            DiagramEditor.this.tool.mouseReleased(var1);
+        public void mouseReleased(MouseEvent event) {
+            DiagramEditor.this.tool.mouseReleased(event);
         }
 
-        public void mouseMoved(MouseEvent var1) {
-            DiagramEditor.this.tool.mouseMoved(var1);
+        public void mouseMoved(MouseEvent event) {
+            DiagramEditor.this.tool.mouseMoved(event);
         }
 
-        public void mouseDragged(MouseEvent var1) {
-            DiagramEditor.this.tool.mouseDragged(var1);
+        public void mouseDragged(MouseEvent event) {
+            DiagramEditor.this.tool.mouseDragged(event);
         }
     }
 }

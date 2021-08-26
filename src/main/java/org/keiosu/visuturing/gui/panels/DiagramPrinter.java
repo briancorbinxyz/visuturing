@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
+import java.lang.invoke.MethodHandles;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -19,89 +20,90 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.keiosu.visuturing.diagram.DiagramEditor;
 import org.keiosu.visuturing.gui.dialogs.AbstractDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DiagramPrinter extends AbstractDialog implements ChangeListener, KeyListener {
-    private PrintableDiagram diagram;
-    private OrientationGraphic og;
-    private PreviewGraphic pg;
-    private Dimension size;
-    private JRadioButton portraitRB;
-    private JRadioButton landscapeRB;
-    private JRadioButton fitRB;
-    private JRadioButton customRB;
-    private JTextField widthTF;
-    private JTextField heightTF;
+    private final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private final PrintableDiagram diagram;
+    private final OrientationGraphic og;
+    private final PreviewGraphic pg;
+    private final JRadioButton portraitRB;
+    private final JRadioButton fitRB;
+    private final JTextField widthTF;
+    private final JTextField heightTF;
+    private final Dimension size;
 
     public DiagramPrinter(DiagramEditor editor) {
         super(null, "Print Options");
         diagram = new PrintableDiagram(editor);
         size = editor.getExtents();
-        JPanel var2 = new JPanel(new BorderLayout());
-        JLayeredPane var3 = new JLayeredPane();
-        JPanel var4 = new JPanel(new BorderLayout());
-        var4.setBorder(BorderFactory.createTitledBorder("Preview"));
-        var4.setPreferredSize(new Dimension(400, 300));
-        var4.setBounds(230, 10, 200, 190);
-        JPanel var5 = new JPanel(new FlowLayout(0));
-        var5.setBorder(BorderFactory.createTitledBorder("Orientation"));
-        var5.setBounds(10, 120, 170, 80);
-        ButtonGroup var6 = new ButtonGroup();
+        JPanel panel = new JPanel(new BorderLayout());
+        JLayeredPane pane = new JLayeredPane();
+        JPanel previewPanel = new JPanel(new BorderLayout());
+        previewPanel.setBorder(BorderFactory.createTitledBorder("Preview"));
+        previewPanel.setPreferredSize(new Dimension(400, 300));
+        previewPanel.setBounds(230, 10, 200, 190);
+        JPanel orientationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        orientationPanel.setBorder(BorderFactory.createTitledBorder("Orientation"));
+        orientationPanel.setBounds(10, 120, 170, 80);
+        ButtonGroup orientationGroup = new ButtonGroup();
         portraitRB = new JRadioButton("Portrait", true);
-        landscapeRB = new JRadioButton("Landscape", false);
-        var6.add(this.portraitRB);
-        var6.add(this.landscapeRB);
+        JRadioButton landscapeRB = new JRadioButton("Landscape", false);
+        orientationGroup.add(this.portraitRB);
+        orientationGroup.add(landscapeRB);
         portraitRB.addChangeListener(this);
         landscapeRB.addChangeListener(this);
         portraitRB.setBounds(70, 140, 94, 16);
         landscapeRB.setBounds(70, 165, 94, 16);
-        var3.add(this.portraitRB);
-        var3.add(this.landscapeRB);
-        JPanel var7 = new JPanel(new FlowLayout(0));
-        var7.setBorder(BorderFactory.createTitledBorder("Size"));
-        ButtonGroup var8 = new ButtonGroup();
+        pane.add(this.portraitRB);
+        pane.add(landscapeRB);
+        JPanel sizePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        sizePanel.setBorder(BorderFactory.createTitledBorder("Size"));
+        ButtonGroup sizeGroup = new ButtonGroup();
         fitRB = new JRadioButton("Fit to Page", false);
-        customRB = new JRadioButton("Custom:", true);
+        JRadioButton customRB = new JRadioButton("Custom:", true);
         fitRB.setBounds(10, 10, 160, 16);
         customRB.setBounds(10, 35, 160, 16);
-        var8.add(this.fitRB);
-        var8.add(this.customRB);
-        var3.add(this.fitRB);
-        var3.add(this.customRB);
+        sizeGroup.add(this.fitRB);
+        sizeGroup.add(customRB);
+        pane.add(this.fitRB);
+        pane.add(customRB);
         fitRB.addChangeListener(this);
         customRB.addChangeListener(this);
-        JLabel var9 = new JLabel("Width:");
-        JLabel var10 = new JLabel("Height:");
-        var9.setBounds(10, 60, 80, 16);
-        var10.setBounds(10, 85, 80, 16);
-        var3.add(var9);
-        var3.add(var10);
+        JLabel widthLabel = new JLabel("Width:");
+        JLabel heightLabel = new JLabel("Height:");
+        widthLabel.setBounds(10, 60, 80, 16);
+        heightLabel.setBounds(10, 85, 80, 16);
+        pane.add(widthLabel);
+        pane.add(heightLabel);
         widthTF = new JTextField("" + size.getWidth());
         heightTF = new JTextField("" + size.getHeight());
         widthTF.setBounds(90, 60, 60, 16);
         heightTF.setBounds(90, 85, 60, 16);
         widthTF.addKeyListener(this);
         heightTF.addKeyListener(this);
-        var3.add(this.widthTF);
-        var3.add(this.heightTF);
-        JLabel var11 = new JLabel("px");
-        JLabel var12 = new JLabel("px");
-        var11.setBounds(155, 60, 20, 16);
-        var12.setBounds(155, 85, 20, 16);
-        var3.add(var11);
-        var3.add(var12);
+        pane.add(this.widthTF);
+        pane.add(this.heightTF);
+        JLabel pxLabel1 = new JLabel("px");
+        JLabel pxLabel2 = new JLabel("px");
+        pxLabel1.setBounds(155, 60, 20, 16);
+        pxLabel2.setBounds(155, 85, 20, 16);
+        pane.add(pxLabel1);
+        pane.add(pxLabel2);
         pg = new PreviewGraphic(this.isPortrait(), this);
         pg.setBounds(240, 30, 180, 150);
         og = new OrientationGraphic(this.portraitRB.isSelected());
         og.setBounds(22, 135, 35, 45);
-        var3.add(this.pg);
-        var3.add(this.og);
-        var3.add(var5, JLayeredPane.DEFAULT_LAYER);
-        var3.add(var7, JLayeredPane.DEFAULT_LAYER);
-        var3.add(var4, JLayeredPane.DEFAULT_LAYER);
-        var3.setPreferredSize(new Dimension(440, 210));
-        var2.setPreferredSize(var3.getPreferredSize());
-        var2.add(var3);
-        init(var2);
+        pane.add(this.pg);
+        pane.add(this.og);
+        pane.add(orientationPanel, JLayeredPane.DEFAULT_LAYER);
+        pane.add(sizePanel, JLayeredPane.DEFAULT_LAYER);
+        pane.add(previewPanel, JLayeredPane.DEFAULT_LAYER);
+        pane.setPreferredSize(new Dimension(440, 210));
+        panel.setPreferredSize(pane.getPreferredSize());
+        panel.add(pane);
+        init(panel);
     }
 
     void updateGraphics() {
@@ -118,35 +120,31 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
         }
     }
 
-    public void stateChanged(ChangeEvent var1) {
+    public void stateChanged(ChangeEvent event) {
         updateGraphics();
     }
 
     public void printIt() {
-        PrinterJob var1 = PrinterJob.getPrinterJob();
-        Book var2 = new Book();
-        PageFormat var3 = var1.defaultPage();
+        PrinterJob printerJob = PrinterJob.getPrinterJob();
+        Book book = new Book();
+        PageFormat pageFormat = printerJob.defaultPage();
         diagram.setPrintSize(this.size);
         diagram.setFitToPage(this.isFitToPage());
         if (this.portraitRB.isSelected()) {
-            var3.setOrientation(1);
+            pageFormat.setOrientation(1);
         } else {
-            var3.setOrientation(2);
+            pageFormat.setOrientation(2);
         }
 
-        var2.append(this.diagram, var3);
-        var1.setPageable(var2);
-        if (var1.printDialog()) {
+        book.append(this.diagram, pageFormat);
+        printerJob.setPageable(book);
+        if (printerJob.printDialog()) {
             try {
-                var1.print();
-            } catch (Exception var5) {
-                var5.printStackTrace();
+                printerJob.print();
+            } catch (Exception e) {
+                LOG.atError().setCause(e.getCause());
             }
         }
-    }
-
-    public void setPrintSize(Dimension var1) {
-        size = var1;
     }
 
     public boolean isFitToPage() {
@@ -161,26 +159,26 @@ public class DiagramPrinter extends AbstractDialog implements ChangeListener, Ke
         return size;
     }
 
-    public void keyTyped(KeyEvent var1) {}
+    public void keyTyped(KeyEvent event) {}
 
-    public void keyPressed(KeyEvent var1) {}
+    public void keyPressed(KeyEvent event) {}
 
-    public void keyReleased(KeyEvent var1) {
-        double var2;
+    public void keyReleased(KeyEvent event) {
+        double width;
         try {
-            var2 = Double.parseDouble(this.widthTF.getText());
-        } catch (NumberFormatException var8) {
-            var2 = 1.0D;
+            width = Double.parseDouble(this.widthTF.getText());
+        } catch (NumberFormatException e) {
+            width = 1.0D;
         }
 
-        double var4;
+        double height;
         try {
-            var4 = Double.parseDouble(this.heightTF.getText());
-        } catch (NumberFormatException var7) {
-            var4 = 1.0D;
+            height = Double.parseDouble(this.heightTF.getText());
+        } catch (NumberFormatException e) {
+            height = 1.0D;
         }
 
-        size.setSize(var2, var4);
+        size.setSize(width, height);
         updateGraphics();
     }
 }

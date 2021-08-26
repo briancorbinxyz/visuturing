@@ -177,19 +177,7 @@ public class TuringMachineDiagramTransitionTool extends TuringMachineDiagramTool
             double ec = Math.sqrt(ex * ex + ey * ey);
             ex = ex / ec * 7.0D;
             ey = ey / ec * 7.0D;
-            java.awt.geom.Line2D.Double arrowLine = new java.awt.geom.Line2D.Double();
-            arrowLine.setLine(
-                    eventPoint.getX(),
-                    eventPoint.getY(),
-                    eventPoint.getX() - (-ex - ey),
-                    eventPoint.getY() - (-ey + ex));
-            canvas.draw(arrowLine);
-            arrowLine.setLine(
-                    eventPoint.getX(),
-                    eventPoint.getY(),
-                    eventPoint.getX() - (-ex + ey),
-                    eventPoint.getY() - (-ey - ex));
-            canvas.draw(arrowLine);
+            diagram.drawArrowHead(canvas, eventPoint, ex, ey);
         }
     }
 }

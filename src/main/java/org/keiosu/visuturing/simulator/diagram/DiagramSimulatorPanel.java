@@ -136,7 +136,6 @@ public class DiagramSimulatorPanel extends AbstractSimulatorPanel
         double maxWidth = Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 0.75D;
         double diagramWidth = this.diagram.getPreferredSize().getWidth();
         this.sp.setDividerLocation((int) (Math.min(diagramWidth, maxWidth)));
-        this.diagram.setDescriptionShown(true);
     }
 
     private void addComputation(Configuration config) {
