@@ -85,8 +85,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
         mediaPanel.add(this.createMediaButton(ADD_SELF_TRANSITION, "addstran"));
         mediaPanel.add(this.createMediaButton(REMOVE_TRANSITION, "destroy"));
         editPanel.add(new DiagramPanel.NonDeterminismButton());
-        editPanel.add(
-                this.createMediaButton(EDIT_DESCRIPTION, "editdesc"));
+        editPanel.add(this.createMediaButton(EDIT_DESCRIPTION, "editdesc"));
         editPanel.add(this.createMediaButton(EDIT_STATES, "editsts"));
         editPanel.add(this.createMediaButton(EDIT_ALPHABET, "editalph"));
         editPanel.add(new DiagramPanel.GenerateButton());
@@ -112,7 +111,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
 
     public ImageIcon createImageIcon(String resource) {
         return new ImageIcon(
-            Objects.requireNonNull(this.getClass().getClassLoader().getResource(resource)));
+                Objects.requireNonNull(this.getClass().getClassLoader().getResource(resource)));
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -126,13 +125,13 @@ public class DiagramPanel extends JPanel implements ActionListener {
                         break;
                     case CHECK_NON_DETERMINISM:
                         JOptionPane.showMessageDialog(
-                            this,
-                            "This Turing Machine is "
-                                + (this.machine.isDeterministic()
-                                ? "deterministic."
-                                : "non-deterministic."),
-                            "Non-Determinism",
-                            JOptionPane.INFORMATION_MESSAGE);
+                                this,
+                                "This Turing Machine is "
+                                        + (this.machine.isDeterministic()
+                                                ? "deterministic."
+                                                : "non-deterministic."),
+                                "Non-Determinism",
+                                JOptionPane.INFORMATION_MESSAGE);
                         break;
                     case ADD_TRANSITION:
                         diagram.setTool(new TuringMachineDiagramTransitionTool(this.diagram));
@@ -163,9 +162,7 @@ public class DiagramPanel extends JPanel implements ActionListener {
     }
 
     private void createDiagramButton(JComponent component, String iconName, String name) {
-        JButton button =
-            DiagramPanel.this.createMediaButton(
-                name, iconName);
+        JButton button = DiagramPanel.this.createMediaButton(name, iconName);
         button.setBounds(7, 19, 78, 18);
         JLayeredPane pane = new JLayeredPane();
         pane.setPreferredSize(component.getPreferredSize());
@@ -178,7 +175,8 @@ public class DiagramPanel extends JPanel implements ActionListener {
     public class ZoomModifier extends JPanel {
         public ZoomModifier() {
             super(new BorderLayout(0, 0));
-            JLabel zoomLabel = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/zoom.gif"));
+            JLabel zoomLabel =
+                    new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/zoom.gif"));
             zoomLabel.setBounds(
                     0,
                     0,
@@ -201,7 +199,8 @@ public class DiagramPanel extends JPanel implements ActionListener {
     public class NonDeterminismButton extends JPanel {
         public NonDeterminismButton() {
             super(new BorderLayout(0, 0));
-            JLabel nonDeterministicButton = new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/nd.gif"));
+            JLabel nonDeterministicButton =
+                    new JLabel(DiagramPanel.this.createImageIcon("bitmaps/diagram/nd.gif"));
             nonDeterministicButton.setBounds(
                     0,
                     0,
@@ -223,6 +222,5 @@ public class DiagramPanel extends JPanel implements ActionListener {
                     (int) diagramLabel.getPreferredSize().getHeight());
             createDiagramButton(diagramLabel, "generate", GENERATE);
         }
-
     }
 }

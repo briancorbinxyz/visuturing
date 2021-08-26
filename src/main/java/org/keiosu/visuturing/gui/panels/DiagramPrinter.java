@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DiagramPrinter extends AbstractDialog implements ChangeListener, KeyListener {
-    private final static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final PrintableDiagram diagram;
     private final OrientationGraphic og;
     private final PreviewGraphic pg;

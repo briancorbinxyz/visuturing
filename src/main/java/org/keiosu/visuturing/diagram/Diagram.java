@@ -116,11 +116,16 @@ public class Diagram {
         double yDelta = yUnit / z * ARROW_LENGTH;
         java.awt.geom.Line2D.Double arrowLine = new java.awt.geom.Line2D.Double();
         arrowLine.setLine(
-            p2.getX(), p2.getY(), p2.getX() - (-xDelta - yDelta), p2.getY() - (-yDelta + xDelta));
+                p2.getX(),
+                p2.getY(),
+                p2.getX() - (-xDelta - yDelta),
+                p2.getY() - (-yDelta + xDelta));
         canvas.draw(arrowLine);
         arrowLine.setLine(
-            p2.getX(), p2.getY(), p2.getX() - (-xDelta + yDelta), p2.getY() - (-yDelta - xDelta));
+                p2.getX(),
+                p2.getY(),
+                p2.getX() - (-xDelta + yDelta),
+                p2.getY() - (-yDelta - xDelta));
         canvas.draw(arrowLine);
     }
-
 }

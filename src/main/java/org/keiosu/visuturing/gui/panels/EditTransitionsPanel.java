@@ -53,7 +53,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
         DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
         tableModel.setDataVector(rows.toArray(new Object[][] {}), this.columnNames.toArray());
         TableColumn nextStateColumn = this.table.getColumnModel().getColumn(2);
-        JComboBox<State> stateJComboBox = new JComboBox<>(states.toArray(new State[]{}));
+        JComboBox<State> stateJComboBox = new JComboBox<>(states.toArray(new State[] {}));
         nextStateColumn.setCellEditor(new DefaultCellEditor(stateJComboBox));
         TableColumn currentStateColumn = this.table.getColumnModel().getColumn(0);
         List<String> nonHaltingStates = new ArrayList<>();
@@ -64,18 +64,19 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
             }
         }
 
-        JComboBox<String> nonHaltingStateComboBox = new JComboBox<>(nonHaltingStates.toArray(new String[]{}));
+        JComboBox<String> nonHaltingStateComboBox =
+                new JComboBox<>(nonHaltingStates.toArray(new String[] {}));
         currentStateColumn.setCellEditor(new DefaultCellEditor(nonHaltingStateComboBox));
         TableColumn currentSymbolColumn = this.table.getColumnModel().getColumn(1);
-        currentSymbolColumn.setCellEditor(new DefaultCellEditor(
-            new JComboBox<>(alphabet.toArray(new String[]{}))));
+        currentSymbolColumn.setCellEditor(
+                new DefaultCellEditor(new JComboBox<>(alphabet.toArray(new String[] {}))));
         TableColumn taskColumn = this.table.getColumnModel().getColumn(3);
         List<String> actionSymbols = new ArrayList<>(alphabet);
         actionSymbols.remove(String.valueOf(Symbols.LEFT_END_MARKER));
         actionSymbols.add(String.valueOf(Symbols.LEFT_ARROW));
         actionSymbols.add(String.valueOf(Symbols.RIGHT_ARROW));
-        taskColumn.setCellEditor(new DefaultCellEditor(
-            new JComboBox<>(actionSymbols.toArray(new String[]{}))));
+        taskColumn.setCellEditor(
+                new DefaultCellEditor(new JComboBox<>(actionSymbols.toArray(new String[] {}))));
     }
 
     public EditTransitionsPanel(TuringMachine machine) {
@@ -111,7 +112,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
         this.description.setWrapStyleWord(true);
         this.description.setText(
                 "THIS TRANSITION MACHINE HAS A DIAGRAM.\nGENERATING A NEW DIAGRAM WILL REPLACE THAT ONE.\n"
-                    + "ADDING OR REMOVING A TRANSITION USING THE TABLE WILL MODIFY DIAGRAM.");
+                        + "ADDING OR REMOVING A TRANSITION USING THE TABLE WILL MODIFY DIAGRAM.");
         this.description.setOpaque(false);
         this.description.setEditable(false);
         this.description.setFont(new Font("Helvetica", Font.PLAIN, 10));
@@ -173,19 +174,20 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
             }
 
             if (!incompleteTransition) {
-                Transition transition = new Transition(currentStateValue, currentSymbol, nextStateValue,
-                    nextTask);
+                Transition transition =
+                        new Transition(currentStateValue, currentSymbol, nextStateValue, nextTask);
                 Point2D from = this.machine.stateFor(currentStateValue).getLocation();
                 Point2D to = this.machine.stateFor(nextStateValue).getLocation();
                 Double cp =
-                    new Double(
-                        from.getX() + (to.getX() - from.getX()) / 2.0D,
-                        from.getY() + (to.getY() - from.getY()) / 2.0D);
+                        new Double(
+                                from.getX() + (to.getX() - from.getX()) / 2.0D,
+                                from.getY() + (to.getY() - from.getY()) / 2.0D);
                 java.awt.geom.QuadCurve2D.Double curve = new java.awt.geom.QuadCurve2D.Double();
                 curve.setCurve(from, cp, to);
                 transition.setEdge(curve);
-                transitions.add(Objects.requireNonNullElse(
-                    machine.getEqualTransition(transition), transition));
+                transitions.add(
+                        Objects.requireNonNullElse(
+                                machine.getEqualTransition(transition), transition));
             }
         }
 
@@ -212,24 +214,24 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
     private void generateDiagramActionPerformed() {
         if (this.machine.hasDiagram()) {
             int returnValue =
-                JOptionPane.showConfirmDialog(
-                    this,
-                    "Are you sure you want to generate a new diagram?\n\nThis will replace your existing diagram",
-                    "VisuTuring",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null);
+                    JOptionPane.showConfirmDialog(
+                            this,
+                            "Are you sure you want to generate a new diagram?\n\nThis will replace your existing diagram",
+                            "VisuTuring",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null);
             if (returnValue == 1) {
                 return;
             }
         }
 
         JOptionPane.showMessageDialog(
-            this,
-            "A transition diagram was automatically created for your Turing Machine by VisuTuring.",
-            "VisuTuring",
-            JOptionPane.INFORMATION_MESSAGE,
-            null);
+                this,
+                "A transition diagram was automatically created for your Turing Machine by VisuTuring.",
+                "VisuTuring",
+                JOptionPane.INFORMATION_MESSAGE,
+                null);
         this.machine.setHasDiagram(true);
         this.description.setVisible(true);
     }
@@ -247,7 +249,7 @@ public class EditTransitionsPanel extends VTPanel implements ActionListener {
 
     private void addTransitionActionPerformed() {
         DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
-        tableModel.addRow(new Object[]{"", "", "", ""});
+        tableModel.addRow(new Object[] {"", "", "", ""});
         if (tableModel.getRowCount() > 0 && !this.diagramButton.isEnabled()) {
             this.diagramButton.setEnabled(true);
         }

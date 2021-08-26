@@ -168,11 +168,10 @@ public class DiagramEditor extends JPanel {
             drawCurveLabel(transition, canvas, transitionCurve);
             diagram.drawArrowHead(canvas, p2, cp.getX() - p2.getX(), cp.getY() - p2.getY());
         }
-
     }
 
-    private void drawCurveLabel(Transition transition, Graphics2D canvas,
-        CubicCurve2D transitionCurve) {
+    private void drawCurveLabel(
+            Transition transition, Graphics2D canvas, CubicCurve2D transitionCurve) {
         String actionOnSymbol;
         Point actionLabelPoint;
         int actionLabelBounds;
@@ -181,18 +180,20 @@ public class DiagramEditor extends JPanel {
         CubicCurve2D.Double curveLhs = new CubicCurve2D.Double();
         transitionCurve.subdivide(curveLhs, null);
         actionLabelPoint = new Point((int) curveLhs.getP2().getX(), (int) curveLhs.getP2().getY());
-        actionLabelBounds = (int) canvas.getFontMetrics().getStringBounds(actionOnSymbol, canvas).getWidth();
+        actionLabelBounds =
+                (int) canvas.getFontMetrics().getStringBounds(actionOnSymbol, canvas).getWidth();
         actionLabelMargin = TRANSITION_MARGIN;
         if (curveLhs.getY1() < curveLhs.getY2()) {
             actionLabelMargin = -(actionLabelMargin + canvas.getFontMetrics().getAscent());
         }
         canvas.drawString(
-            actionOnSymbol, (int) (
-                actionLabelPoint.getX() - (double) (actionLabelBounds / 2)), (int) actionLabelPoint.getY() - actionLabelMargin);
+                actionOnSymbol,
+                (int) (actionLabelPoint.getX() - (double) (actionLabelBounds / 2)),
+                (int) actionLabelPoint.getY() - actionLabelMargin);
     }
 
-    private void drawCurveLabel(Transition transition, Graphics2D canvas,
-        QuadCurve2D transitionCurve) {
+    private void drawCurveLabel(
+            Transition transition, Graphics2D canvas, QuadCurve2D transitionCurve) {
         String actionOnSymbol;
         Point actionLabelPoint;
         int actionLabelBounds;
@@ -201,14 +202,16 @@ public class DiagramEditor extends JPanel {
         QuadCurve2D curveLhs = new QuadCurve2D.Double();
         transitionCurve.subdivide(curveLhs, null);
         actionLabelPoint = new Point((int) curveLhs.getP2().getX(), (int) curveLhs.getP2().getY());
-        actionLabelBounds = (int) canvas.getFontMetrics().getStringBounds(actionOnSymbol, canvas).getWidth();
+        actionLabelBounds =
+                (int) canvas.getFontMetrics().getStringBounds(actionOnSymbol, canvas).getWidth();
         actionLabelMargin = TRANSITION_MARGIN;
         if (curveLhs.getY1() < curveLhs.getY2()) {
             actionLabelMargin = -(actionLabelMargin + canvas.getFontMetrics().getAscent());
         }
         canvas.drawString(
-            actionOnSymbol, (int) (
-                actionLabelPoint.getX() - (double) (actionLabelBounds / 2)), (int) actionLabelPoint.getY() - actionLabelMargin);
+                actionOnSymbol,
+                (int) (actionLabelPoint.getX() - (double) (actionLabelBounds / 2)),
+                (int) actionLabelPoint.getY() - actionLabelMargin);
     }
 
     public void setGrid(boolean on) {
@@ -356,8 +359,8 @@ public class DiagramEditor extends JPanel {
 
         for (Transition transition : transitions) {
             Shape transitionCurve =
-                this.diagram.transitionCurve(
-                    transition, this.currentMachine.stateFor(transition.getCurrentState()));
+                    this.diagram.transitionCurve(
+                            transition, this.currentMachine.stateFor(transition.getCurrentState()));
             Rectangle curveBounds = stroke.createStrokedShape(transitionCurve).getBounds();
             if (width < curveBounds.getX() + curveBounds.getWidth() + BORDER) {
                 width = curveBounds.getX() + curveBounds.getWidth() + BORDER;

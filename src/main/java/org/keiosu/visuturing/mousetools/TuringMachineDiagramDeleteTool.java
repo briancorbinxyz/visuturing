@@ -71,10 +71,11 @@ public class TuringMachineDiagramDeleteTool extends TuringMachineDiagramTool {
 
         try {
             this.setCursor(
-                    Toolkit.getDefaultToolkit().createCustomCursor(
-                            this.createImageIcon("cursors/delete.gif").getImage(),
-                            new Point(9, 9),
-                            "Remove"));
+                    Toolkit.getDefaultToolkit()
+                            .createCustomCursor(
+                                    this.createImageIcon("cursors/delete.gif").getImage(),
+                                    new Point(9, 9),
+                                    "Remove"));
             this.setOverCursor(this.cursor);
         } catch (Exception ignored) {
             // do nothing
@@ -89,12 +90,13 @@ public class TuringMachineDiagramDeleteTool extends TuringMachineDiagramTool {
 
         if (this.currentTransition != null) {
             if (JOptionPane.showConfirmDialog(
-                null,
-                    "Are you sure you want to remove the transition: "
-                            + this.currentTransition
-                            + " ?",
-                    "VisuTuring - Transition Removal",
-                JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
+                            null,
+                            "Are you sure you want to remove the transition: "
+                                    + this.currentTransition
+                                    + " ?",
+                            "VisuTuring - Transition Removal",
+                            JOptionPane.YES_NO_CANCEL_OPTION)
+                    == 0) {
                 this.diagramEditor.getCurrentMachine().removeTransition(this.currentTransition);
                 this.diagramEditor.repaint();
             }

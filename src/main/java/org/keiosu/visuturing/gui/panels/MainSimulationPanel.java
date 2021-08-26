@@ -62,7 +62,8 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
         borderPanel.setBackground(Color.white);
         borderPanel.add(topBorder, "North");
         centerPanel.add(borderPanel, "Center");
-        centerPanel.add(new JLabel(this.createImageIcon("bitmaps/diagram/rightcorner.gif")), "East");
+        centerPanel.add(
+                new JLabel(this.createImageIcon("bitmaps/diagram/rightcorner.gif")), "East");
         JPanel eastBorder = new JPanel(new BorderLayout(0, 0));
         eastBorder.setBackground(Color.BLACK);
         eastBorder.add(new JLabel(this.createImageIcon("bitmaps/diagram/sideborder.gif")));
@@ -88,8 +89,7 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
         JPanel mediaPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING, 10, 10));
         mediaPanel.setOpaque(false);
         this.inputBox = new MainSimulationPanel.InputWordBox(this, this);
-        this.inputBox.setToolTipText(
-            INSTRUCTIONS);
+        this.inputBox.setToolTipText(INSTRUCTIONS);
         inputPanel.add(this.inputBox);
         inputPanel.add(new MainSimulationPanel.SymbolButton());
         mediaPanel.add(this.createMediaButton(PLAY, "play"));
@@ -110,7 +110,8 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
     }
 
     ImageIcon createImageIcon(String resource) {
-        return new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(resource)));
+        return new ImageIcon(
+                Objects.requireNonNull(this.getClass().getClassLoader().getResource(resource)));
     }
 
     public void actionPerformed(ActionEvent event) {
@@ -173,7 +174,7 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
                     this,
                     "Invalid Input.\n\nOnly symbols from the alphabet may be     \nused in the input word. \n\nClick the ADD SYMBOL button for a list of \nvalid symbols.",
                     "Invalid Input",
-                JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return acceptableWord;
@@ -189,39 +190,39 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
         List<String> alphabet = this.simulator.getMachine().getAlphabet();
         Font font = new Font("Helvetica", Font.PLAIN, 14);
         ActionListener listener =
-            event -> {
-                String sourceName = ((Component) event.getSource()).getName();
-                if (sourceName.equals(CLOSE)) {
-                    MainSimulationPanel.this.alphabetMenu.setVisible(false);
-                } else if (sourceName.equals(CLEAR)) {
-                    MainSimulationPanel.this.inputBox.setText("");
-                } else {
-                    MainSimulationPanel.this.inputBox.setText(
-                            MainSimulationPanel.this
-                                            .inputBox
-                                            .getText()
-                                            .substring(
-                                                    0,
-                                                    MainSimulationPanel.this
-                                                            .inputBox
-                                                            .getField()
-                                                            .getCaretPosition())
-                                    + sourceName
-                                    + MainSimulationPanel.this
-                                            .inputBox
-                                            .getText()
-                                            .substring(
-                                                    MainSimulationPanel.this
-                                                            .inputBox
-                                                            .getField()
-                                                            .getCaretPosition(),
-                                                    MainSimulationPanel.this
-                                                            .inputBox
-                                                            .getField()
-                                                            .getText()
-                                                            .length()));
-                }
-            };
+                event -> {
+                    String sourceName = ((Component) event.getSource()).getName();
+                    if (sourceName.equals(CLOSE)) {
+                        MainSimulationPanel.this.alphabetMenu.setVisible(false);
+                    } else if (sourceName.equals(CLEAR)) {
+                        MainSimulationPanel.this.inputBox.setText("");
+                    } else {
+                        MainSimulationPanel.this.inputBox.setText(
+                                MainSimulationPanel.this
+                                                .inputBox
+                                                .getText()
+                                                .substring(
+                                                        0,
+                                                        MainSimulationPanel.this
+                                                                .inputBox
+                                                                .getField()
+                                                                .getCaretPosition())
+                                        + sourceName
+                                        + MainSimulationPanel.this
+                                                .inputBox
+                                                .getText()
+                                                .substring(
+                                                        MainSimulationPanel.this
+                                                                .inputBox
+                                                                .getField()
+                                                                .getCaretPosition(),
+                                                        MainSimulationPanel.this
+                                                                .inputBox
+                                                                .getField()
+                                                                .getText()
+                                                                .length()));
+                    }
+                };
         JMenuItem clearMenuItem = this.alphabetMenu.add("clear");
         clearMenuItem.setName(CLEAR);
         clearMenuItem.addActionListener(listener);
@@ -365,8 +366,7 @@ public class MainSimulationPanel extends JPanel implements ActionListener, KeyLi
                     (int) alphabetLabel.getPreferredSize().getWidth(),
                     (int) alphabetLabel.getPreferredSize().getHeight());
             JButton addSymbol =
-                    MainSimulationPanel.this.createMediaButton(
-                        ADD_SYMBOL, "add-symbol");
+                    MainSimulationPanel.this.createMediaButton(ADD_SYMBOL, "add-symbol");
             addSymbol.setBounds(7, 19, 78, 18);
             JLayeredPane pane = new JLayeredPane();
             pane.setPreferredSize(alphabetLabel.getPreferredSize());
