@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [2.0.1] - 2021-08-26
-### Changed
+### Fixed
 - Authors sample machine to only halt on correct inputs
 
 ## [2.0.0] - 2021-08-26
