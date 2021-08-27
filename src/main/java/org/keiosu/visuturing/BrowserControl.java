@@ -33,11 +33,8 @@ public class BrowserControl {
 
     private static void openUrlFirefox(String url) throws IOException {
         URL fullUrl = new URL(url);
-        Process cmdProcess = Runtime.getRuntime().exec(new String[] {
-            "firefox",
-            "-new-tab",
-            fullUrl.toString()
-        });
+        Process cmdProcess =
+                Runtime.getRuntime().exec(new String[] {"firefox", "-new-tab", fullUrl.toString()});
         try {
             cmdProcess.waitFor();
         } catch (InterruptedException e) {
@@ -50,11 +47,8 @@ public class BrowserControl {
 
     private static void openUrlWindows(String url) throws IOException {
         URL fullUrl = new URL(url);
-        Runtime.getRuntime().exec(new String[] {
-            "rundll32",
-            "url.dll,FileProtocolHandler",
-            fullUrl.toString()
-        });
+        Runtime.getRuntime()
+                .exec(new String[] {"rundll32", "url.dll,FileProtocolHandler", fullUrl.toString()});
     }
 
     private static boolean isWindowsPlatform() {
