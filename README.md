@@ -20,16 +20,16 @@ Brian Corbin
 Screens
 -------------------
 
-![VisuTuring Diagram Editor](https://github.com/keiosucoding/visuturing/raw/master/images/Screen%20Shot%202014-11-30%20at%2023.04.19.png)
+![VisuTuring Diagram Editor](images/Screen%20Shot%202014-11-30%20at%2023.04.19.png)
 
 - Simulate Turing Machines / Automata...
 
-![Turing Machine Simulation](https://github.com/keiosucoding/visuturing/raw/master/images/Screen%20Shot%202014-11-30%20at%2023.03.18.png)
+![Turing Machine Simulation](images/Screen%20Shot%202014-11-30%20at%2023.03.18.png)
 
-![Advanced Turing Machine Simulation](https://github.com/keiosucoding/visuturing/raw/master/images/Screen%20Shot%202014-11-30%20at%2023.12.40.png)
+![Advanced Turing Machine Simulation](images/Screen%20Shot%202014-11-30%20at%2023.12.40.png)
 
 - Simulate The Human Computer...
 
-![The Human Computer](https://github.com/keiosucoding/visuturing/raw/master/images/Screen%20Shot%202014-11-30%20at%2023.04.56.png)
+![The Human Computer](images/Screen%20Shot%202014-11-30%20at%2023.04.56.png)
 
 Happy Simulating!
