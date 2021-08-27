@@ -781,7 +781,7 @@ public class VisuTuring extends JFrame implements ActionListener, MouseMotionLis
     }
 
     public void visitBrian() {
-        BrowserControl.displayURL("www.briancorbin.co.uk");
+        BrowserControl.displayURL("http://www.briancorbin.co.uk");
     }
 
     class FrameHandler extends InternalFrameAdapter {
