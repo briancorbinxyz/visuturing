@@ -12,7 +12,7 @@
 </state>
 <state>
 <name>h</name>
-<location x='587.0' y='275.0' />
+<location x='763.0' y='275.0' />
 </state>
 <state>
 <name>b</name>
@@ -29,6 +29,10 @@
 <state>
 <name>bria</name>
 <location x='471.0' y='275.0' />
+</state>
+<state>
+<name>brian</name>
+<location x='623.0' y='273.0' />
 </state>
 </states>
 <alphabet>
@@ -66,17 +70,6 @@
 <p1 x='140.0' y='270.0' />
 <p2 x='250.0' y='271.0' />
 <p3 x='181.0' y='207.0' />
-</edge>
-</transition>
-<transition>
-<current-state>bria</current-state>
-<current-symbol>006E</current-symbol>
-<next-state>h</next-state>
-<task>2192</task>
-<edge>
-<p1 x='471.0' y='275.0' />
-<p2 x='587.0' y='275.0' />
-<p3 x='526.0' y='222.0' />
 </edge>
 </transition>
 <transition>
@@ -148,12 +141,34 @@
 <transition>
 <current-state>bria</current-state>
 <current-symbol>004E</current-symbol>
-<next-state>h</next-state>
+<next-state>brian</next-state>
 <task>2192</task>
 <edge>
 <p1 x='471.0' y='275.0' />
-<p2 x='587.0' y='275.0' />
-<p3 x='528.5' y='279.0' />
+<p2 x='620.8000000000001' y='273.80000000000007' />
+<p3 x='532.3' y='276.4' />
+</edge>
+</transition>
+<transition>
+<current-state>bria</current-state>
+<current-symbol>006E</current-symbol>
+<next-state>brian</next-state>
+<task>2192</task>
+<edge>
+<p1 x='471.0' y='275.0' />
+<p2 x='620.8000000000001' y='273.80000000000007' />
+<p3 x='529.9' y='214.79999999999998' />
+</edge>
+</transition>
+<transition>
+<current-state>brian</current-state>
+<current-symbol>2294</current-symbol>
+<next-state>h</next-state>
+<task>2294</task>
+<edge>
+<p1 x='622.8000000000001' y='274.6' />
+<p2 x='763.0' y='275.8' />
+<p3 x='692.5' y='278.0' />
 </edge>
 </transition>
 </transitions>
