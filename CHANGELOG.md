@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2021-08-26
+### Fixed
+- Authors sample machine to only halt on correct inputs
+
 ## [2.0.0] - 2021-08-26
 ### Added
 - This CHANGELOG to help explain evolving code state 
@@ -25,5 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to simulate, design, and print Turing Machines
 - A README.md explaining the purpose of the project
 
+[2.0.1]: https://github.com/blacish/visuturing/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/blacish/visuturing/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/blacish/visuturing/releases/tag/v1.0.0
