@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 
 <?author name='Brian L A Corbin' ?>
-<?program name='tBIT VisuTuring' version='1.0 3YP' ?><turing-machine>
+<?program name='VisuTuring' version='1.0 3YP' ?><turing-machine>
 <name>Eraser</name>
 <description>Erases the input word from the tape where the word takes the form a*.
 
@@ -14,7 +14,7 @@
 </state>
 <state>
 <name>h</name>
-<location x='274.0' y='313.0' />
+<location x='245.0' y='248.0' />
 </state>
 <state>
 <name>q</name>
@@ -34,7 +34,7 @@
 <task>2294</task>
 <edge>
 <p1 x='66.0' y='95.0' />
-<p2 x='274.0' y='313.0' />
+<p2 x='245.0' y='248.0' />
 <p3 x='168.0' y='206.5' />
 </edge>
 </transition>
@@ -89,7 +89,7 @@
 <task>0061</task>
 <edge>
 <p1 x='448.0' y='94.0' />
-<p2 x='274.0' y='313.0' />
+<p2 x='245.0' y='248.0' />
 <p3 x='361.0' y='203.5' />
 </edge>
 </transition>
