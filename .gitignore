@@ -1,5 +1,7 @@
 .idea/**/misc.xml
 
+bin/*
+
 ########################################################################################################################
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
@@ -95,3 +97,17 @@ gradle-app.setting
 
 # SonarQube Plugin
 .idea/**/sonarIssues.xml
+
+# https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
