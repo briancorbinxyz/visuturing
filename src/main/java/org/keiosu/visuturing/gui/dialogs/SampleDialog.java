@@ -1,6 +1,7 @@
 package org.keiosu.visuturing.gui.dialogs;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -88,16 +89,19 @@ public class SampleDialog extends AbstractDialog implements ListSelectionListene
     }
 
     public File getSelectedFile() {
-        try {
-            URL sampleUrl =
-                    requireNonNull(
-                            SampleDialog.class
-                                    .getClassLoader()
-                                    .getResource(SampleDialog.SAMPLE_DIR));
-            return Paths.get(sampleUrl.toURI()).resolve(selectedFile).toFile();
-        } catch (URISyntaxException e) {
-            return null;
-        }
+        URL sampleUrl =
+                requireNonNull(
+                        SampleDialog.class.getClassLoader().getResource(SampleDialog.SAMPLE_DIR));
+        return ofNullable(selectedFile)
+                .map(
+                        f -> {
+                            try {
+                                return Paths.get(sampleUrl.toURI()).resolve(f).toFile();
+                            } catch (URISyntaxException e) {
+                                return null;
+                            }
+                        })
+                .orElse(null);
     }
 
     public void valueChanged(ListSelectionEvent event) {
