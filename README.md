@@ -6,6 +6,8 @@ Turing Machine Simulator in Java
 Originally my 3rd Year CompSci BSc project which I resurrected after Alan Turing hype from a film starring Mr. Cumberbatch,
 to share with the community.
 
+Technology: Java / Java2D / Java Swing
+
 Overview
 -------------------
 
